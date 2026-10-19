@@ -9,7 +9,7 @@
 <meta property="og:title" content="Convite Especial - Aylla Vitória" />
 <meta property="og:description" content="Você é nosso convidado especial! Toque para abrir." />
 <meta property="og:image" content="capa.png" />
- 
+
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -172,7 +172,7 @@ html, body {
   <img id="cover" src="capa.png" alt="Capa Envelope" onclick="iniciarExperiencia()">
   <div class="tap-hint" onclick="iniciarExperiencia()">Toque para abrir</div>
 
-  <!-- 2. Vídeo de Abertura (Hospedado no CDN Imgur) -->
+  <!-- 2. Vídeo de Abertura (Link Imgur) -->
   <video id="intro-video" playsinline webkit-playsinline preload="auto" src="https://i.imgur.com/JPzoItH.mp4"></video>
   <button id="btn-pular" type="button" onclick="irParaFinal()">Pular vídeo ✕</button>
 
@@ -205,8 +205,8 @@ html, body {
   </div>
 </div>
 
-<!-- Música de Fundo (opcional, caso você tenha colocado musica.mp3 no GitHub) -->
-<audio id="musica" src="musica.mp3" loop preload="auto"></audio>
+<!-- Música de Fundo (Seu link do Imgur em Loop contínuo) -->
+<audio id="musica" src="https://i.imgur.com/Qv9rKqF.mp4" loop preload="auto"></audio>
 
 <script>
 const stage = document.getElementById('stage');
@@ -223,18 +223,18 @@ function iniciarExperiencia() {
   if (jaIniciou) return;
   jaIniciou = true;
 
-  // Mostra o vídeo e esconde o envelope
+  // Mostra o vídeo e o botão de pular
   video.style.display = 'block';
   btnPular.style.display = 'block';
   stage.classList.add('opened');
 
-  // O som do próprio vídeo já toca junto
+  // Roda o vídeo com o próprio som dele
   video.currentTime = 0;
   const promessa = video.play();
 
   if (promessa !== undefined) {
-    promessa.catch(err => {
-      // Se o navegador bloquear o áudio do vídeo, roda ele mutado para não travar
+    promessa.catch(() => {
+      // Caso haja bloqueio de áudio pelo aparelho, toca mudo para não travar
       video.muted = true;
       video.play().catch(irParaFinal);
     });
@@ -245,20 +245,22 @@ function iniciarExperiencia() {
 }
 
 function irParaFinal() {
+  // 1. Pausa e desativa totalmente o vídeo e o som dele
   if (video) {
     video.pause();
+    video.currentTime = 0;
     video.style.display = 'none';
   }
   btnPular.style.display = 'none';
   stage.classList.add('opened');
 
-  // Ao chegar na página final, toca a música de fundo caso ela exista
+  // 2. Entra a música de fundo em loop com volume perfeito (sem colidir com o vídeo)
   if (musica) {
-    musica.volume = 0.6;
-    musica.play().catch(() => {});
+    musica.volume = 0.65;
+    musica.play().catch(e => console.log("Áudio aguardando interação:", e));
   }
 
-  // Revela o convite principal
+  // 3. Exibe o convite principal e os botões
   convitePage.classList.add('show');
   btnLayer.classList.add('show');
 }
