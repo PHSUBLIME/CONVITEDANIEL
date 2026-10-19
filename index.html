@@ -35,6 +35,8 @@ html, body {
   position: absolute; top: 0; left: 0;
   width: 100%; height: 100%;
   object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 /* 1. Capa Envelope */
@@ -47,7 +49,7 @@ html, body {
   display: none !important;
 }
 
-/* 2. Vídeo de Transição */
+/* 2. Vídeo de Abertura */
 #intro-video {
   z-index: 40;
   display: none;
@@ -155,7 +157,7 @@ html, body {
   border-radius: 20px;
 }
 
-/* Onda de brilho */
+/* Efeito de brilho ao clicar */
 .btn-click:active::after {
   content: '';
   position: absolute;
@@ -188,8 +190,8 @@ html, body {
   <img id="cover" src="capa.png" alt="Capa Envelope" onclick="iniciarExperiencia()">
   <div class="tap-hint" onclick="iniciarExperiencia()">Toque para abrir</div>
 
-  <!-- 2. Vídeo de Abertura -->
-  <video id="intro-video" playsinline webkit-playsinline preload="auto" src="https://i.imgur.com/JPzoItH.mp4"></video>
+  <!-- 2. Vídeo de Abertura (Seu novo link Imgur) -->
+  <video id="intro-video" playsinline webkit-playsinline x5-playsinline preload="auto" src="https://i.imgur.com/3W1InHI.mp4"></video>
   <button id="btn-pular" type="button" onclick="irParaFinal()">Pular vídeo ✕</button>
 
   <!-- Canvas das Partículas de Brilho -->
@@ -213,7 +215,7 @@ html, body {
   </div>
 
   <!-- 4. Página de Presentes / Pix -->
-  <img id="presentes-page" src="https://i.imgur.com/WvZS72q.png" alt="Página de Presentes">
+  <img id="presentes-page" src="https://i.imgur.com/8QG3tQJ.png" alt="Página de Presentes">
 
   <!-- Botões da Página de Presentes -->
   <div class="btn-layer" id="btnLayerPresentes">
@@ -320,20 +322,19 @@ function iniciarExperiencia() {
   video.classList.add('ativo');
   btnPular.style.display = 'block';
 
-  // Roda o vídeo imediatamente
   video.currentTime = 0;
-  video.muted = true; // Permite início instantâneo sem ser barrado pelo navegador
+  video.muted = false;
 
   const promessa = video.play();
   if (promessa !== undefined) {
     promessa.then(() => {
       stage.classList.add('opened');
-      video.muted = false; // Desmuta assim que confirmou o início
     }).catch(err => {
-      console.warn("Autoplay sem som:", err);
-      stage.classList.add('opened');
+      console.warn("Reproduzindo mudo caso haja bloqueio do navegador:", err);
       video.muted = true;
-      video.play().catch(irParaFinal);
+      video.play().then(() => {
+        stage.classList.add('opened');
+      }).catch(irParaFinal);
     });
   } else {
     stage.classList.add('opened');
@@ -351,7 +352,6 @@ function irParaFinal() {
   btnPular.style.display = 'none';
   stage.classList.add('opened');
 
-  // Inicia a música de fundo em loop
   if (musica) {
     musica.volume = 0.65;
     musica.play().catch(() => {});
@@ -361,7 +361,6 @@ function irParaFinal() {
   btnLayerPrincipal.classList.add('show');
 }
 
-// Navegação para a Página de Presentes
 function abrirPaginaPresentes() {
   convitePage.classList.remove('show');
   btnLayerPrincipal.classList.remove('show');
@@ -370,7 +369,6 @@ function abrirPaginaPresentes() {
   btnLayerPresentes.classList.add('show');
 }
 
-// Voltar para a Página Principal
 function voltarAoConvite() {
   presentesPage.classList.remove('show');
   btnLayerPresentes.classList.remove('show');
@@ -381,7 +379,7 @@ function voltarAoConvite() {
 
 function copiarPix(chave) {
   if (!chave || chave === 'SUA_CHAVE_PIX_AQUI') {
-    alert("✨ Adicione a sua chave Pix no código!");
+    alert("✨ Substitua SUA_CHAVE_PIX_AQUI pela sua chave Pix real no código!");
     return;
   }
   navigator.clipboard.writeText(chave).then(() => {
