@@ -39,14 +39,36 @@ html, body {
   -webkit-user-drag: none;
 }
 
-/* 1. Capa Envelope */
+/* 1. Capa Envelope - Transição da carta abrindo */
 #cover {
   z-index: 50;
   cursor: pointer;
-  transition: opacity 0.4s ease;
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 1s ease;
+  transform-origin: center center;
 }
 .opened #cover {
-  display: none !important;
+  opacity: 0;
+  transform: scale(1.3);
+  pointer-events: none;
+}
+
+/* Fumaça mágica na abertura da carta */
+.smoke-layer {
+  position: absolute; inset: -20%;
+  z-index: 55;
+  background: radial-gradient(circle, rgba(255, 235, 245, 0.95) 15%, rgba(245, 182, 206, 0.75) 45%, rgba(13, 6, 8, 0.9) 80%);
+  filter: blur(25px);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(15%) scale(0.85);
+}
+.opened .smoke-layer {
+  animation: animarFumaca 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+@keyframes animarFumaca {
+  0% { opacity: 0; transform: translateY(15%) scale(0.85); }
+  40% { opacity: 0.9; transform: translateY(0%) scale(1.05); }
+  100% { opacity: 0; transform: translateY(-15%) scale(1.3); }
 }
 
 /* 2. Vídeo de Abertura */
@@ -54,9 +76,12 @@ html, body {
   z-index: 40;
   display: none;
   background: #000;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 #intro-video.ativo {
   display: block;
+  opacity: 1;
 }
 
 /* Botão Pular Vídeo */
@@ -112,8 +137,9 @@ html, body {
   pointer-events: none;
   animation: pulse 1.8s infinite;
   box-shadow: 0 4px 18px rgba(0,0,0,0.5);
+  transition: opacity 0.4s ease;
 }
-.opened .tap-hint { display: none !important; }
+.opened .tap-hint { opacity: 0; pointer-events: none; }
 
 @keyframes pulse {
   0%, 100% { transform: translate(-50%, -50%) scale(1); }
@@ -190,7 +216,10 @@ html, body {
   <img id="cover" src="capa.png" alt="Capa Envelope" onclick="iniciarExperiencia()">
   <div class="tap-hint" onclick="iniciarExperiencia()">Toque para abrir</div>
 
-  <!-- 2. Vídeo de Abertura (Seu novo link Imgur) -->
+  <!-- Fumaça mágica na abertura da carta -->
+  <div class="smoke-layer"></div>
+
+  <!-- 2. Vídeo de Abertura (Imgur) -->
   <video id="intro-video" playsinline webkit-playsinline x5-playsinline preload="auto" src="https://i.imgur.com/3W1InHI.mp4"></video>
   <button id="btn-pular" type="button" onclick="irParaFinal()">Pular vídeo ✕</button>
 
@@ -214,8 +243,8 @@ html, body {
        target="_blank" rel="noopener" onclick="animarBrilho(event)"></a>
   </div>
 
-  <!-- 4. Página de Presentes / Pix -->
-  <img id="presentes-page" src="https://i.imgur.com/8QG3tQJ.png" alt="Página de Presentes">
+  <!-- 4. Página de Presentes / Pix (Carregada do seu GitHub) -->
+  <img id="presentes-page" src="presentes.png" alt="Página de Presentes">
 
   <!-- Botões da Página de Presentes -->
   <div class="btn-layer" id="btnLayerPresentes">
@@ -319,39 +348,40 @@ function iniciarExperiencia() {
   if (jaIniciou) return;
   jaIniciou = true;
 
-  video.classList.add('ativo');
-  btnPular.style.display = 'block';
+  // 1. Inicia a animação da carta abrindo devagar com fumaça
+  stage.classList.add('opened');
 
-  video.currentTime = 0;
-  video.muted = false;
+  // 2. Aguarda a carta abrir (600ms) e então inicia o vídeo
+  setTimeout(() => {
+    video.classList.add('ativo');
+    btnPular.style.display = 'block';
 
-  const promessa = video.play();
-  if (promessa !== undefined) {
-    promessa.then(() => {
-      stage.classList.add('opened');
-    }).catch(err => {
-      console.warn("Reproduzindo mudo caso haja bloqueio do navegador:", err);
-      video.muted = true;
-      video.play().then(() => {
-        stage.classList.add('opened');
-      }).catch(irParaFinal);
-    });
-  } else {
-    stage.classList.add('opened');
-  }
+    video.currentTime = 0;
+    video.muted = false;
 
-  video.onended = irParaFinal;
-  video.onerror = irParaFinal;
+    const promessa = video.play();
+    if (promessa !== undefined) {
+      promessa.catch(() => {
+        // Se o navegador bloquear áudio, roda mudo para não travar
+        video.muted = true;
+        video.play().catch(irParaFinal);
+      });
+    }
+
+    video.onended = irParaFinal;
+    video.onerror = irParaFinal;
+  }, 600);
 }
 
 function irParaFinal() {
   if (video) {
     video.pause();
+    video.classList.remove('ativo');
     video.style.display = 'none';
   }
   btnPular.style.display = 'none';
-  stage.classList.add('opened');
 
+  // Inicia a música de fundo
   if (musica) {
     musica.volume = 0.65;
     musica.play().catch(() => {});
@@ -361,6 +391,7 @@ function irParaFinal() {
   btnLayerPrincipal.classList.add('show');
 }
 
+// Navegação para a Página de Presentes
 function abrirPaginaPresentes() {
   convitePage.classList.remove('show');
   btnLayerPrincipal.classList.remove('show');
@@ -369,6 +400,7 @@ function abrirPaginaPresentes() {
   btnLayerPresentes.classList.add('show');
 }
 
+// Voltar para a Página Principal
 function voltarAoConvite() {
   presentesPage.classList.remove('show');
   btnLayerPresentes.classList.remove('show');
