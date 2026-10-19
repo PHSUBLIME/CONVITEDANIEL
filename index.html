@@ -39,7 +39,7 @@ html, body {
   -webkit-user-drag: none;
 }
 
-/* 1. Capa Envelope Estático */
+/* 1. Capa Envelope */
 #cover {
   z-index: 50;
   cursor: pointer;
@@ -190,7 +190,7 @@ html, body {
   <img id="cover" src="capa.png" alt="Capa Envelope" onclick="iniciarExperiencia()">
   <div class="tap-hint" onclick="iniciarExperiencia()">Toque para abrir</div>
 
-  <!-- VÍDEO 1: Animação da Carta se Abrindo (Castelo) -->
+  <!-- VÍDEO 1: Carta se Abrindo (Castelo) -->
   <video id="video-abertura" class="video-player" playsinline webkit-playsinline x5-playsinline preload="auto" src="https://i.imgur.com/JPzoItH.mp4"></video>
 
   <!-- VÍDEO 2: A Menina Falando -->
@@ -219,7 +219,7 @@ html, body {
   </div>
 
   <!-- 4. Página de Presentes / Pix -->
-  <img id="presentes-page" src="presentes.png" alt="Página de Presentes">
+  <img id="presentes-page" src="presentes.png" alt="Página de Presentes" onerror="tentarOutroFormato(this)">
 
   <!-- Botões da Página de Presentes -->
   <div class="btn-layer" id="btnLayerPresentes">
@@ -245,6 +245,14 @@ const presentesPage = document.getElementById('presentes-page');
 const btnLayerPrincipal = document.getElementById('btnLayerPrincipal');
 const btnLayerPresentes = document.getElementById('btnLayerPresentes');
 const musica = document.getElementById('musica');
+
+// Se tiver subido como presentes.jpg, corrige sozinho
+function tentarOutroFormato(img) {
+  if (!img.dataset.corrigido) {
+    img.dataset.corrigido = "true";
+    img.src = "presentes.jpg";
+  }
+}
 
 // Canvas de brilhos
 const canvas = document.getElementById('sparkle-canvas');
@@ -335,12 +343,11 @@ function iniciarExperiencia() {
     videoAbertura.play().catch(tocarVideoFala);
   });
 
-  // Quando o vídeo da carta abrindo terminar -> Toca o vídeo da menina falando
   videoAbertura.onended = tocarVideoFala;
   videoAbertura.onerror = tocarVideoFala;
 }
 
-// 2. Vídeo da Menina Falando (Vídeo 2)
+// 2. Vídeo da Menina Falando (Vídeo 2) + Início da Música de Fundo
 function tocarVideoFala() {
   videoAbertura.pause();
   videoAbertura.classList.remove('ativo');
@@ -349,6 +356,12 @@ function tocarVideoFala() {
   videoFala.classList.add('ativo');
   videoFala.currentTime = 0;
   videoFala.muted = false;
+
+  // A música de fundo começa a tocar AQUI, exatamente junto da fala
+  if (musica) {
+    musica.volume = 0.35; // Volume perfeito de fundo para não cobrir a voz dela
+    musica.play().catch(() => {});
+  }
 
   const promessa = videoFala.play();
   if (promessa !== undefined) {
@@ -375,10 +388,12 @@ function irParaFinal() {
   btnPular.style.display = 'none';
   stage.classList.add('opened');
 
-  // Inicia a música de fundo em loop contínuo
+  // Garante que a música continue tocando no convite e aumenta um pouco o volume
   if (musica) {
     musica.volume = 0.65;
-    musica.play().catch(() => {});
+    if (musica.paused) {
+      musica.play().catch(() => {});
+    }
   }
 
   convitePage.classList.add('show');
