@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Convite Especial - Aylla Vitória</title>
 
+<!-- Compartilhamento WhatsApp / Redes -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Convite Especial - Aylla Vitória" />
+<meta property="og:description" content="Você é nosso convidado especial! Toque para abrir." />
+<meta property="og:image" content="capa.png" />
+
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -29,6 +35,7 @@ html, body {
   aspect-ratio: 9 / 16;
   background: #000;
   overflow: hidden;
+  box-shadow: 0 0 35px rgba(0,0,0,0.85);
 }
 
 .stage img {
@@ -179,11 +186,11 @@ html, body {
 
 <div class="stage" id="stage">
   <!-- Capa Envelope -->
-  <img id="cover" src="capa.jpg" alt="Capa Envelope" onclick="abrirConvite()" onerror="tentarPng(this, 'capa.png')">
+  <img id="cover" src="capa.png" alt="Capa Envelope" onclick="abrirConvite()">
   <div class="tap-hint" onclick="abrirConvite()">Toque para abrir</div>
 
   <!-- Página Principal do Convite -->
-  <img src="pagina.jpg" alt="Convite Principal" onerror="tentarPng(this, 'pagina.png')">
+  <img src="pagina.png" alt="Convite Principal">
 
   <!-- Botão 1: Localização -->
   <a id="btn-local" class="btn-click" 
@@ -210,21 +217,13 @@ html, body {
   </div>
 </div>
 
-<!-- Música -->
+<!-- Música de Fundo (opcional) -->
 <audio id="musica" src="musica.mp3" loop preload="auto"></audio>
 
 <script>
 const stage = document.getElementById('stage');
 const musica = document.getElementById('musica');
 const modal = document.getElementById('pixModal');
-
-// Se o arquivo tiver extensão diferente, corrige automaticamente
-function tentarPng(img, fallback) {
-  if (!img.dataset.tried) {
-    img.dataset.tried = "true";
-    img.src = fallback;
-  }
-}
 
 function abrirConvite() {
   stage.classList.add('opened');
