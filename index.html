@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Convite Especial - Aylla Vitória</title>
 
 <meta property="og:type" content="website" />
@@ -21,6 +21,7 @@ html, body {
   display: flex; align-items: center; justify-content: center;
 }
 
+/* Área do convite no formato de Stories (9:16) */
 .stage {
   position: relative;
   width: 100%; height: 100%;
@@ -31,7 +32,7 @@ html, body {
   box-shadow: 0 0 35px rgba(0,0,0,0.85);
 }
 
-.stage img {
+.stage img, .stage video {
   position: absolute; top: 0; left: 0;
   width: 100%; height: 100%;
   object-fit: cover;
@@ -39,64 +40,57 @@ html, body {
   -webkit-user-drag: none;
 }
 
-/* Convite Principal */
-#convite-page {
-  z-index: 10;
-}
-
-/* Capa Envelope */
+/* 1. Capa Envelope */
 #cover {
   z-index: 50;
   cursor: pointer;
-  transition: opacity 1.6s cubic-bezier(0.25, 1, 0.5, 1), transform 2s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
-
 .opened #cover {
   opacity: 0;
-  transform: scale(1.4);
+  transform: scale(1.15);
   pointer-events: none;
 }
 
-/* EFEITO DE FUMAÇA MÁGICA / NÉVOA REAL */
-.smoke-layer {
-  position: absolute;
-  inset: -20%;
-  z-index: 55;
-  background: radial-gradient(circle, rgba(255, 235, 245, 0.95) 15%, rgba(245, 182, 206, 0.75) 45%, rgba(13, 6, 8, 0.9) 80%);
-  filter: blur(25px);
+/* 2. Vídeo de Transição */
+#intro-video {
+  z-index: 40;
+  display: none;
   opacity: 0;
-  pointer-events: none;
-  transform: translateY(15%) scale(0.85);
+  transition: opacity 0.6s ease;
+}
+#intro-video.active {
+  display: block;
+  opacity: 1;
 }
 
-.opened .smoke-layer {
-  animation: animarFumaca 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+/* Botão Pular Vídeo */
+#btn-pular {
+  position: absolute;
+  right: 14px;
+  bottom: 24px;
+  z-index: 45;
+  display: none;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  -webkit-tap-highlight-color: transparent;
 }
 
-@keyframes animarFumaca {
-  0% {
-    opacity: 0;
-    transform: translateY(15%) scale(0.85);
-  }
-  30% {
-    opacity: 0.95;
-    transform: translateY(0%) scale(1.05);
-  }
-  65% {
-    opacity: 0.75;
-    transform: translateY(-8%) scale(1.2);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-18%) scale(1.35);
-  }
+/* 3. Página Final (Convite Interativo) */
+#convite-page {
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 1s ease;
 }
-
-/* Partículas e brilhos mágicos */
-#sparkle-canvas {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  z-index: 58; pointer-events: none;
+#convite-page.show {
+  opacity: 1;
 }
 
 /* Botão 'Toque para abrir' */
@@ -106,7 +100,7 @@ html, body {
   transform: translate(-50%, -50%);
   z-index: 60;
   color: #fff;
-  background: rgba(138, 30, 50, 0.88);
+  background: rgba(138, 30, 50, 0.9);
   border: 1px solid #d4af37;
   padding: 11px 24px;
   border-radius: 25px;
@@ -118,22 +112,25 @@ html, body {
   box-shadow: 0 4px 18px rgba(0,0,0,0.5);
   transition: opacity 0.4s ease;
 }
-
-.opened .tap-hint {
-  opacity: 0;
-}
+.opened .tap-hint { opacity: 0; }
 
 @keyframes pulse {
   0%, 100% { transform: translate(-50%, -50%) scale(1); }
   50% { transform: translate(-50%, -50%) scale(1.06); }
 }
 
-/* Botões invisíveis sobre a arte */
+/* Botões invisíveis sobre a arte final */
+.btn-layer {
+  position: absolute; inset: 0;
+  z-index: 35;
+  display: none;
+}
+.btn-layer.show { display: block; }
+
 .btn-click {
   position: absolute;
   border-radius: 50%;
   display: block;
-  z-index: 30;
   background: transparent;
   -webkit-tap-highlight-color: transparent;
 }
@@ -152,7 +149,6 @@ html, body {
   transition: opacity 0.3s ease;
   padding: 20px;
 }
-
 .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
 .modal-box {
@@ -185,32 +181,34 @@ html, body {
 </head>
 <body>
 
-<div class="stage" id="stage" onclick="abrirConvite()">
-  <!-- Capa Envelope -->
-  <img id="cover" src="capa.png" alt="Capa Envelope">
-  <div class="tap-hint">Toque para abrir</div>
+<div class="stage" id="stage">
+  <!-- 1. Capa Envelope -->
+  <img id="cover" src="capa.png" alt="Capa Envelope" onclick="iniciarExperiencia()">
+  <div class="tap-hint" onclick="iniciarExperiencia()">Toque para abrir</div>
 
-  <!-- Fumaça Mágica e Canvas de Partículas -->
-  <div class="smoke-layer"></div>
-  <canvas id="sparkle-canvas"></canvas>
+  <!-- 2. Vídeo de Abertura (playsinline é vital para celulares não abrirem tela cheia do sistema) -->
+  <video id="intro-video" src="video.mp4" playsinline webkit-playsinline preload="auto"></video>
+  <button id="btn-pular" type="button" onclick="irParaFinal()">Pular vídeo ✕</button>
 
-  <!-- Página Principal do Convite -->
+  <!-- 3. Convite Principal -->
   <img id="convite-page" src="pagina.png" alt="Convite Principal">
 
   <!-- Botões Interativos -->
-  <a id="btn-local" class="btn-click" 
-     href="https://www.google.com/maps/search/?api=1&query=Espa%C3%A7o+Lion+Eventos" 
-     target="_blank" rel="noopener" onclick="event.stopPropagation()"></a>
+  <div class="btn-layer" id="btnLayer">
+    <a id="btn-local" class="btn-click" 
+       href="https://www.google.com/maps/search/?api=1&query=Espa%C3%A7o+Lion+Eventos" 
+       target="_blank" rel="noopener"></a>
 
-  <a id="btn-presente" class="btn-click" href="javascript:void(0)" 
-     onclick="event.stopPropagation(); abrirPresentes()"></a>
+    <a id="btn-presente" class="btn-click" href="javascript:void(0)" 
+       onclick="abrirPresentes()"></a>
 
-  <a id="btn-presenca" class="btn-click" 
-     href="https://wa.me/55SEUNUMEROAQUI?text=Ol%C3%A1!%20Gostaria%20de%20confirmar%20minha%20presen%C3%A7a%20no%20anivers%C3%A1rio%20de%201%20aninho%20da%20Aylla%20Vit%C3%B3ria!%20%F0%9F%91%91" 
-     target="_blank" rel="noopener" onclick="event.stopPropagation()"></a>
+    <a id="btn-presenca" class="btn-click" 
+       href="https://wa.me/55SEUNUMEROAQUI?text=Ol%C3%A1!%20Gostaria%20de%20confirmar%20minha%20presen%C3%A7a%20no%20anivers%C3%A1rio%20de%201%20aninho%20da%20Aylla%20Vit%C3%B3ria!%20%F0%9F%91%91" 
+       target="_blank" rel="noopener"></a>
+  </div>
 
-  <!-- Modal do Pix -->
-  <div class="modal-overlay" id="pixModal" onclick="event.stopPropagation()">
+  <!-- Janela Popup Pix -->
+  <div class="modal-overlay" id="pixModal">
     <div class="modal-box">
       <h3 class="modal-title">Sugestão de Presente 🎁</h3>
       <p class="modal-text">Sua presença é o maior presente! Caso queira nos presentear de forma prática, você pode usar a chave Pix:</p>
@@ -221,91 +219,63 @@ html, body {
   </div>
 </div>
 
-<!-- Música de Fundo Local -->
+<!-- Música de Fundo -->
 <audio id="musica" src="musica.mp3" loop preload="auto"></audio>
 
 <script>
 const stage = document.getElementById('stage');
+const video = document.getElementById('intro-video');
+const btnPular = document.getElementById('btn-pular');
+const convitePage = document.getElementById('convite-page');
+const btnLayer = document.getElementById('btnLayer');
 const musica = document.getElementById('musica');
 const modal = document.getElementById('pixModal');
-const canvas = document.getElementById('sparkle-canvas');
-const ctx = canvas.getContext('2d');
 
-let particles = [];
-let animFrame;
+let jaIniciou = false;
 
-function redimensionarCanvas() {
-  canvas.width = stage.clientWidth;
-  canvas.height = stage.clientHeight;
-}
+function iniciarExperiencia() {
+  if (jaIniciou) return;
+  jaIniciou = true;
 
-function criarParticulas() {
-  redimensionarCanvas();
-  particles = [];
-  const total = 80;
-  const centroX = canvas.width / 2;
-  const centroY = canvas.height * 0.55;
+  stage.classList.add('opened');
 
-  for (let i = 0; i < total; i++) {
-    const angulo = Math.random() * Math.PI * 2;
-    const velocidade = Math.random() * 3.5 + 1;
-    particles.push({
-      x: centroX,
-      y: centroY,
-      vx: Math.cos(angulo) * velocidade,
-      vy: Math.sin(angulo) * velocidade - Math.random() * 2,
-      tamanho: Math.random() * 3 + 1.5,
-      alpha: 1,
-      vida: Math.random() * 0.015 + 0.008,
-      cor: ['#ffd700', '#ffffff', '#ffb6c1', '#f3a4b5'][Math.floor(Math.random() * 4)]
+  // 1. Toca a música diretamente no toque do usuário
+  if (musica) {
+    musica.volume = 0.6;
+    musica.play().catch(err => {
+      console.warn("Aviso de áudio:", err);
     });
   }
-  animarParticulas();
-}
 
-function animarParticulas() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  let vivas = false;
+  // 2. Tenta rodar o vídeo
+  if (video && video.getAttribute('src')) {
+    video.classList.add('active');
+    btnPular.style.display = 'block';
 
-  for (let p of particles) {
-    p.x += p.vx;
-    p.y += p.vy;
-    p.alpha -= p.vida;
+    video.play().catch(() => {
+      // Se der erro ao carregar o vídeo, vai direto para a página final
+      irParaFinal();
+    });
 
-    if (p.alpha > 0) {
-      vivas = true;
-      ctx.save();
-      ctx.globalAlpha = Math.max(0, p.alpha);
-      ctx.fillStyle = p.cor;
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = p.cor;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.tamanho, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    }
-  }
-
-  if (vivas) {
-    animFrame = requestAnimationFrame(animarParticulas);
+    video.onended = () => {
+      irParaFinal();
+    };
+  } else {
+    irParaFinal();
   }
 }
 
-function abrirConvite() {
-  if (stage.classList.contains('opened')) return;
-  stage.classList.add('opened');
-  criarParticulas();
-
-  // Tocar música de fundo se o arquivo existir
-  if (musica) {
-    musica.volume = 0.5;
-    const playPromise = musica.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(function(e) {
-        console.log("Arquivo de música ainda não adicionado ou bloqueado.");
-      });
-    }
+function irParaFinal() {
+  if (video) {
+    video.pause();
+    video.classList.remove('active');
+    video.style.display = 'none';
   }
+  btnPular.style.display = 'none';
+
+  // Revela a imagem final e ativa os botões
+  convitePage.classList.add('show');
+  btnLayer.classList.add('show');
 }
 
 function abrirPresentes() {
