@@ -35,27 +35,25 @@ html, body {
   position: absolute; top: 0; left: 0;
   width: 100%; height: 100%;
   object-fit: cover;
-  user-select: none;
-  -webkit-user-drag: none;
 }
 
 /* 1. Capa Envelope */
 #cover {
   z-index: 50;
   cursor: pointer;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.4s ease;
 }
 .opened #cover {
   display: none !important;
 }
 
-/* 2. Vídeo de Abertura */
+/* 2. Vídeo de Transição */
 #intro-video {
   z-index: 40;
   display: none;
   background: #000;
 }
-.opened #intro-video {
+#intro-video.ativo {
   display: block;
 }
 
@@ -66,7 +64,7 @@ html, body {
   bottom: 24px;
   z-index: 45;
   display: none;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.75);
   color: #fff;
   border: 1px solid rgba(212, 175, 55, 0.8);
   border-radius: 20px;
@@ -81,22 +79,18 @@ html, body {
 #convite-page {
   z-index: 10;
   display: none;
-  transition: opacity 0.6s ease;
 }
 #convite-page.show {
   display: block;
 }
 
-/* 4. Página de Presentes (Arte Completa) */
+/* 4. Página de Presentes */
 #presentes-page {
   z-index: 25;
   display: none;
-  opacity: 0;
-  transition: opacity 0.5s ease;
 }
 #presentes-page.show {
   display: block;
-  opacity: 1;
 }
 
 /* Indicador de toque na capa */
@@ -139,29 +133,29 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Botões redondos da Página Principal */
+/* Botões da Página Principal */
 #btn-local { left: 9%; top: 73.5%; width: 25%; height: 15%; border-radius: 50%; }
 #btn-presente { left: 37.5%; top: 73.5%; width: 25%; height: 15%; border-radius: 50%; }
 #btn-presenca { left: 65.5%; top: 73.5%; width: 25%; height: 15%; border-radius: 50%; }
 
 /* Botões da Página de Presentes */
 #btn-copiar-pix {
-  left: 20%;
-  top: 72%;
-  width: 60%;
+  left: 15%;
+  top: 71%;
+  width: 70%;
   height: 9%;
   border-radius: 15px;
 }
 
 #btn-voltar {
-  left: 35%;
-  top: 86.5%;
-  width: 30%;
-  height: 7%;
+  left: 32%;
+  top: 86%;
+  width: 36%;
+  height: 8%;
   border-radius: 20px;
 }
 
-/* Efeito de brilho ao clicar */
+/* Onda de brilho */
 .btn-click:active::after {
   content: '';
   position: absolute;
@@ -176,7 +170,7 @@ html, body {
   100% { transform: scale(1.4); opacity: 0; }
 }
 
-/* Canvas das partículas mágicas ao clicar */
+/* Canvas de faíscas */
 #sparkle-canvas {
   position: absolute;
   inset: 0;
@@ -194,10 +188,8 @@ html, body {
   <img id="cover" src="capa.png" alt="Capa Envelope" onclick="iniciarExperiencia()">
   <div class="tap-hint" onclick="iniciarExperiencia()">Toque para abrir</div>
 
-  <!-- 2. Vídeo de Abertura (Imgur) -->
-  <video id="intro-video" playsinline webkit-playsinline x5-playsinline preload="auto">
-    <source src="https://i.imgur.com/rWv7aXm.mp4" type="video/mp4">
-  </video>
+  <!-- 2. Vídeo de Abertura -->
+  <video id="intro-video" playsinline webkit-playsinline preload="auto" src="https://i.imgur.com/JPzoItH.mp4"></video>
   <button id="btn-pular" type="button" onclick="irParaFinal()">Pular vídeo ✕</button>
 
   <!-- Canvas das Partículas de Brilho -->
@@ -220,16 +212,14 @@ html, body {
        target="_blank" rel="noopener" onclick="animarBrilho(event)"></a>
   </div>
 
-  <!-- 4. Página de Presentes / Pix Completa -->
-  <img id="presentes-page" src="https://i.imgur.com/8QG3tQJ.png" alt="Página de Presentes">
+  <!-- 4. Página de Presentes / Pix -->
+  <img id="presentes-page" src="https://i.imgur.com/WvZS72q.png" alt="Página de Presentes">
 
   <!-- Botões da Página de Presentes -->
   <div class="btn-layer" id="btnLayerPresentes">
-    <!-- Botão Copiar Chave Pix -->
     <a id="btn-copiar-pix" class="btn-click" href="javascript:void(0)" 
        onclick="animarBrilho(event); copiarPix('SUA_CHAVE_PIX_AQUI')"></a>
 
-    <!-- Botão Voltar -->
     <a id="btn-voltar" class="btn-click" href="javascript:void(0)" 
        onclick="animarBrilho(event); voltarAoConvite()"></a>
   </div>
@@ -327,19 +317,26 @@ function iniciarExperiencia() {
   if (jaIniciou) return;
   jaIniciou = true;
 
-  stage.classList.add('opened');
+  video.classList.add('ativo');
   btnPular.style.display = 'block';
 
+  // Roda o vídeo imediatamente
   video.currentTime = 0;
-  video.muted = false;
+  video.muted = true; // Permite início instantâneo sem ser barrado pelo navegador
 
-  const playPromessa = video.play();
-
-  if (playPromessa !== undefined) {
-    playPromessa.catch(() => {
+  const promessa = video.play();
+  if (promessa !== undefined) {
+    promessa.then(() => {
+      stage.classList.add('opened');
+      video.muted = false; // Desmuta assim que confirmou o início
+    }).catch(err => {
+      console.warn("Autoplay sem som:", err);
+      stage.classList.add('opened');
       video.muted = true;
       video.play().catch(irParaFinal);
     });
+  } else {
+    stage.classList.add('opened');
   }
 
   video.onended = irParaFinal;
@@ -354,6 +351,7 @@ function irParaFinal() {
   btnPular.style.display = 'none';
   stage.classList.add('opened');
 
+  // Inicia a música de fundo em loop
   if (musica) {
     musica.volume = 0.65;
     musica.play().catch(() => {});
