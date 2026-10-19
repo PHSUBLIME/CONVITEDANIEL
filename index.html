@@ -2,49 +2,46 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Convite Especial - Aylla Vitória</title>
 
-<!-- Compartilhamento WhatsApp / Redes -->
-<meta property="og:type" content="website" />
-<meta property="og:title" content="Convite Especial - Aylla Vitória" />
-<meta property="og:description" content="Você é nosso convidado especial! Toque para abrir." />
-<meta property="og:image" content="capa.jpg" />
-
 <style>
-* { box-sizing: border-box; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 html, body {
-  margin: 0; padding: 0;
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   background: #0d0608;
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: system-ui, -apple-system, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.phone-wrapper {
-  width: 100vw; height: 100vh; height: 100dvh;
-  display: flex; align-items: center; justify-content: center;
-}
-
+/* Área do convite em formato de celular (9:16) */
 .stage {
   position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 480px;
+  max-height: 100vh;
   aspect-ratio: 9 / 16;
-  width: auto;
-  max-width: 100%;
-  max-height: 100dvh;
-  box-shadow: 0 0 30px rgba(0,0,0,0.8);
+  background: #000;
   overflow: hidden;
 }
 
 .stage img {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   user-select: none;
   -webkit-user-drag: none;
 }
 
-/* Transições das telas */
+/* Capa Envelope */
 #cover {
   z-index: 50;
   cursor: pointer;
@@ -57,7 +54,7 @@ html, body {
   pointer-events: none;
 }
 
-/* Indicador de clique na capa */
+/* Botão piscando 'Toque para abrir' */
 .tap-hint {
   position: absolute;
   top: 59%;
@@ -65,41 +62,36 @@ html, body {
   transform: translate(-50%, -50%);
   z-index: 60;
   color: #fff;
-  background: rgba(138, 30, 50, 0.75);
-  padding: 8px 18px;
-  border-radius: 20px;
-  font-size: 13px;
+  background: rgba(138, 30, 50, 0.85);
+  border: 1px solid #d4af37;
+  padding: 10px 22px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
-  font-weight: 600;
   pointer-events: none;
   animation: pulse 1.8s infinite;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
 .opened .tap-hint { display: none; }
 
 @keyframes pulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
-  50% { transform: translate(-50%, -50%) scale(1.06); opacity: 1; }
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.08); }
 }
 
-/* Camada com os botões invisíveis */
-.btn-layer {
-  position: absolute; inset: 0;
-  z-index: 20;
-}
-
+/* Botões invisíveis sobre a arte */
 .btn-click {
   position: absolute;
   border-radius: 50%;
   display: block;
+  z-index: 20;
+  background: transparent;
   -webkit-tap-highlight-color: transparent;
-  /* Dica: troque 'transparent' por 'rgba(255,0,0,0.3)' se quiser enxergar a área de toque */
-  background: transparent; 
 }
 
-/* Posicionamento calibrado nos 3 botões redondos */
 #btn-local {
   left: 9%;
   top: 73.5%;
@@ -121,10 +113,10 @@ html, body {
   height: 15%;
 }
 
-/* Modal Popup de Sugestão de Presente / Pix */
+/* Janela Modal do Pix */
 .modal-overlay {
   position: absolute; inset: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.75);
   z-index: 100;
   display: flex; align-items: center; justify-content: center;
   opacity: 0; pointer-events: none;
@@ -142,30 +134,13 @@ html, body {
   border-radius: 20px;
   padding: 24px 20px;
   width: 90%;
-  max-width: 330px;
+  max-width: 320px;
   text-align: center;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-  transform: translateY(20px);
-  transition: transform 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
 }
 
-.modal-overlay.active .modal-box {
-  transform: translateY(0);
-}
-
-.modal-title {
-  color: #7b1828;
-  margin: 0 0 10px;
-  font-size: 20px;
-}
-
-.modal-text {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 16px;
-  line-height: 1.4;
-}
-
+.modal-title { color: #7b1828; margin: 0 0 10px; font-size: 20px; }
+.modal-text { font-size: 14px; color: #555; margin-bottom: 16px; line-height: 1.4; }
 .pix-input {
   width: 100%;
   padding: 10px;
@@ -178,12 +153,11 @@ html, body {
   margin-bottom: 12px;
   font-weight: 600;
 }
-
 .btn-copiar {
   background: #7b1828;
   color: #fff;
   border: none;
-  padding: 11px 20px;
+  padding: 12px;
   font-size: 14px;
   font-weight: bold;
   border-radius: 25px;
@@ -191,7 +165,6 @@ html, body {
   width: 100%;
   margin-bottom: 10px;
 }
-
 .btn-fechar {
   background: transparent;
   color: #888;
@@ -204,53 +177,40 @@ html, body {
 </head>
 <body>
 
-<div class="phone-wrapper">
-  <div class="stage" id="stage">
-    
-    <!-- Capa Envelope -->
-    <img id="cover" src="capa.jpg" alt="Abrir Convite" onclick="abrirConvite()">
-    <div class="tap-hint" onclick="abrirConvite()">Toque para abrir</div>
+<div class="stage" id="stage">
+  <!-- Capa Envelope -->
+  <img id="cover" src="capa.jpg" alt="Capa Envelope" onclick="abrirConvite()" onerror="tentarPng(this, 'capa.png')">
+  <div class="tap-hint" onclick="abrirConvite()">Toque para abrir</div>
 
-    <!-- Convite Principal -->
-    <img src="pagina.jpg" alt="Convite Aylla Vitória">
+  <!-- Página Principal do Convite -->
+  <img src="pagina.jpg" alt="Convite Principal" onerror="tentarPng(this, 'pagina.png')">
 
-    <!-- Áreas Clicáveis sobre a imagem principal -->
-    <div class="btn-layer">
-      
-      <!-- 1. LOCALIZAÇÃO (Espaço's Lion Eventos) -->
-      <!-- Troque pelo link correto do Google Maps do local -->
-      <a id="btn-local" class="btn-click" 
-         href="https://www.google.com/maps/search/?api=1&query=Espa%C3%A7o+Lion+Eventos" 
-         target="_blank" rel="noopener" aria-label="Ver Localização"></a>
+  <!-- Botão 1: Localização -->
+  <a id="btn-local" class="btn-click" 
+     href="https://www.google.com/maps/search/?api=1&query=Espa%C3%A7o+Lion+Eventos" 
+     target="_blank" rel="noopener"></a>
 
-      <!-- 2. SUGESTÃO DE PRESENTE (Abre popup do Pix) -->
-      <a id="btn-presente" class="btn-click" href="javascript:void(0)" onclick="abrirPresentes()" aria-label="Sugestão de Presente"></a>
+  <!-- Botão 2: Presentes (Pix) -->
+  <a id="btn-presente" class="btn-click" href="javascript:void(0)" onclick="abrirPresentes()"></a>
 
-      <!-- 3. CONFIRMAR PRESENÇA (WhatsApp) -->
-      <!-- Troque pelo seu WhatsApp com DDD (exemplo: 5511999999999) -->
-      <a id="btn-presenca" class="btn-click" 
-         href="https://wa.me/55SEUNUMEROAQUI?text=Ol%C3%A1!%20Gostaria%20de%20confirmar%20minha%20presen%C3%A7a%20no%20anivers%C3%A1rio%20de%201%20aninho%20da%20Aylla%20Vit%C3%B3ria!%20%F0%9F%91%91%E2%9C%A8" 
-         target="_blank" rel="noopener" aria-label="Confirmar Presença"></a>
+  <!-- Botão 3: Confirmar Presença (WhatsApp) -->
+  <a id="btn-presenca" class="btn-click" 
+     href="https://wa.me/55SEUNUMEROAQUI?text=Ol%C3%A1!%20Gostaria%20de%20confirmar%20minha%20presen%C3%A7a%20no%20anivers%C3%A1rio%20de%201%20aninho%20da%20Aylla%20Vit%C3%B3ria!%20%F0%9F%91%91" 
+     target="_blank" rel="noopener"></a>
+
+  <!-- Modal do Pix -->
+  <div class="modal-overlay" id="pixModal">
+    <div class="modal-box">
+      <h3 class="modal-title">Sugestão de Presente 🎁</h3>
+      <p class="modal-text">Sua presença é o maior presente! Caso queira nos presentear de forma prática, você pode usar a chave Pix:</p>
+      <input type="text" class="pix-input" id="chavePixVal" value="SUA_CHAVE_PIX_AQUI" readonly>
+      <button class="btn-copiar" onclick="copiarPix()">Copiar Chave Pix</button>
+      <button class="btn-fechar" onclick="fecharPresentes()">Voltar ao convite</button>
     </div>
-
-    <!-- Janela de Presentes (Popup Pix) -->
-    <div class="modal-overlay" id="pixModal">
-      <div class="modal-box">
-        <h3 class="modal-title">Sugestão de Presente 🎁</h3>
-        <p class="modal-text">Sua presença é o maior presente! Caso queira nos presentear de forma prática, você pode usar a chave Pix:</p>
-        
-        <!-- Altere para a sua Chave Pix -->
-        <input type="text" class="pix-input" id="chavePixVal" value="SUA_CHAVE_PIX_AQUI" readonly>
-        
-        <button class="btn-copiar" onclick="copiarPix()">Copiar Chave Pix</button>
-        <button class="btn-fechar" onclick="fecharPresentes()">Voltar ao convite</button>
-      </div>
-    </div>
-
   </div>
 </div>
 
-<!-- Música de Fundo -->
+<!-- Música -->
 <audio id="musica" src="musica.mp3" loop preload="auto"></audio>
 
 <script>
@@ -258,15 +218,19 @@ const stage = document.getElementById('stage');
 const musica = document.getElementById('musica');
 const modal = document.getElementById('pixModal');
 
+// Se o arquivo tiver extensão diferente, corrige automaticamente
+function tentarPng(img, fallback) {
+  if (!img.dataset.tried) {
+    img.dataset.tried = "true";
+    img.src = fallback;
+  }
+}
+
 function abrirConvite() {
   stage.classList.add('opened');
-  
-  // Toca o áudio após a interação
   if(musica) {
     musica.volume = 0.6;
-    musica.play().catch(function(e) {
-      console.log("Áudio bloqueado ou arquivo não encontrado:", e);
-    });
+    musica.play().catch(function(){});
   }
 }
 
