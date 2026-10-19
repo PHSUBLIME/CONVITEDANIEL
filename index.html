@@ -21,7 +21,6 @@ html, body {
   display: flex; align-items: center; justify-content: center;
 }
 
-/* Área do convite no formato de Stories (9:16) */
 .stage {
   position: relative;
   width: 100%; height: 100%;
@@ -44,23 +43,21 @@ html, body {
 #cover {
   z-index: 50;
   cursor: pointer;
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition: opacity 0.7s ease;
 }
 .opened #cover {
   opacity: 0;
-  transform: scale(1.15);
   pointer-events: none;
 }
 
 /* 2. Vídeo de Transição */
 #intro-video {
-  z-index: 40;
-  display: none;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-#intro-video.active {
+  z-index: 30;
   display: block;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+#intro-video.visivel {
   opacity: 1;
 }
 
@@ -71,15 +68,14 @@ html, body {
   bottom: 24px;
   z-index: 45;
   display: none;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.7);
   color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(212, 175, 55, 0.6);
   border-radius: 20px;
   padding: 8px 16px;
   font-size: 13px;
   font-weight: bold;
   cursor: pointer;
-  backdrop-filter: blur(4px);
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -87,7 +83,7 @@ html, body {
 #convite-page {
   z-index: 10;
   opacity: 0;
-  transition: opacity 1s ease;
+  transition: opacity 0.8s ease;
 }
 #convite-page.show {
   opacity: 1;
@@ -110,9 +106,8 @@ html, body {
   pointer-events: none;
   animation: pulse 1.8s infinite;
   box-shadow: 0 4px 18px rgba(0,0,0,0.5);
-  transition: opacity 0.4s ease;
 }
-.opened .tap-hint { opacity: 0; }
+.opened .tap-hint { display: none; }
 
 @keyframes pulse {
   0%, 100% { transform: translate(-50%, -50%) scale(1); }
@@ -186,8 +181,8 @@ html, body {
   <img id="cover" src="capa.png" alt="Capa Envelope" onclick="iniciarExperiencia()">
   <div class="tap-hint" onclick="iniciarExperiencia()">Toque para abrir</div>
 
-  <!-- 2. Vídeo de Abertura (playsinline é vital para celulares não abrirem tela cheia do sistema) -->
-  <video id="intro-video" src="video.mp4" playsinline webkit-playsinline preload="auto"></video>
+  <!-- 2. Vídeo de Abertura (muted + playsinline garante reprodução imediata sem travar) -->
+  <video id="intro-video" src="video.mp4" playsinline webkit-playsinline muted preload="auto"></video>
   <button id="btn-pular" type="button" onclick="irParaFinal()">Pular vídeo ✕</button>
 
   <!-- 3. Convite Principal -->
@@ -207,7 +202,7 @@ html, body {
        target="_blank" rel="noopener"></a>
   </div>
 
-  <!-- Janela Popup Pix -->
+  <!-- Modal do Pix -->
   <div class="modal-overlay" id="pixModal">
     <div class="modal-box">
       <h3 class="modal-title">Sugestão de Presente 🎁</h3>
@@ -239,41 +234,42 @@ function iniciarExperiencia() {
 
   stage.classList.add('opened');
 
-  // 1. Toca a música diretamente no toque do usuário
+  // Toca o áudio de fundo
   if (musica) {
     musica.volume = 0.6;
-    musica.play().catch(err => {
-      console.warn("Aviso de áudio:", err);
-    });
+    musica.play().catch(function(){});
   }
 
-  // 2. Tenta rodar o vídeo
-  if (video && video.getAttribute('src')) {
-    video.classList.add('active');
+  // Roda o vídeo
+  if (video) {
+    video.classList.add('visivel');
     btnPular.style.display = 'block';
 
-    video.play().catch(() => {
-      // Se der erro ao carregar o vídeo, vai direto para a página final
-      irParaFinal();
-    });
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        // Se o vídeo tiver seu próprio som e você quiser ativá-lo:
+        // video.muted = false;
+      }).catch(err => {
+        console.log("Erro ao reproduzir o vídeo:", err);
+      });
+    }
 
     video.onended = () => {
       irParaFinal();
     };
-  } else {
-    irParaFinal();
   }
 }
 
 function irParaFinal() {
   if (video) {
     video.pause();
-    video.classList.remove('active');
+    video.classList.remove('visivel');
     video.style.display = 'none';
   }
   btnPular.style.display = 'none';
 
-  // Revela a imagem final e ativa os botões
+  // Revela o convite final
   convitePage.classList.add('show');
   btnLayer.classList.add('show');
 }
