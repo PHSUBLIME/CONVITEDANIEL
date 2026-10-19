@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Convite Especial - Aylla Vitória</title>
 
-<!-- Compartilhamento WhatsApp / Redes -->
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Convite Especial - Aylla Vitória" />
 <meta property="og:description" content="Você é nosso convidado especial! Toque para abrir." />
@@ -15,23 +14,17 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   background: #0d0608;
   overflow: hidden;
   font-family: system-ui, -apple-system, sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
 }
 
-/* Área do convite em formato de celular (9:16) */
 .stage {
   position: relative;
-  width: 100%;
-  height: 100%;
-  max-width: 480px;
-  max-height: 100vh;
+  width: 100%; height: 100%;
+  max-width: 480px; max-height: 100vh;
   aspect-ratio: 9 / 16;
   background: #000;
   overflow: hidden;
@@ -39,98 +32,77 @@ html, body {
 }
 
 .stage img {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
   object-fit: cover;
   user-select: none;
   -webkit-user-drag: none;
 }
 
-/* Botão de controle de música no topo */
-#music-toggle {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 120;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(123, 24, 40, 0.7);
-  border: 1px solid rgba(212, 175, 55, 0.8);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.4);
-  font-size: 14px;
-}
-
-/* Página do Convite Principal */
+/* Convite Principal */
 #convite-page {
   z-index: 10;
-  transform: scale(0.95);
-  transition: transform 2.2s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.opened #convite-page {
-  transform: scale(1);
 }
 
 /* Capa Envelope */
 #cover {
   z-index: 50;
   cursor: pointer;
-  transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1), transform 2.2s cubic-bezier(0.25, 1, 0.5, 1);
-  transform-origin: center center;
+  transition: opacity 1.6s cubic-bezier(0.25, 1, 0.5, 1), transform 2s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .opened #cover {
   opacity: 0;
-  transform: scale(1.35);
+  transform: scale(1.4);
   pointer-events: none;
 }
 
-/* Fumaça Mágica Encantada */
-.smoke-overlay {
+/* EFEITO DE FUMAÇA MÁGICA / NÉVOA REAL */
+.smoke-layer {
   position: absolute;
-  inset: 0;
+  inset: -20%;
   z-index: 55;
-  background: radial-gradient(circle at 50% 55%, rgba(255, 230, 240, 0.95) 0%, rgba(245, 180, 205, 0.8) 40%, rgba(13, 6, 8, 0.95) 100%);
+  background: radial-gradient(circle, rgba(255, 235, 245, 0.95) 15%, rgba(245, 182, 206, 0.75) 45%, rgba(13, 6, 8, 0.9) 80%);
+  filter: blur(25px);
   opacity: 0;
   pointer-events: none;
-  filter: blur(12px);
-  transform: scale(0.8);
+  transform: translateY(15%) scale(0.85);
 }
 
-.opened .smoke-overlay {
-  animation: smokeFade 2.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+.opened .smoke-layer {
+  animation: animarFumaca 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
-@keyframes smokeFade {
-  0% { opacity: 0; transform: scale(0.8); }
-  35% { opacity: 0.92; transform: scale(1.1); }
-  70% { opacity: 0.6; transform: scale(1.2); }
-  100% { opacity: 0; transform: scale(1.35); }
+@keyframes animarFumaca {
+  0% {
+    opacity: 0;
+    transform: translateY(15%) scale(0.85);
+  }
+  30% {
+    opacity: 0.95;
+    transform: translateY(0%) scale(1.05);
+  }
+  65% {
+    opacity: 0.75;
+    transform: translateY(-8%) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-18%) scale(1.35);
+  }
 }
 
-/* Partículas e Estrelas Mágicas */
+/* Partículas e brilhos mágicos */
 #sparkle-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 58;
-  pointer-events: none;
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 58; pointer-events: none;
 }
 
 /* Botão 'Toque para abrir' */
 .tap-hint {
   position: absolute;
-  top: 59%;
-  left: 50%;
+  top: 59%; left: 50%;
   transform: translate(-50%, -50%);
   z-index: 60;
   color: #fff;
@@ -138,19 +110,17 @@ html, body {
   border: 1px solid #d4af37;
   padding: 11px 24px;
   border-radius: 25px;
-  font-size: 13px;
-  font-weight: bold;
+  font-size: 13px; font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
   pointer-events: none;
   animation: pulse 1.8s infinite;
   box-shadow: 0 4px 18px rgba(0,0,0,0.5);
-  transition: opacity 0.5s ease;
+  transition: opacity 0.4s ease;
 }
 
 .opened .tap-hint {
   opacity: 0;
-  pointer-events: none;
 }
 
 @keyframes pulse {
@@ -168,26 +138,9 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 
-#btn-local {
-  left: 9%;
-  top: 73.5%;
-  width: 25%;
-  height: 15%;
-}
-
-#btn-presente {
-  left: 37.5%;
-  top: 73.5%;
-  width: 25%;
-  height: 15%;
-}
-
-#btn-presenca {
-  left: 65.5%;
-  top: 73.5%;
-  width: 25%;
-  height: 15%;
-}
+#btn-local { left: 9%; top: 73.5%; width: 25%; height: 15%; }
+#btn-presente { left: 37.5%; top: 73.5%; width: 25%; height: 15%; }
+#btn-presenca { left: 65.5%; top: 73.5%; width: 25%; height: 15%; }
 
 /* Modal do Pix */
 .modal-overlay {
@@ -200,17 +153,14 @@ html, body {
   padding: 20px;
 }
 
-.modal-overlay.active {
-  opacity: 1; pointer-events: auto;
-}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
 
 .modal-box {
   background: #fffdf9;
   border: 2px solid #d4af37;
   border-radius: 20px;
   padding: 24px 20px;
-  width: 90%;
-  max-width: 320px;
+  width: 90%; max-width: 320px;
   text-align: center;
   box-shadow: 0 10px 30px rgba(0,0,0,0.8);
 }
@@ -218,71 +168,49 @@ html, body {
 .modal-title { color: #7b1828; margin: 0 0 10px; font-size: 20px; }
 .modal-text { font-size: 14px; color: #555; margin-bottom: 16px; line-height: 1.4; }
 .pix-input {
-  width: 100%;
-  padding: 10px;
-  font-size: 13px;
-  text-align: center;
-  border: 1px dashed #d4af37;
-  border-radius: 8px;
-  background: #faf4ed;
-  color: #333;
-  margin-bottom: 12px;
-  font-weight: 600;
+  width: 100%; padding: 10px; font-size: 13px; text-align: center;
+  border: 1px dashed #d4af37; border-radius: 8px; background: #faf4ed;
+  color: #333; margin-bottom: 12px; font-weight: 600;
 }
 .btn-copiar {
-  background: #7b1828;
-  color: #fff;
-  border: none;
-  padding: 12px;
-  font-size: 14px;
-  font-weight: bold;
-  border-radius: 25px;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom: 10px;
+  background: #7b1828; color: #fff; border: none; padding: 12px;
+  font-size: 14px; font-weight: bold; border-radius: 25px; cursor: pointer;
+  width: 100%; margin-bottom: 10px;
 }
 .btn-fechar {
-  background: transparent;
-  color: #888;
-  border: none;
-  font-size: 13px;
-  cursor: pointer;
-  text-decoration: underline;
+  background: transparent; color: #888; border: none; font-size: 13px;
+  cursor: pointer; text-decoration: underline;
 }
 </style>
 </head>
 <body>
 
-<div class="stage" id="stage">
-  <!-- Botão de Som Mudo / Tocar -->
-  <button id="music-toggle" onclick="alternarMusica()" title="Som">🎵</button>
-
+<div class="stage" id="stage" onclick="abrirConvite()">
   <!-- Capa Envelope -->
-  <img id="cover" src="capa.png" alt="Capa Envelope" onclick="abrirConvite()">
-  <div class="tap-hint" onclick="abrirConvite()">Toque para abrir</div>
+  <img id="cover" src="capa.png" alt="Capa Envelope">
+  <div class="tap-hint">Toque para abrir</div>
 
-  <!-- Fumaça Mágica e Brilhos -->
-  <div class="smoke-overlay"></div>
+  <!-- Fumaça Mágica e Canvas de Partículas -->
+  <div class="smoke-layer"></div>
   <canvas id="sparkle-canvas"></canvas>
 
   <!-- Página Principal do Convite -->
   <img id="convite-page" src="pagina.png" alt="Convite Principal">
 
-  <!-- Botão 1: Localização -->
+  <!-- Botões Interativos -->
   <a id="btn-local" class="btn-click" 
      href="https://www.google.com/maps/search/?api=1&query=Espa%C3%A7o+Lion+Eventos" 
-     target="_blank" rel="noopener"></a>
+     target="_blank" rel="noopener" onclick="event.stopPropagation()"></a>
 
-  <!-- Botão 2: Presentes (Pix) -->
-  <a id="btn-presente" class="btn-click" href="javascript:void(0)" onclick="abrirPresentes()"></a>
+  <a id="btn-presente" class="btn-click" href="javascript:void(0)" 
+     onclick="event.stopPropagation(); abrirPresentes()"></a>
 
-  <!-- Botão 3: Confirmar Presença (WhatsApp) -->
   <a id="btn-presenca" class="btn-click" 
      href="https://wa.me/55SEUNUMEROAQUI?text=Ol%C3%A1!%20Gostaria%20de%20confirmar%20minha%20presen%C3%A7a%20no%20anivers%C3%A1rio%20de%201%20aninho%20da%20Aylla%20Vit%C3%B3ria!%20%F0%9F%91%91" 
-     target="_blank" rel="noopener"></a>
+     target="_blank" rel="noopener" onclick="event.stopPropagation()"></a>
 
   <!-- Modal do Pix -->
-  <div class="modal-overlay" id="pixModal">
+  <div class="modal-overlay" id="pixModal" onclick="event.stopPropagation()">
     <div class="modal-box">
       <h3 class="modal-title">Sugestão de Presente 🎁</h3>
       <p class="modal-text">Sua presença é o maior presente! Caso queira nos presentear de forma prática, você pode usar a chave Pix:</p>
@@ -293,8 +221,8 @@ html, body {
   </div>
 </div>
 
-<!-- Música de Princesa (Valsa Encantada Online) -->
-<audio id="musica" src="https://assets.mixkit.co/music/preview/mixkit-fairytale-waltz-149.mp3" loop preload="auto"></audio>
+<!-- Música de Fundo Local -->
+<audio id="musica" src="musica.mp3" loop preload="auto"></audio>
 
 <script>
 const stage = document.getElementById('stage');
@@ -302,7 +230,6 @@ const musica = document.getElementById('musica');
 const modal = document.getElementById('pixModal');
 const canvas = document.getElementById('sparkle-canvas');
 const ctx = canvas.getContext('2d');
-const musicBtn = document.getElementById('music-toggle');
 
 let particles = [];
 let animFrame;
@@ -311,24 +238,23 @@ function redimensionarCanvas() {
   canvas.width = stage.clientWidth;
   canvas.height = stage.clientHeight;
 }
-window.addEventListener('resize', redimensionarCanvas);
 
 function criarParticulas() {
   redimensionarCanvas();
   particles = [];
-  const total = 90;
+  const total = 80;
   const centroX = canvas.width / 2;
   const centroY = canvas.height * 0.55;
 
   for (let i = 0; i < total; i++) {
     const angulo = Math.random() * Math.PI * 2;
-    const velocidade = Math.random() * 4 + 1;
+    const velocidade = Math.random() * 3.5 + 1;
     particles.push({
       x: centroX,
       y: centroY,
       vx: Math.cos(angulo) * velocidade,
       vy: Math.sin(angulo) * velocidade - Math.random() * 2,
-      tamanho: Math.random() * 3.5 + 1.5,
+      tamanho: Math.random() * 3 + 1.5,
       alpha: 1,
       vida: Math.random() * 0.015 + 0.008,
       cor: ['#ffd700', '#ffffff', '#ffb6c1', '#f3a4b5'][Math.floor(Math.random() * 4)]
@@ -370,19 +296,15 @@ function abrirConvite() {
   stage.classList.add('opened');
   criarParticulas();
 
+  // Tocar música de fundo se o arquivo existir
   if (musica) {
     musica.volume = 0.5;
-    musica.play().catch(function(){});
-  }
-}
-
-function alternarMusica() {
-  if (musica.paused) {
-    musica.play();
-    musicBtn.innerText = "🎵";
-  } else {
-    musica.pause();
-    musicBtn.innerText = "🔇";
+    const playPromise = musica.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(function(e) {
+        console.log("Arquivo de música ainda não adicionado ou bloqueado.");
+      });
+    }
   }
 }
 
