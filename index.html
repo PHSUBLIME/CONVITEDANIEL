@@ -41,6 +41,7 @@ html, body {
 #cover {
   z-index: 50;
   cursor: pointer;
+  transition: opacity 0.5s ease;
 }
 .opened #cover {
   display: none !important;
@@ -51,6 +52,9 @@ html, body {
   z-index: 40;
   display: none;
   background: #000;
+}
+.opened #intro-video {
+  display: block;
 }
 
 /* Botão Pular Vídeo */
@@ -125,7 +129,7 @@ html, body {
 #btn-presente { left: 37.5%; top: 73.5%; width: 25%; height: 15%; }
 #btn-presenca { left: 65.5%; top: 73.5%; width: 25%; height: 15%; }
 
-/* Onda de brilho imediata */
+/* Onda de brilho */
 .btn-click:active::after {
   content: '';
   position: absolute;
@@ -197,17 +201,20 @@ html, body {
   <img id="cover" src="capa.png" alt="Capa Envelope" onclick="iniciarExperiencia()">
   <div class="tap-hint" onclick="iniciarExperiencia()">Toque para abrir</div>
 
-  <!-- 2. NOVO VÍDEO NO MEIO DAS 2 FOTOS -->
-  <video id="intro-video" playsinline webkit-playsinline preload="auto" src="https://i.imgur.com/rWv7aXm.mp4"></video>
+  <!-- 2. Vídeo de Abertura (Link Direto CDN) -->
+  <video id="intro-video" playsinline webkit-playsinline x5-playsinline preload="auto">
+    <source src="https://i.imgur.com/rWv7aXm.mp4" type="video/mp4">
+    <source src="https://i.imgur.com/JPzoItH.mp4" type="video/mp4">
+  </video>
   <button id="btn-pular" type="button" onclick="irParaFinal()">Pular vídeo ✕</button>
 
-  <!-- Canvas dos Brilhos Mágicos -->
+  <!-- Canvas das Partículas -->
   <canvas id="sparkle-canvas"></canvas>
 
   <!-- 3. Convite Principal -->
   <img id="convite-page" src="pagina.png" alt="Convite Principal">
 
-  <!-- Botões Interativos com Brilhos -->
+  <!-- Botões Interativos -->
   <div class="btn-layer" id="btnLayer">
     <a id="btn-local" class="btn-click" 
        href="https://www.google.com/maps/search/?api=1&query=Espa%C3%A7o+Lion+Eventos" 
@@ -221,7 +228,7 @@ html, body {
        target="_blank" rel="noopener" onclick="animarBrilho(event)"></a>
   </div>
 
-  <!-- Modal do Pix -->
+  <!-- Modal Pix -->
   <div class="modal-overlay" id="pixModal">
     <div class="modal-box">
       <h3 class="modal-title">Sugestão de Presente 🎁</h3>
@@ -245,7 +252,7 @@ const btnLayer = document.getElementById('btnLayer');
 const musica = document.getElementById('musica');
 const modal = document.getElementById('pixModal');
 
-// Canvas para as partículas mágicas
+// Canvas
 const canvas = document.getElementById('sparkle-canvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -270,8 +277,7 @@ function animarBrilho(e) {
     const angle = Math.random() * Math.PI * 2;
     const speed = Math.random() * 5 + 1.5;
     particles.push({
-      x: x,
-      y: y,
+      x: x, y: y,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
       radius: Math.random() * 3.5 + 1.5,
@@ -281,9 +287,7 @@ function animarBrilho(e) {
     });
   }
 
-  if (!animId) {
-    animarParticulas();
-  }
+  if (!animId) animarParticulas();
 }
 
 function animarParticulas() {
@@ -300,7 +304,7 @@ function animarParticulas() {
       vivas = true;
       ctx.save();
       ctx.globalAlpha = p.alpha;
-      ctx.fillStyle = p.cor;
+      ctx.fillStyle = p.color;
       ctx.shadowBlur = 8;
       ctx.shadowColor = p.cor;
       ctx.beginPath();
@@ -326,34 +330,41 @@ function iniciarExperiencia() {
   if (jaIniciou) return;
   jaIniciou = true;
 
-  video.style.display = 'block';
-  btnPular.style.display = 'block';
   stage.classList.add('opened');
+  btnPular.style.display = 'block';
 
+  // Desbloqueia o som antes do play
   video.currentTime = 0;
-  const promessa = video.play();
+  video.muted = false;
 
-  if (promessa !== undefined) {
-    promessa.catch(() => {
+  const playPromessa = video.play();
+
+  if (playPromessa !== undefined) {
+    playPromessa.then(() => {
+      // Vídeo rodando com som normal!
+    }).catch(err => {
+      console.warn("Autoplay com áudio barrado, rodando com som mutado para não travar:", err);
       video.muted = true;
       video.play().catch(irParaFinal);
     });
   }
 
   video.onended = irParaFinal;
-  video.onerror = irParaFinal;
+  video.onerror = function(e) {
+    console.error("Erro no carregamento do vídeo:", e);
+    irParaFinal();
+  };
 }
 
 function irParaFinal() {
   if (video) {
     video.pause();
-    video.currentTime = 0;
     video.style.display = 'none';
   }
   btnPular.style.display = 'none';
   stage.classList.add('opened');
 
-  // Ao chegar no convite final, toca a música de fundo em loop
+  // Inicia a música de fundo ao chegar na tela final
   if (musica) {
     musica.volume = 0.65;
     musica.play().catch(() => {});
