@@ -35,6 +35,8 @@ html, body {
   position: absolute; top: 0; left: 0;
   width: 100%; height: 100%;
   object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 /* 1. Capa Envelope */
@@ -75,13 +77,26 @@ html, body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* 3. Convite Principal */
+/* 3. Página Principal (Convite) */
 #convite-page {
   z-index: 10;
   display: none;
+  transition: opacity 0.6s ease;
 }
 #convite-page.show {
   display: block;
+}
+
+/* 4. Página de Presentes (Arte Completa) */
+#presentes-page {
+  z-index: 25;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+#presentes-page.show {
+  display: block;
+  opacity: 1;
 }
 
 /* Indicador de toque na capa */
@@ -109,7 +124,7 @@ html, body {
   50% { transform: translate(-50%, -50%) scale(1.06); }
 }
 
-/* Botões invisíveis sobre a arte final */
+/* Camadas de botões invisíveis */
 .btn-layer {
   position: absolute; inset: 0;
   z-index: 35;
@@ -119,22 +134,39 @@ html, body {
 
 .btn-click {
   position: absolute;
-  border-radius: 50%;
   display: block;
   background: transparent;
   -webkit-tap-highlight-color: transparent;
 }
 
-#btn-local { left: 9%; top: 73.5%; width: 25%; height: 15%; }
-#btn-presente { left: 37.5%; top: 73.5%; width: 25%; height: 15%; }
-#btn-presenca { left: 65.5%; top: 73.5%; width: 25%; height: 15%; }
+/* Botões redondos da Página Principal */
+#btn-local { left: 9%; top: 73.5%; width: 25%; height: 15%; border-radius: 50%; }
+#btn-presente { left: 37.5%; top: 73.5%; width: 25%; height: 15%; border-radius: 50%; }
+#btn-presenca { left: 65.5%; top: 73.5%; width: 25%; height: 15%; border-radius: 50%; }
 
-/* Onda de brilho */
+/* Botões da Página de Presentes */
+#btn-copiar-pix {
+  left: 20%;
+  top: 72%;
+  width: 60%;
+  height: 9%;
+  border-radius: 15px;
+}
+
+#btn-voltar {
+  left: 35%;
+  top: 86.5%;
+  width: 30%;
+  height: 7%;
+  border-radius: 20px;
+}
+
+/* Efeito de brilho ao clicar */
 .btn-click:active::after {
   content: '';
   position: absolute;
   inset: -10%;
-  border-radius: 50%;
+  border-radius: inherit;
   background: radial-gradient(circle, rgba(255, 223, 100, 0.8) 0%, rgba(212, 175, 55, 0.4) 50%, rgba(255, 255, 255, 0) 70%);
   animation: flashClick 0.5s ease-out;
 }
@@ -150,47 +182,8 @@ html, body {
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 38;
+  z-index: 48;
   pointer-events: none;
-}
-
-/* Modal do Pix */
-.modal-overlay {
-  position: absolute; inset: 0;
-  background: rgba(0,0,0,0.75);
-  z-index: 100;
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.3s ease;
-  padding: 20px;
-}
-.modal-overlay.active { opacity: 1; pointer-events: auto; }
-
-.modal-box {
-  background: #fffdf9;
-  border: 2px solid #d4af37;
-  border-radius: 20px;
-  padding: 24px 20px;
-  width: 90%; max-width: 320px;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-}
-
-.modal-title { color: #7b1828; margin: 0 0 10px; font-size: 20px; }
-.modal-text { font-size: 14px; color: #555; margin-bottom: 16px; line-height: 1.4; }
-.pix-input {
-  width: 100%; padding: 10px; font-size: 13px; text-align: center;
-  border: 1px dashed #d4af37; border-radius: 8px; background: #faf4ed;
-  color: #333; margin-bottom: 12px; font-weight: 600;
-}
-.btn-copiar {
-  background: #7b1828; color: #fff; border: none; padding: 12px;
-  font-size: 14px; font-weight: bold; border-radius: 25px; cursor: pointer;
-  width: 100%; margin-bottom: 10px;
-}
-.btn-fechar {
-  background: transparent; color: #888; border: none; font-size: 13px;
-  cursor: pointer; text-decoration: underline;
 }
 </style>
 </head>
@@ -201,43 +194,46 @@ html, body {
   <img id="cover" src="capa.png" alt="Capa Envelope" onclick="iniciarExperiencia()">
   <div class="tap-hint" onclick="iniciarExperiencia()">Toque para abrir</div>
 
-  <!-- 2. Vídeo de Abertura (Link Direto CDN) -->
+  <!-- 2. Vídeo de Abertura (Imgur) -->
   <video id="intro-video" playsinline webkit-playsinline x5-playsinline preload="auto">
     <source src="https://i.imgur.com/rWv7aXm.mp4" type="video/mp4">
-    <source src="https://i.imgur.com/JPzoItH.mp4" type="video/mp4">
   </video>
   <button id="btn-pular" type="button" onclick="irParaFinal()">Pular vídeo ✕</button>
 
-  <!-- Canvas das Partículas -->
+  <!-- Canvas das Partículas de Brilho -->
   <canvas id="sparkle-canvas"></canvas>
 
   <!-- 3. Convite Principal -->
   <img id="convite-page" src="pagina.png" alt="Convite Principal">
 
-  <!-- Botões Interativos -->
-  <div class="btn-layer" id="btnLayer">
+  <!-- Botões da Página Principal -->
+  <div class="btn-layer" id="btnLayerPrincipal">
     <a id="btn-local" class="btn-click" 
        href="https://www.google.com/maps/search/?api=1&query=Espa%C3%A7o+Lion+Eventos" 
        target="_blank" rel="noopener" onclick="animarBrilho(event)"></a>
 
     <a id="btn-presente" class="btn-click" href="javascript:void(0)" 
-       onclick="animarBrilho(event); abrirPresentes()"></a>
+       onclick="animarBrilho(event); abrirPaginaPresentes()"></a>
 
     <a id="btn-presenca" class="btn-click" 
        href="https://wa.me/55SEUNUMEROAQUI?text=Ol%C3%A1!%20Gostaria%20de%20confirmar%20minha%20presen%C3%A7a%20no%20anivers%C3%A1rio%20de%201%20aninho%20da%20Aylla%20Vit%C3%B3ria!%20%F0%9F%91%91" 
        target="_blank" rel="noopener" onclick="animarBrilho(event)"></a>
   </div>
 
-  <!-- Modal Pix -->
-  <div class="modal-overlay" id="pixModal">
-    <div class="modal-box">
-      <h3 class="modal-title">Sugestão de Presente 🎁</h3>
-      <p class="modal-text">Sua presença é o maior presente! Caso queira nos presentear de forma prática, você pode usar a chave Pix:</p>
-      <input type="text" class="pix-input" id="chavePixVal" value="SUA_CHAVE_PIX_AQUI" readonly>
-      <button class="btn-copiar" onclick="copiarPix()">Copiar Chave Pix</button>
-      <button class="btn-fechar" onclick="fecharPresentes()">Voltar ao convite</button>
-    </div>
+  <!-- 4. Página de Presentes / Pix Completa -->
+  <img id="presentes-page" src="https://i.imgur.com/8QG3tQJ.png" alt="Página de Presentes">
+
+  <!-- Botões da Página de Presentes -->
+  <div class="btn-layer" id="btnLayerPresentes">
+    <!-- Botão Copiar Chave Pix -->
+    <a id="btn-copiar-pix" class="btn-click" href="javascript:void(0)" 
+       onclick="animarBrilho(event); copiarPix('SUA_CHAVE_PIX_AQUI')"></a>
+
+    <!-- Botão Voltar -->
+    <a id="btn-voltar" class="btn-click" href="javascript:void(0)" 
+       onclick="animarBrilho(event); voltarAoConvite()"></a>
   </div>
+
 </div>
 
 <!-- Música de Fundo (Loop) -->
@@ -248,11 +244,12 @@ const stage = document.getElementById('stage');
 const video = document.getElementById('intro-video');
 const btnPular = document.getElementById('btn-pular');
 const convitePage = document.getElementById('convite-page');
-const btnLayer = document.getElementById('btnLayer');
+const presentesPage = document.getElementById('presentes-page');
+const btnLayerPrincipal = document.getElementById('btnLayerPrincipal');
+const btnLayerPresentes = document.getElementById('btnLayerPresentes');
 const musica = document.getElementById('musica');
-const modal = document.getElementById('pixModal');
 
-// Canvas
+// Canvas de brilhos
 const canvas = document.getElementById('sparkle-canvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -304,7 +301,7 @@ function animarParticulas() {
       vivas = true;
       ctx.save();
       ctx.globalAlpha = p.alpha;
-      ctx.fillStyle = p.color;
+      ctx.fillStyle = p.cor;
       ctx.shadowBlur = 8;
       ctx.shadowColor = p.cor;
       ctx.beginPath();
@@ -333,27 +330,20 @@ function iniciarExperiencia() {
   stage.classList.add('opened');
   btnPular.style.display = 'block';
 
-  // Desbloqueia o som antes do play
   video.currentTime = 0;
   video.muted = false;
 
   const playPromessa = video.play();
 
   if (playPromessa !== undefined) {
-    playPromessa.then(() => {
-      // Vídeo rodando com som normal!
-    }).catch(err => {
-      console.warn("Autoplay com áudio barrado, rodando com som mutado para não travar:", err);
+    playPromessa.catch(() => {
       video.muted = true;
       video.play().catch(irParaFinal);
     });
   }
 
   video.onended = irParaFinal;
-  video.onerror = function(e) {
-    console.error("Erro no carregamento do vídeo:", e);
-    irParaFinal();
-  };
+  video.onerror = irParaFinal;
 }
 
 function irParaFinal() {
@@ -364,26 +354,38 @@ function irParaFinal() {
   btnPular.style.display = 'none';
   stage.classList.add('opened');
 
-  // Inicia a música de fundo ao chegar na tela final
   if (musica) {
     musica.volume = 0.65;
     musica.play().catch(() => {});
   }
 
   convitePage.classList.add('show');
-  btnLayer.classList.add('show');
+  btnLayerPrincipal.classList.add('show');
 }
 
-function abrirPresentes() {
-  modal.classList.add('active');
+// Navegação para a Página de Presentes
+function abrirPaginaPresentes() {
+  convitePage.classList.remove('show');
+  btnLayerPrincipal.classList.remove('show');
+
+  presentesPage.classList.add('show');
+  btnLayerPresentes.classList.add('show');
 }
 
-function fecharPresentes() {
-  modal.classList.remove('active');
+// Voltar para a Página Principal
+function voltarAoConvite() {
+  presentesPage.classList.remove('show');
+  btnLayerPresentes.classList.remove('show');
+
+  convitePage.classList.add('show');
+  btnLayerPrincipal.classList.add('show');
 }
 
-function copiarPix() {
-  const chave = document.getElementById('chavePixVal').value;
+function copiarPix(chave) {
+  if (!chave || chave === 'SUA_CHAVE_PIX_AQUI') {
+    alert("✨ Adicione a sua chave Pix no código!");
+    return;
+  }
   navigator.clipboard.writeText(chave).then(() => {
     alert("✨ Chave Pix copiada com sucesso!");
   }).catch(() => {
