@@ -5,11 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Convite Especial - Maitê</title>
 
-<!-- Fontes Nobres -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Great+Vibes&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
-
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Convite Especial - 1 Aninho da Maitê" />
 <meta property="og:description" content="Você é nosso convidado especial! Toque para abrir." />
@@ -114,7 +109,7 @@ html, body {
   transform: scale(1.3);
 }
 
-/* 🦋 BORBOLETA REALISTA 3D */
+/* 🦋 BORBOLETA 3D */
 #butterfly {
   position: absolute;
   top: 0; left: 0;
@@ -156,67 +151,6 @@ html, body {
 @keyframes flapRight {
   0% { transform: rotateY(0deg); }
   100% { transform: rotateY(-68deg); }
-}
-
-/* SOBREPOSIÇÃO DOS DADOS DA MAITÊ */
-.overlay-dados-maite {
-  position: absolute;
-  top: 27%;
-  left: 17%;
-  width: 66%;
-  height: 42.5%;
-  background: #fdf5ea;
-  border-radius: 25px;
-  z-index: 15;
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.35);
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  padding: 8px 12px;
-}
-#convite-page.show ~ .overlay-dados-maite {
-  display: flex;
-}
-
-.overlay-dados-maite h1 {
-  font-family: 'Great Vibes', cursive;
-  font-size: clamp(34px, 8vw, 44px);
-  color: #7b1328;
-  margin: 0;
-  line-height: 1;
-  text-shadow: 1px 1px 2px rgba(212, 175, 55, 0.4);
-}
-.overlay-dados-maite .idade {
-  font-family: 'Cinzel', serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: #9b6c28;
-  letter-spacing: 2px;
-  margin-top: 2px;
-  margin-bottom: 12px;
-}
-.info-badge {
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid #e2c88d;
-  border-radius: 20px;
-  padding: 5px 12px;
-  width: 92%;
-  margin-bottom: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  color: #6a1727;
-}
-.info-badge.local {
-  font-size: 11px;
-  line-height: 1.2;
 }
 
 /* 4. Página de Presentes */
@@ -376,17 +310,8 @@ html, body {
 
   <canvas id="sparkle-canvas"></canvas>
 
-  <!-- 3. Convite Principal -->
+  <!-- 3. Convite Principal (Sua imagem editada) -->
   <img id="convite-page" src="./pagina.png" alt="Convite Principal">
-
-  <!-- DADOS DA MAITÊ -->
-  <div class="overlay-dados-maite" id="overlayMaite">
-    <h1>Maitê</h1>
-    <div class="idade">👑 1 ANINHO 👑</div>
-    <div class="info-badge">📅 14 de Novembro de 2025</div>
-    <div class="info-badge">⏰ Às 16h00</div>
-    <div class="info-badge local">📍 Espaço Aquarela Festas e Eventos</div>
-  </div>
 
   <!-- Botões Principais -->
   <div class="btn-layer" id="btnLayerPrincipal">
@@ -438,7 +363,6 @@ const videoAbertura = document.getElementById('video-abertura');
 const videoFala = document.getElementById('video-fala');
 const btnPular = document.getElementById('btn-pular');
 const convitePage = document.getElementById('convite-page');
-const overlayMaite = document.getElementById('overlayMaite');
 const presentesPage = document.getElementById('presentes-page');
 const btnLayerPrincipal = document.getElementById('btnLayerPrincipal');
 const btnLayerPresentes = document.getElementById('btnLayerPresentes');
@@ -453,7 +377,6 @@ const canvas = document.getElementById('sparkle-canvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
 let butterflySparkles = [];
-let animId = null;
 
 function ajustarCanvas() {
   canvas.width = stage.clientWidth;
@@ -492,7 +415,6 @@ function atualizarBorboleta() {
   prevX = bX;
   prevY = bY;
 
-  // Trajetória em curva de conto de fadas
   bX = (w * 0.5) + Math.sin(tempoVoo * 0.9) * (w * 0.35) + Math.cos(tempoVoo * 1.8) * 25;
   bY = (h * 0.38) + Math.cos(tempoVoo * 0.7) * (h * 0.22) + Math.sin(tempoVoo * 1.5) * 35;
 
@@ -502,7 +424,6 @@ function atualizarBorboleta() {
 
   butterfly.style.transform = `translate(${bX - 24}px, ${bY - 24}px) rotate(${angulo}deg)`;
 
-  // Solta pó de fada brilhante atrás da borboleta
   if (Math.random() < 0.65) {
     const cores = ['#ffe29f', '#ffffff', '#ffd700', '#ffb6c1'];
     butterflySparkles.push({
@@ -518,13 +439,11 @@ function atualizarBorboleta() {
   }
 }
 
-// Loop Principal das Partículas e Borboleta
 function loopAnimacao() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   atualizarBorboleta();
 
-  // 1. Desenha Pó de fada da Borboleta
   for (let i = butterflySparkles.length - 1; i >= 0; i--) {
     const p = butterflySparkles[i];
     p.x += p.vx;
@@ -546,7 +465,6 @@ function loopAnimacao() {
     }
   }
 
-  // 2. Partículas de Toque/Clique
   for (let i = particles.length - 1; i >= 0; i--) {
     const p = particles[i];
     p.x += p.vx;
@@ -603,7 +521,6 @@ function iniciarExperiencia() {
   if (jaIniciou) return;
   jaIniciou = true;
 
-  // Desliga borboleta durante os vídeos
   ativarBorboleta(false);
 
   stage.classList.add('opened');
@@ -657,11 +574,9 @@ function transicaoParaFala() {
   videoFala.onerror = irParaFinal;
 }
 
-// 🌟 TRANSIÇÃO COM FUMAÇA / NÉVOA MÁGICA 🌟
 function irParaFinal() {
   btnPular.style.display = 'none';
 
-  // 1. Dispara a Nuvem Mágica de Fumaça
   smokeOverlay.classList.add('animar');
 
   setTimeout(() => {
@@ -682,10 +597,8 @@ function irParaFinal() {
     }
 
     convitePage.classList.add('show');
-    overlayMaite.style.display = 'flex';
     btnLayerPrincipal.classList.add('show');
 
-    // 2. Dissolve a fumaça revelando o convite como mágica
     setTimeout(() => {
       smokeOverlay.classList.remove('animar');
     }, 450);
@@ -693,19 +606,16 @@ function irParaFinal() {
   }, 350);
 }
 
-// Ao abrir presentes -> Ativa a Borboleta voando
 function abrirPaginaPresentes() {
   convitePage.classList.remove('show');
-  overlayMaite.style.display = 'none';
   btnLayerPrincipal.classList.remove('show');
 
   presentesPage.classList.add('show');
   btnLayerPresentes.classList.add('show');
 
-  ativarBorboleta(true); // 🦋 Borboleta ativa nos presentes!
+  ativarBorboleta(true);
 }
 
-// Ao voltar para o convite -> Desativa a borboleta para leitura limpa
 function voltarAoConvite() {
   presentesPage.classList.remove('show');
   btnLayerPresentes.classList.remove('show');
@@ -713,7 +623,6 @@ function voltarAoConvite() {
   ativarBorboleta(false);
 
   convitePage.classList.add('show');
-  overlayMaite.style.display = 'flex';
   btnLayerPrincipal.classList.add('show');
 }
 
