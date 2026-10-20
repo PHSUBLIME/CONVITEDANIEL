@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Convite Especial - Aylla Vitória</title>
+<title>Convite Especial - Maitê</title>
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Convite Especial - Aylla Vitória" />
+<meta property="og:title" content="Convite Especial - 1 Aninho da Maitê" />
 <meta property="og:description" content="Você é nosso convidado especial! Toque para abrir." />
 <meta property="og:image" content="capa.png" />
 
-<!-- Pré-carregamento da foto de presentes do PostImages -->
+<!-- Pré-carregamento da foto de presentes -->
 <link rel="preload" as="image" href="https://i.postimg.cc/zX3NpXj6/presentes.png">
 
 <style>
@@ -54,7 +54,7 @@ html, body {
   transition: opacity 0.5s ease;
 }
 
-/* 2. Vídeos com Transição Suave (Crossfade) */
+/* 2. Vídeos com Transição Suave */
 .video-player {
   z-index: 40;
   opacity: 0;
@@ -125,7 +125,6 @@ html, body {
   pointer-events: none;
   animation: pulse 1.8s infinite;
   box-shadow: 0 4px 18px rgba(0,0,0,0.5);
-  transition: opacity 0.3s ease;
 }
 .opened .tap-hint { display: none !important; }
 
@@ -156,17 +155,14 @@ html, body {
 #btn-presenca { left: 65.5%; top: 73.5%; width: 25%; height: 15%; border-radius: 50%; }
 
 /* Botões da Página de Presentes */
-/* Linha 1 */
 #btn-pedagogicos { left: 19%; top: 46%; width: 19%; height: 16%; border-radius: 50%; }
 #btn-livros       { left: 40.5%; top: 46%; width: 19%; height: 16%; border-radius: 50%; }
 #btn-roupas       { left: 62%; top: 46%; width: 19%; height: 16%; border-radius: 50%; }
 
-/* Linha 2 */
 #btn-higiene     { left: 19%; top: 63%; width: 19%; height: 16%; border-radius: 50%; }
 #btn-educativos  { left: 40.5%; top: 63%; width: 19%; height: 16%; border-radius: 50%; }
 #btn-valepix     { left: 62%; top: 63%; width: 19%; height: 16%; border-radius: 50%; }
 
-/* Botão Voltar */
 #btn-voltar {
   left: 33%;
   top: 83.5%;
@@ -190,7 +186,6 @@ html, body {
   100% { transform: scale(1.4); opacity: 0; }
 }
 
-/* Canvas de faíscas */
 #sparkle-canvas {
   position: absolute;
   inset: 0;
@@ -200,7 +195,7 @@ html, body {
   pointer-events: none;
 }
 
-/* Modal Elegante do Pix */
+/* Modal do Pix */
 #modal-pix {
   position: absolute;
   inset: 0;
@@ -262,7 +257,6 @@ html, body {
   display: block;
   width: 100%;
   margin-bottom: 10px;
-  box-shadow: 0 4px 12px rgba(138, 30, 50, 0.35);
 }
 .btn-fechar {
   background: transparent;
@@ -281,7 +275,7 @@ html, body {
   <img id="cover" src="./capa.png" alt="Capa Envelope" onclick="iniciarExperiencia()">
   <div class="tap-hint" onclick="iniciarExperiencia()">Toque para abrir</div>
 
-  <!-- VÍDEOS COM TRANSIÇÃO EM CROSSFADE -->
+  <!-- VÍDEOS COM TRANSIÇÃO -->
   <video id="video-abertura" class="video-player" playsinline webkit-playsinline x5-playsinline preload="auto" src="https://i.imgur.com/JPzoItH.mp4"></video>
   <video id="video-fala" class="video-player" playsinline webkit-playsinline x5-playsinline preload="auto" src="https://i.imgur.com/3W1InHI.mp4"></video>
 
@@ -294,65 +288,58 @@ html, body {
 
   <!-- Botões da Página Principal -->
   <div class="btn-layer" id="btnLayerPrincipal">
+    <!-- LOCALIZAÇÃO ATUALIZADA: ESPAÇO AQUARELA -->
     <a id="btn-local" class="btn-click" 
-       href="https://www.google.com/maps/search/?api=1&query=Espa%C3%A7o+Lion+Eventos" 
+       href="https://www.google.com/maps/search/?api=1&query=Espa%C3%A7o+Aquarela+Festas+e+Eventos" 
        target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
 
     <a id="btn-presente" class="btn-click" href="javascript:void(0)" 
        onclick="animarBrilho(event); abrirPaginaPresentes()"></a>
 
-    <!-- Substitua 55SEUNUMERODOTELEFONE pelo seu número com DDD (Ex: 5511999999999) -->
+    <!-- WHATSAPP ATUALIZADO: MAITÊ - 14/11 ÀS 16H -->
     <a id="btn-presenca" class="btn-click" 
-       href="https://wa.me/55SEUNUMERODOTELEFONE?text=Ol%C3%A1!%20%F0%9F%92%95%20Com%20muita%20alegria%20confirmo%20minha%20presen%C3%A7a%20no%20anivers%C3%A1rio%20de%201%20aninho%20da%20princesa%20Aylla%20Vit%C3%B3ria!%20%F0%9F%91%91%E2%9C%A8%20Mal%20podemos%20esperar%20por%20esse%20dia%20especial!" 
+       href="https://wa.me/55SEUNUMERODOTELEFONE?text=Ol%C3%A1!%20%F0%9F%92%95%20Com%20muita%20alegria%20confirmo%20minha%20presen%C3%A7a%20no%20anivers%C3%A1rio%20de%201%20aninho%20da%20Mait%C3%AA!%20%F0%9F%91%91%E2%9C%A8%20Nos%20vemos%20dia%2014%2F11%20%C3%A0s%2016h%20no%20Espa%C3%A7o%20Aquarela!%20%F0%9F%8E%89" 
        target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
   </div>
 
-  <!-- 4. Página de Presentes (PostImages) -->
+  <!-- 4. Página de Presentes -->
   <img id="presentes-page" src="https://i.postimg.cc/zX3NpXj6/presentes.png" alt="Página de Presentes">
 
   <!-- Botões Interativos da Página de Presentes -->
   <div class="btn-layer" id="btnLayerPresentes">
-    <!-- 1. Brinquedos Pedagógicos (Amazon) -->
     <a id="btn-pedagogicos" class="btn-click" 
        href="https://www.amazon.com.br/s?k=brinquedos+pedagogicos+1+ano" 
        target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
 
-    <!-- 2. Livros Infantis (Amazon Infantil) -->
     <a id="btn-livros" class="btn-click" 
        href="https://www.amazon.com.br/s?k=livros+infantis+bebe+1+ano" 
        target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
 
-    <!-- 3. Roupinhas (Lojas Renner Bebê) -->
     <a id="btn-roupas" class="btn-click" 
        href="https://www.lojasrenner.com.br/c/infantil/bebe" 
        target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
 
-    <!-- 4. Kit de Higiene Pessoal (Granado Bebê Oficial) -->
     <a id="btn-higiene" class="btn-click" 
        href="https://www.granado.com.br/bebe" 
        target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
 
-    <!-- 5. Brinquedos Educativos (Ri Happy) -->
     <a id="btn-educativos" class="btn-click" 
        href="https://www.rihappy.com.br/brinquedos-para-bebes" 
        target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
 
-    <!-- 6. Vale Presente (Abre popup do Pix) -->
     <a id="btn-valepix" class="btn-click" href="javascript:void(0)" 
        onclick="animarBrilho(event); abrirModalPix()"></a>
 
-    <!-- Voltar ao Convite Principal -->
     <a id="btn-voltar" class="btn-click" href="javascript:void(0)" 
        onclick="animarBrilho(event); voltarAoConvite()"></a>
   </div>
 
-  <!-- Modal Pix Pop-up -->
+  <!-- Modal Pix -->
   <div id="modal-pix" onclick="fecharModalPix(event)">
     <div class="modal-box" onclick="event.stopPropagation()">
-      <h3>🎁 Vale Presente (Pix)</h3>
-      <p>Caso prefira nos agraciar com um mimo via Pix para o cofrinho da nossa princesinha:</p>
+      <h3>🎁 Vale Presente da Maitê</h3>
+      <p>Caso prefira nos agraciar com um mimo via Pix para o cofrinho da nossa princesinha Maitê:</p>
       
-      <!-- Chave Pix (Coloque a sua chave aqui) -->
       <div class="pix-chave-container" id="texto-chave-pix">SUACHAVEPIXAQUI</div>
       
       <button class="btn-copiar" type="button" onclick="copiarChavePix()">Copiar Chave Pix ✨</button>
@@ -367,7 +354,7 @@ html, body {
 
 <script>
 // --- CONFIGURE AQUI SUA CHAVE PIX ---
-const CHAVE_PIX = "SUACHAVEPIXAQUI"; // Coloque aqui seu CPF, Celular, E-mail ou Chave Aleatória
+const CHAVE_PIX = "SUACHAVEPIXAQUI"; // Coloque seu Pix aqui
 
 const stage = document.getElementById('stage');
 const videoAbertura = document.getElementById('video-abertura');
@@ -380,7 +367,6 @@ const btnLayerPresentes = document.getElementById('btnLayerPresentes');
 const musica = document.getElementById('musica');
 const modalPix = document.getElementById('modal-pix');
 
-// Atualiza o texto do pop-up com a chave
 document.getElementById('texto-chave-pix').innerText = CHAVE_PIX;
 
 // Canvas de brilhos
@@ -458,7 +444,6 @@ function animarParticulas() {
 let jaIniciou = false;
 let transicaoIniciada = false;
 
-// 1. Toca no envelope -> Inicia Vídeo 1
 function iniciarExperiencia() {
   if (jaIniciou) return;
   jaIniciou = true;
@@ -473,7 +458,6 @@ function iniciarExperiencia() {
     videoAbertura.play().catch(transicaoParaFala);
   });
 
-  // Dispara a transição suave 0.6s antes do vídeo 1 acabar
   videoAbertura.addEventListener('timeupdate', () => {
     if (!transicaoIniciada && videoAbertura.duration && (videoAbertura.duration - videoAbertura.currentTime <= 0.65)) {
       transicaoIniciada = true;
@@ -487,14 +471,12 @@ function iniciarExperiencia() {
   videoAbertura.onerror = transicaoParaFala;
 }
 
-// 2. Transição suave (Crossfade) para o Vídeo 2 (Maitê falando)
 function transicaoParaFala() {
   transicaoIniciada = true;
 
-  // Inicia vídeo 2
   videoFala.currentTime = 0;
   videoFala.muted = false;
-  videoFala.classList.add('visivel'); // Faz o fade in suave
+  videoFala.classList.add('visivel');
 
   if (musica) {
     musica.volume = 0.35;
@@ -506,7 +488,6 @@ function transicaoParaFala() {
     videoFala.play().catch(irParaFinal);
   });
 
-  // Faz o fade out suave do vídeo 1 e depois desliga
   setTimeout(() => {
     videoAbertura.classList.remove('visivel');
     setTimeout(() => {
@@ -518,7 +499,6 @@ function transicaoParaFala() {
   videoFala.onerror = irParaFinal;
 }
 
-// 3. Fim de tudo -> Exibe Convite Principal
 function irParaFinal() {
   if (videoAbertura) {
     videoAbertura.classList.remove('visivel');
@@ -542,7 +522,6 @@ function irParaFinal() {
   btnLayerPrincipal.classList.add('show');
 }
 
-// Navegação entre páginas
 function abrirPaginaPresentes() {
   convitePage.classList.remove('show');
   btnLayerPrincipal.classList.remove('show');
@@ -559,7 +538,6 @@ function voltarAoConvite() {
   btnLayerPrincipal.classList.add('show');
 }
 
-// Funções do Modal Pix
 function abrirModalPix() {
   modalPix.style.display = 'flex';
 }
