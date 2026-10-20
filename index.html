@@ -10,6 +10,9 @@
 <meta property="og:description" content="Você é nosso convidado especial! Toque para abrir." />
 <meta property="og:image" content="capa.png" />
 
+<!-- PRÉ-CARREGAMENTO: Baixa a foto pesada de presentes antes mesmo da pessoa clicar -->
+<link rel="preload" as="image" href="https://raw.githubusercontent.com/PHSUBLIME/CONVITEDANIEL/main/presentes.png">
+
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -207,8 +210,10 @@ html, body {
        target="_blank" rel="noopener" onclick="animarBrilho(event)"></a>
   </div>
 
-  <!-- 4. Página de Presentes (com cache buster) -->
-  <img id="presentes-page" src="./presentes.png?v=2" alt="Página de Presentes">
+  <!-- 4. Página de Presentes (Link direto do GitHub sem cache) -->
+  <img id="presentes-page" 
+       src="https://raw.githubusercontent.com/PHSUBLIME/CONVITEDANIEL/main/presentes.png" 
+       alt="Página de Presentes">
 
   <!-- Botões da Página de Presentes -->
   <div class="btn-layer" id="btnLayerPresentes">
@@ -231,6 +236,10 @@ const presentesPage = document.getElementById('presentes-page');
 const btnLayerPrincipal = document.getElementById('btnLayerPrincipal');
 const btnLayerPresentes = document.getElementById('btnLayerPresentes');
 const musica = document.getElementById('musica');
+
+// Força o navegador a já manter a foto carregada na memória
+const preCarregador = new Image();
+preCarregador.src = "https://raw.githubusercontent.com/PHSUBLIME/CONVITEDANIEL/main/presentes.png";
 
 // Canvas de brilhos
 const canvas = document.getElementById('sparkle-canvas');
