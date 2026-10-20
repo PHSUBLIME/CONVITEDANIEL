@@ -7,7 +7,7 @@
 
 <!-- 🌟 FOTO E DADOS PARA O WHATSAPP 🌟 -->
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Convite Real - 1 Aninho da Maitê 👑✨" />
+<meta property="og:title" content="Convite Real - 1 Aninho da Maitê" />
 <meta property="og:description" content="Você é nosso convidado de honra! Toque para abrir o convite mágico." />
 <meta property="og:image" content="https://festadamaite.phsublime.com.br/compartilhar.jpeg" />
 <meta property="og:image:secure_url" content="https://festadamaite.phsublime.com.br/compartilhar.jpeg" />
@@ -605,13 +605,21 @@ window.addEventListener('resize', ajustarCanvas);
 ajustarCanvas();
 
 // ==========================================
-// 📱 CONFIRMAÇÃO DE PRESENÇA NO WHATSAPP COM EMOJIS REAIS
+// 📱 CONFIRMAÇÃO COM CÓDIGOS UNICODE (SEM CARACTERES QUEBRADOS)
 // ==========================================
 function confirmarPresencaWhatsapp(e) {
   if (e) animarBrilho(e);
   const telefone = "5521981461040";
-  const mensagem = "Saudações Reais! 🏰👑 Atendendo à nobre convocação de Sua Alteza, a Princesa Maitê, confirmo com imensa honra e alegria a nossa presença no Grande Baile do seu 1º Aninho! Nos vemos dia 14/11 às 16h no Espaço Aquarela! 🎉✨";
-  const urlWhatsapp = "https://wa.me/" + telefone + "?text=" + encodeURIComponent(mensagem);
+  
+  // Emojis gerados por código numérico puro (100% à prova de falhas)
+  const castelo = String.fromCodePoint(0x1F3F0);
+  const coroa = String.fromCodePoint(0x1F451);
+  const festa = String.fromCodePoint(0x1F389);
+  const brilho = String.fromCodePoint(0x2728);
+
+  const mensagem = "Saudações Reais! " + castelo + coroa + " Atendendo à nobre convocação de Sua Alteza, a Princesa Maitê, confirmo com imensa honra e alegria a nossa presença no Grande Baile do seu 1º Aninho! Nos vemos dia 14/11 às 16h no Espaço Aquarela! " + festa + brilho;
+
+  const urlWhatsapp = "https://api.whatsapp.com/send?phone=" + telefone + "&text=" + encodeURIComponent(mensagem);
   window.open(urlWhatsapp, '_blank');
 }
 
