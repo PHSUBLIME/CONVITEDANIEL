@@ -10,8 +10,8 @@
 <meta property="og:description" content="Você é nosso convidado especial! Toque para abrir." />
 <meta property="og:image" content="capa.png" />
 
-<!-- PRÉ-CARREGAMENTO: Baixa a foto pesada de presentes antes mesmo da pessoa clicar -->
-<link rel="preload" as="image" href="https://raw.githubusercontent.com/PHSUBLIME/CONVITEDANIEL/main/presentes.png">
+<!-- Pré-carregamento da foto de presentes do PostImages -->
+<link rel="preload" as="image" href="https://i.postimg.cc/zX3NpXj6/presentes.png">
 
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -46,20 +46,24 @@ html, body {
 #cover {
   z-index: 50;
   cursor: pointer;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.5s ease;
 }
 .opened #cover {
-  display: none !important;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
 }
 
-/* 2. Vídeos de Transição */
+/* 2. Vídeos com Transição Suave (Crossfade) */
 .video-player {
   z-index: 40;
-  display: none;
-  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s ease-in-out;
 }
-.video-player.ativo {
-  display: block;
+.video-player.visivel {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Botão Pular Vídeo */
@@ -84,18 +88,24 @@ html, body {
 #convite-page {
   z-index: 10;
   display: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
 }
 #convite-page.show {
   display: block;
+  opacity: 1;
 }
 
 /* 4. Página de Presentes */
 #presentes-page {
   z-index: 25;
   display: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
 #presentes-page.show {
   display: block;
+  opacity: 1;
 }
 
 /* Indicador de toque na capa */
@@ -115,6 +125,7 @@ html, body {
   pointer-events: none;
   animation: pulse 1.8s infinite;
   box-shadow: 0 4px 18px rgba(0,0,0,0.5);
+  transition: opacity 0.3s ease;
 }
 .opened .tap-hint { display: none !important; }
 
@@ -136,6 +147,7 @@ html, body {
   display: block;
   background: transparent;
   -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
 }
 
 /* Botões da Página Principal */
@@ -143,12 +155,23 @@ html, body {
 #btn-presente { left: 37.5%; top: 73.5%; width: 25%; height: 15%; border-radius: 50%; }
 #btn-presenca { left: 65.5%; top: 73.5%; width: 25%; height: 15%; border-radius: 50%; }
 
-/* Botão Voltar da Página de Presentes */
+/* Botões da Página de Presentes */
+/* Linha 1 */
+#btn-pedagogicos { left: 19%; top: 46%; width: 19%; height: 16%; border-radius: 50%; }
+#btn-livros       { left: 40.5%; top: 46%; width: 19%; height: 16%; border-radius: 50%; }
+#btn-roupas       { left: 62%; top: 46%; width: 19%; height: 16%; border-radius: 50%; }
+
+/* Linha 2 */
+#btn-higiene     { left: 19%; top: 63%; width: 19%; height: 16%; border-radius: 50%; }
+#btn-educativos  { left: 40.5%; top: 63%; width: 19%; height: 16%; border-radius: 50%; }
+#btn-valepix     { left: 62%; top: 63%; width: 19%; height: 16%; border-radius: 50%; }
+
+/* Botão Voltar */
 #btn-voltar {
-  left: 32%;
-  top: 83%;
-  width: 36%;
-  height: 9%;
+  left: 33%;
+  top: 83.5%;
+  width: 34%;
+  height: 7%;
   border-radius: 25px;
 }
 
@@ -176,6 +199,79 @@ html, body {
   z-index: 48;
   pointer-events: none;
 }
+
+/* Modal Elegante do Pix */
+#modal-pix {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-box {
+  background: #fff8f0;
+  border: 2px solid #d4af37;
+  border-radius: 20px;
+  padding: 24px 20px;
+  text-align: center;
+  width: 90%;
+  max-width: 340px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  animation: popIn 0.3s ease-out;
+}
+@keyframes popIn {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.modal-box h3 {
+  color: #8a1e32;
+  font-size: 19px;
+  margin-bottom: 8px;
+}
+.modal-box p {
+  color: #555;
+  font-size: 13px;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+.pix-chave-container {
+  background: #f0e6d6;
+  padding: 10px;
+  border-radius: 10px;
+  font-family: monospace;
+  font-size: 13px;
+  color: #333;
+  word-break: break-all;
+  user-select: all;
+  margin-bottom: 16px;
+  border: 1px dashed #c09d3b;
+}
+.btn-copiar {
+  background: #8a1e32;
+  color: #fff;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 25px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 12px rgba(138, 30, 50, 0.35);
+}
+.btn-fechar {
+  background: transparent;
+  color: #777;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: underline;
+}
 </style>
 </head>
 <body>
@@ -185,7 +281,7 @@ html, body {
   <img id="cover" src="./capa.png" alt="Capa Envelope" onclick="iniciarExperiencia()">
   <div class="tap-hint" onclick="iniciarExperiencia()">Toque para abrir</div>
 
-  <!-- VÍDEOS -->
+  <!-- VÍDEOS COM TRANSIÇÃO EM CROSSFADE -->
   <video id="video-abertura" class="video-player" playsinline webkit-playsinline x5-playsinline preload="auto" src="https://i.imgur.com/JPzoItH.mp4"></video>
   <video id="video-fala" class="video-player" playsinline webkit-playsinline x5-playsinline preload="auto" src="https://i.imgur.com/3W1InHI.mp4"></video>
 
@@ -200,25 +296,68 @@ html, body {
   <div class="btn-layer" id="btnLayerPrincipal">
     <a id="btn-local" class="btn-click" 
        href="https://www.google.com/maps/search/?api=1&query=Espa%C3%A7o+Lion+Eventos" 
-       target="_blank" rel="noopener" onclick="animarBrilho(event)"></a>
+       target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
 
     <a id="btn-presente" class="btn-click" href="javascript:void(0)" 
        onclick="animarBrilho(event); abrirPaginaPresentes()"></a>
 
+    <!-- Substitua 55SEUNUMERODOTELEFONE pelo seu número com DDD (Ex: 5511999999999) -->
     <a id="btn-presenca" class="btn-click" 
-       href="https://wa.me/55SEUNUMEROAQUI?text=Ol%C3%A1!%20Gostaria%20de%20confirmar%20minha%20presen%C3%A7a%20no%20anivers%C3%A1rio%20de%201%20aninho%20da%20Aylla%20Vit%C3%B3ria!%20%F0%9F%91%91" 
-       target="_blank" rel="noopener" onclick="animarBrilho(event)"></a>
+       href="https://wa.me/55SEUNUMERODOTELEFONE?text=Ol%C3%A1!%20%F0%9F%92%95%20Com%20muita%20alegria%20confirmo%20minha%20presen%C3%A7a%20no%20anivers%C3%A1rio%20de%201%20aninho%20da%20princesa%20Aylla%20Vit%C3%B3ria!%20%F0%9F%91%91%E2%9C%A8%20Mal%20podemos%20esperar%20por%20esse%20dia%20especial!" 
+       target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
   </div>
 
-  <!-- 4. Página de Presentes (Link direto do GitHub sem cache) -->
-  <img id="presentes-page" 
-       src="https://raw.githubusercontent.com/PHSUBLIME/CONVITEDANIEL/main/presentes.png" 
-       alt="Página de Presentes">
+  <!-- 4. Página de Presentes (PostImages) -->
+  <img id="presentes-page" src="https://i.postimg.cc/zX3NpXj6/presentes.png" alt="Página de Presentes">
 
-  <!-- Botões da Página de Presentes -->
+  <!-- Botões Interativos da Página de Presentes -->
   <div class="btn-layer" id="btnLayerPresentes">
+    <!-- 1. Brinquedos Pedagógicos (Amazon) -->
+    <a id="btn-pedagogicos" class="btn-click" 
+       href="https://www.amazon.com.br/s?k=brinquedos+pedagogicos+1+ano" 
+       target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
+
+    <!-- 2. Livros Infantis (Amazon Infantil) -->
+    <a id="btn-livros" class="btn-click" 
+       href="https://www.amazon.com.br/s?k=livros+infantis+bebe+1+ano" 
+       target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
+
+    <!-- 3. Roupinhas (Lojas Renner Bebê) -->
+    <a id="btn-roupas" class="btn-click" 
+       href="https://www.lojasrenner.com.br/c/infantil/bebe" 
+       target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
+
+    <!-- 4. Kit de Higiene Pessoal (Granado Bebê Oficial) -->
+    <a id="btn-higiene" class="btn-click" 
+       href="https://www.granado.com.br/bebe" 
+       target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
+
+    <!-- 5. Brinquedos Educativos (Ri Happy) -->
+    <a id="btn-educativos" class="btn-click" 
+       href="https://www.rihappy.com.br/brinquedos-para-bebes" 
+       target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
+
+    <!-- 6. Vale Presente (Abre popup do Pix) -->
+    <a id="btn-valepix" class="btn-click" href="javascript:void(0)" 
+       onclick="animarBrilho(event); abrirModalPix()"></a>
+
+    <!-- Voltar ao Convite Principal -->
     <a id="btn-voltar" class="btn-click" href="javascript:void(0)" 
        onclick="animarBrilho(event); voltarAoConvite()"></a>
+  </div>
+
+  <!-- Modal Pix Pop-up -->
+  <div id="modal-pix" onclick="fecharModalPix(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <h3>🎁 Vale Presente (Pix)</h3>
+      <p>Caso prefira nos agraciar com um mimo via Pix para o cofrinho da nossa princesinha:</p>
+      
+      <!-- Chave Pix (Coloque a sua chave aqui) -->
+      <div class="pix-chave-container" id="texto-chave-pix">SUACHAVEPIXAQUI</div>
+      
+      <button class="btn-copiar" type="button" onclick="copiarChavePix()">Copiar Chave Pix ✨</button>
+      <button class="btn-fechar" type="button" onclick="fecharModalPix()">Fechar</button>
+    </div>
   </div>
 
 </div>
@@ -227,6 +366,9 @@ html, body {
 <audio id="musica" src="https://i.imgur.com/Qv9rKqF.mp4" loop preload="auto"></audio>
 
 <script>
+// --- CONFIGURE AQUI SUA CHAVE PIX ---
+const CHAVE_PIX = "SUACHAVEPIXAQUI"; // Coloque aqui seu CPF, Celular, E-mail ou Chave Aleatória
+
 const stage = document.getElementById('stage');
 const videoAbertura = document.getElementById('video-abertura');
 const videoFala = document.getElementById('video-fala');
@@ -236,10 +378,10 @@ const presentesPage = document.getElementById('presentes-page');
 const btnLayerPrincipal = document.getElementById('btnLayerPrincipal');
 const btnLayerPresentes = document.getElementById('btnLayerPresentes');
 const musica = document.getElementById('musica');
+const modalPix = document.getElementById('modal-pix');
 
-// Força o navegador a já manter a foto carregada na memória
-const preCarregador = new Image();
-preCarregador.src = "https://raw.githubusercontent.com/PHSUBLIME/CONVITEDANIEL/main/presentes.png";
+// Atualiza o texto do pop-up com a chave
+document.getElementById('texto-chave-pix').innerText = CHAVE_PIX;
 
 // Canvas de brilhos
 const canvas = document.getElementById('sparkle-canvas');
@@ -314,59 +456,77 @@ function animarParticulas() {
 }
 
 let jaIniciou = false;
+let transicaoIniciada = false;
 
+// 1. Toca no envelope -> Inicia Vídeo 1
 function iniciarExperiencia() {
   if (jaIniciou) return;
   jaIniciou = true;
 
   stage.classList.add('opened');
-  videoAbertura.classList.add('ativo');
+  videoAbertura.classList.add('visivel');
   btnPular.style.display = 'block';
 
   videoAbertura.currentTime = 0;
   videoAbertura.play().catch(() => {
     videoAbertura.muted = true;
-    videoAbertura.play().catch(tocarVideoFala);
+    videoAbertura.play().catch(transicaoParaFala);
   });
 
-  videoAbertura.onended = tocarVideoFala;
-  videoAbertura.onerror = tocarVideoFala;
+  // Dispara a transição suave 0.6s antes do vídeo 1 acabar
+  videoAbertura.addEventListener('timeupdate', () => {
+    if (!transicaoIniciada && videoAbertura.duration && (videoAbertura.duration - videoAbertura.currentTime <= 0.65)) {
+      transicaoIniciada = true;
+      transicaoParaFala();
+    }
+  });
+
+  videoAbertura.onended = () => {
+    if (!transicaoIniciada) transicaoParaFala();
+  };
+  videoAbertura.onerror = transicaoParaFala;
 }
 
-function tocarVideoFala() {
-  videoAbertura.pause();
-  videoAbertura.classList.remove('ativo');
-  videoAbertura.style.display = 'none';
+// 2. Transição suave (Crossfade) para o Vídeo 2 (Maitê falando)
+function transicaoParaFala() {
+  transicaoIniciada = true;
 
-  videoFala.classList.add('ativo');
+  // Inicia vídeo 2
   videoFala.currentTime = 0;
   videoFala.muted = false;
+  videoFala.classList.add('visivel'); // Faz o fade in suave
 
   if (musica) {
     musica.volume = 0.35;
     musica.play().catch(() => {});
   }
 
-  const promessa = videoFala.play();
-  if (promessa !== undefined) {
-    promessa.catch(() => {
-      videoFala.muted = true;
-      videoFala.play().catch(irParaFinal);
-    });
-  }
+  videoFala.play().catch(() => {
+    videoFala.muted = true;
+    videoFala.play().catch(irParaFinal);
+  });
+
+  // Faz o fade out suave do vídeo 1 e depois desliga
+  setTimeout(() => {
+    videoAbertura.classList.remove('visivel');
+    setTimeout(() => {
+      videoAbertura.pause();
+    }, 600);
+  }, 300);
 
   videoFala.onended = irParaFinal;
   videoFala.onerror = irParaFinal;
 }
 
+// 3. Fim de tudo -> Exibe Convite Principal
 function irParaFinal() {
   if (videoAbertura) {
+    videoAbertura.classList.remove('visivel');
     videoAbertura.pause();
-    videoAbertura.style.display = 'none';
   }
   if (videoFala) {
+    videoFala.classList.remove('visivel');
     videoFala.pause();
-    videoFala.style.display = 'none';
   }
   btnPular.style.display = 'none';
   stage.classList.add('opened');
@@ -382,6 +542,7 @@ function irParaFinal() {
   btnLayerPrincipal.classList.add('show');
 }
 
+// Navegação entre páginas
 function abrirPaginaPresentes() {
   convitePage.classList.remove('show');
   btnLayerPrincipal.classList.remove('show');
@@ -396,6 +557,28 @@ function voltarAoConvite() {
 
   convitePage.classList.add('show');
   btnLayerPrincipal.classList.add('show');
+}
+
+// Funções do Modal Pix
+function abrirModalPix() {
+  modalPix.style.display = 'flex';
+}
+
+function fecharModalPix(e) {
+  modalPix.style.display = 'none';
+}
+
+function copiarChavePix() {
+  if (CHAVE_PIX === "SUACHAVEPIXAQUI") {
+    alert("✨ Por favor, substitua 'SUACHAVEPIXAQUI' no início do script pelo seu Pix real!");
+    return;
+  }
+  navigator.clipboard.writeText(CHAVE_PIX).then(() => {
+    alert("✨ Chave Pix copiada com sucesso!");
+    fecharModalPix();
+  }).catch(() => {
+    prompt("Copie a chave Pix abaixo:", CHAVE_PIX);
+  });
 }
 </script>
 
