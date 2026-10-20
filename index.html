@@ -5,15 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Convite Especial - Maitê</title>
 
+<!-- 🌟 FOTO E DADOS PARA O COMPARTILHAMENTO NO WHATSAPP 🌟 -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Convite Real - 1 Aninho da Maitê 👑✨" />
+<meta property="og:description" content="Você é nosso convidado de honra! Toque para abrir o convite mágico." />
+<meta property="og:image" content="https://festadamaite.phsublime.com.br/compartilhar.jpeg" />
+<meta property="og:image:secure_url" content="https://festadamaite.phsublime.com.br/compartilhar.jpeg" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="1600" />
+
 <!-- Fontes Nobres -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Great+Vibes&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
-
-<meta property="og:type" content="website" />
-<meta property="og:title" content="Convite Especial - 1 Aninho da Maitê" />
-<meta property="og:description" content="Você é nosso convidado especial! Toque para abrir." />
-<meta property="og:image" content="capa.png" />
 
 <!-- Pré-carregamento das Fotos e Presentes -->
 <link rel="preload" as="image" href="https://i.postimg.cc/nzpLRbSH/Whats-App-Image-2026-10-16-at-20-04-49.jpg">
@@ -582,7 +587,6 @@ function carregarAudioSeguro() {
 carregarAudioSeguro();
 
 audioNarracao.addEventListener('error', () => {
-  console.warn("Fonte " + indiceFonte + " falhou, tentando próxima...");
   indiceFonte++;
   carregarAudioSeguro();
 });
@@ -754,7 +758,6 @@ function iniciarExperiencia() {
   if (jaIniciou) return;
   jaIniciou = true;
 
-  // Pré-ativação simples de áudio autorizada pelo toque
   if (audioNarracao) {
     audioNarracao.play().then(() => {
       audioNarracao.pause();
@@ -794,25 +797,22 @@ function iniciarExperiencia() {
   videoAbertura.onerror = iniciarSlideshow;
 }
 
-// 2. Inicia o Slideshow com Narração e Música Encorpada
+// 2. Inicia o Slideshow com Narração e Música
 function iniciarSlideshow() {
   transicaoIniciada = true;
 
   videoAbertura.classList.remove('visivel');
   setTimeout(() => { videoAbertura.pause(); }, 500);
 
-  // 🎵 Volume da música bem nítido
   if (musica) {
     musica.volume = 0.58;
     musica.play().catch(() => {});
   }
 
-  // 🎙️ Toca a narração
   if (audioNarracao) {
     audioNarracao.currentTime = 0;
     audioNarracao.volume = 1;
     audioNarracao.play().catch(err => {
-      console.warn("Falha no play inicial, tentando rota alternativa:", err);
       indiceFonte++;
       carregarAudioSeguro();
       audioNarracao.play().catch(() => {});
