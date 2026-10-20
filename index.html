@@ -489,8 +489,12 @@ html, body {
 <!-- Música de Fundo -->
 <audio id="musica" src="https://i.imgur.com/Qv9rKqF.mp4" loop preload="auto"></audio>
 
-<!-- 🎙️ ÁUDIO DA NARRAÇÃO DA MAITÊ -->
-<audio id="audio-narracao" src="https://files.catbox.moe/petiz3.m4a" preload="auto"></audio>
+<!-- 🎙️ ÁUDIO DA NARRAÇÃO (Lê do GitHub e tem Catbox como reserva) -->
+<audio id="audio-narracao" 
+       src="./Video%20Project%203.m4a" 
+       onerror="this.onerror=null; this.src='https://files.catbox.moe/petiz3.m4a';" 
+       preload="auto">
+</audio>
 
 <script>
 const CHAVE_PIX = "SUACHAVEPIXAQUI";
@@ -656,9 +660,34 @@ function animarBrilho(e) {
 let jaIniciou = false;
 let transicaoIniciada = false;
 
+// 1. Toque no Envelope -> DESTRAVA OS ÁUDIOS NO NAVEGADOR
 function iniciarExperiencia() {
   if (jaIniciou) return;
   jaIniciou = true;
+
+  // 🔓 DESTRAVA O ÁUDIO PARA O CELULAR PERMITIR TOCAR
+  if (audioNarracao) {
+    audioNarracao.volume = 0;
+    const promessa = audioNarracao.play();
+    if (promessa !== undefined) {
+      promessa.then(() => {
+        audioNarracao.pause();
+        audioNarracao.currentTime = 0;
+        audioNarracao.volume = 1;
+      }).catch(() => {});
+    }
+  }
+
+  if (musica) {
+    musica.volume = 0;
+    const promessaMusica = musica.play();
+    if (promessaMusica !== undefined) {
+      promessaMusica.then(() => {
+        musica.pause();
+        musica.currentTime = 0;
+      }).catch(() => {});
+    }
+  }
 
   ativarBorboleta(false);
 
@@ -692,18 +721,20 @@ function iniciarSlideshow() {
   videoAbertura.classList.remove('visivel');
   setTimeout(() => { videoAbertura.pause(); }, 500);
 
-  // Inicia a música de fundo com volume suave
+  // Inicia a música de fundo com volume bem baixinho para a voz ficar perfeita
   if (musica) {
-    musica.volume = 0.22; // Baixinho para a narração sobressair
+    musica.volume = 0.18;
     musica.play().catch(() => {});
   }
 
-  // Toca o áudio da Narração
+  // Toca o áudio da Narração destravado
   if (audioNarracao) {
     audioNarracao.currentTime = 0;
-    audioNarracao.play().catch(() => {});
+    audioNarracao.volume = 1;
+    audioNarracao.play().catch(err => {
+      console.log("Tentando reproduzir narração:", err);
+    });
     
-    // Quando a narração terminar, aumenta um pouco a música
     audioNarracao.onended = () => {
       if (musica) musica.volume = 0.5;
     };
