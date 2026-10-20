@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Convite Especial - Maitê</title>
 
-<!-- 🌟 FOTO E DADOS PARA O COMPARTILHAMENTO NO WHATSAPP 🌟 -->
+<!-- 🌟 FOTO E DADOS PARA O WHATSAPP 🌟 -->
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Convite Real - 1 Aninho da Maitê 👑✨" />
 <meta property="og:description" content="Você é nosso convidado de honra! Toque para abrir o convite mágico." />
@@ -97,12 +97,11 @@ html, body {
   cursor: pointer;
 }
 
-/* 🌟 SLIDESHOW DE RETROSPECTIVA DA MAITÊ 🌟 */
+/* 🌟 SLIDESHOW COM O CASTELO DE FUNDO 🌟 */
 #slideshow-container {
   position: absolute;
   inset: 0;
   z-index: 42;
-  background: radial-gradient(circle at center, #220813 0%, #0c0205 100%);
   display: none;
   opacity: 0;
   transition: opacity 1s ease;
@@ -115,25 +114,38 @@ html, body {
   display: flex;
   opacity: 1;
 }
+
+/* Fundo do Castelo com Desfoque de Cinema */
+.slideshow-bg {
+  position: absolute;
+  inset: -15px;
+  background: url('./pagina.png') center/cover no-repeat;
+  filter: blur(5px) brightness(0.55);
+  transform: scale(1.06);
+  z-index: 1;
+}
+
 .slideshow-title {
   font-family: 'Great Vibes', cursive;
   color: #f7d58b;
   font-size: clamp(28px, 7vw, 36px);
-  text-shadow: 0 0 12px rgba(212, 175, 55, 0.65);
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.75), 0 2px 6px rgba(0, 0, 0, 0.9);
   margin-bottom: 14px;
   z-index: 3;
   text-align: center;
   padding: 0 15px;
 }
+
 .photo-frame {
   position: relative;
   width: 82%;
   height: 64%;
   border-radius: 24px;
-  border: 3px solid #d4af37;
-  box-shadow: 0 0 30px rgba(212, 175, 55, 0.45), 0 15px 35px rgba(0, 0, 0, 0.9);
+  border: 3.5px solid #d4af37;
+  box-shadow: 0 0 35px rgba(212, 175, 55, 0.6), 0 15px 40px rgba(0, 0, 0, 0.95);
   overflow: hidden;
   background: #140308;
+  z-index: 3;
 }
 
 .slide-photo {
@@ -174,14 +186,14 @@ html, body {
 .dot {
   width: 8px; height: 8px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.35);
   border: 1px solid #d4af37;
   transition: all 0.5s ease;
 }
 .dot.ativo {
   background: #ffd700;
   transform: scale(1.4);
-  box-shadow: 0 0 8px #ffd700;
+  box-shadow: 0 0 10px #ffd700;
 }
 
 /* 3. Página Principal */
@@ -440,8 +452,11 @@ html, body {
   <!-- Vídeo 1: Castelo se abrindo -->
   <video id="video-abertura" class="video-player" playsinline webkit-playsinline x5-playsinline preload="auto" src="https://i.imgur.com/JPzoItH.mp4"></video>
 
-  <!-- 🌟 SLIDESHOW COM A MAITÊ DE PRINCESA PRIMEIRO 🌟 -->
+  <!-- 🌟 SLIDESHOW COM O CASTELO NO FUNDO 🌟 -->
   <div id="slideshow-container">
+    <!-- Camada do Castelo Encantado -->
+    <div class="slideshow-bg"></div>
+
     <div class="slideshow-title">1 Aninho de Puro Amor ✨</div>
     <div class="photo-frame">
       <img class="slide-photo" src="https://i.postimg.cc/nzpLRbSH/Whats-App-Image-2026-10-16-at-20-04-49.jpg" alt="Maitê Princesa 1">
@@ -797,7 +812,7 @@ function iniciarExperiencia() {
   videoAbertura.onerror = iniciarSlideshow;
 }
 
-// 2. Inicia o Slideshow com Narração e Música
+// 2. Inicia o Slideshow com o Castelo ao fundo
 function iniciarSlideshow() {
   transicaoIniciada = true;
 
