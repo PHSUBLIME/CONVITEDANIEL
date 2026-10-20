@@ -300,27 +300,38 @@ html, body {
   opacity: 1;
 }
 
+/* 💌 BOTÃO TOQUE PARA ABRIR (PERFEITO E CENTRALIZADO) */
 .tap-hint {
   position: absolute;
-  top: 59%; left: 50%;
+  top: 61.5%;
+  left: 50%;
   transform: translate(-50%, -50%);
   z-index: 60;
   color: #fff;
-  background: rgba(138, 30, 50, 0.92);
-  border: 1px solid #d4af37;
-  padding: 11px 24px;
-  border-radius: 25px;
-  font-size: 13px; font-weight: bold;
-  letter-spacing: 1px;
+  background: linear-gradient(135deg, rgba(138, 30, 50, 0.95) 0%, rgba(186, 45, 72, 0.95) 100%);
+  border: 1.5px solid #ffd700;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
+  white-space: nowrap; /* Impede a quebra de linha feia */
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   pointer-events: none;
-  animation: pulse 1.8s infinite;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.4);
+  animation: pulse 1.8s infinite ease-in-out;
 }
 .opened .tap-hint { display: none !important; }
 
 @keyframes pulse {
   0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.06); }
+  50% { transform: translate(-50%, -50%) scale(1.05); }
 }
 
 .btn-layer {
@@ -366,7 +377,7 @@ html, body {
   pointer-events: none;
 }
 
-/* Modal Pix */
+/* Modal Pix com Dados Completos */
 #modal-pix {
   position: absolute; inset: 0;
   background: rgba(0, 0, 0, 0.82);
@@ -435,7 +446,9 @@ html, body {
 <div class="stage" id="stage">
   <!-- 1. Capa -->
   <img id="cover" src="./capa.png" alt="Capa" onclick="iniciarExperiencia()">
-  <div class="tap-hint" onclick="iniciarExperiencia()">Toque para abrir</div>
+  
+  <!-- Botão Toque para Abrir (Alinhado e elegante) -->
+  <div class="tap-hint" onclick="iniciarExperiencia()">✨ TOQUE PARA ABRIR ✨</div>
 
   <!-- 🦋 3 BORBOLETAS ENCANTADAS -->
   <div id="butterflies-group">
@@ -514,7 +527,7 @@ html, body {
     <a id="btn-presente" class="btn-click" href="javascript:void(0)" 
        onclick="animarBrilho(event); abrirPaginaPresentes()"></a>
 
-    <!-- 🏰 CONFIRMAÇÃO DE PRESENÇA COM EMOJIS NATIVOS VIA JS 🏰 -->
+    <!-- 🏰 CONFIRMAÇÃO COM CÓDIGO UNICODE 100% SEGURO 🏰 -->
     <a id="btn-presenca" class="btn-click" href="javascript:void(0)" 
        onclick="confirmarPresencaWhatsapp(event)"></a>
   </div>
@@ -605,7 +618,7 @@ window.addEventListener('resize', ajustarCanvas);
 ajustarCanvas();
 
 // ==========================================
-// 📱 CONFIRMAÇÃO COM CÓDIGOS UNICODE (SEM CARACTERES QUEBRADOS)
+// 📱 CONFIRMAÇÃO DE PRESENÇA NO WHATSAPP COM EMOJIS NATIVOS
 // ==========================================
 function confirmarPresencaWhatsapp(e) {
   if (e) animarBrilho(e);
