@@ -512,11 +512,8 @@ html, body {
 <!-- Música de Fundo -->
 <audio id="musica" src="https://i.imgur.com/Qv9rKqF.mp4" loop preload="auto"></audio>
 
-<!-- 🎙️ ÁUDIO DA NARRAÇÃO (Link direto sem <source> para garantir reprodução no celular) -->
-<audio id="audio-narracao" 
-       src="https://files.catbox.moe/txl3r7.mp3" 
-       preload="auto">
-</audio>
+<!-- 🎙️ Áudio da Narração -->
+<audio id="audio-narracao" preload="auto"></audio>
 
 <script>
 const CHAVE_PIX = "SUACHAVEPIXAQUI";
@@ -563,6 +560,32 @@ function ajustarCanvas() {
 }
 window.addEventListener('resize', ajustarCanvas);
 ajustarCanvas();
+
+// ==========================================
+// 🎙️ SISTEMA DE BUSCA DE ÁUDIO À PROVA DE FALHAS
+// ==========================================
+const fontesAudio = [
+  "https://raw.githubusercontent.com/PHSUBLIME/CONVITEDANIEL/main/narra%C3%A7%C3%A3o.mp3",
+  "./narra%C3%A7%C3%A3o.mp3",
+  "./narracao.mp3",
+  "https://raw.githubusercontent.com/PHSUBLIME/CONVITEDANIEL/main/narracao.mp3",
+  "https://files.catbox.moe/txl3r7.mp3"
+];
+
+let indiceFonte = 0;
+
+function carregarAudioSeguro() {
+  if (indiceFonte >= fontesAudio.length) return;
+  audioNarracao.src = fontesAudio[indiceFonte];
+  audioNarracao.load();
+}
+carregarAudioSeguro();
+
+audioNarracao.addEventListener('error', () => {
+  console.warn("Fonte " + indiceFonte + " falhou, tentando próxima...");
+  indiceFonte++;
+  carregarAudioSeguro();
+});
 
 // ==========================================
 // ✨ RASTRO MÁGICO AO PASSAR MOUSE OU DEDO
@@ -613,7 +636,6 @@ function atualizarBorboletas() {
   const w = stage.clientWidth || 360;
   const h = stage.clientHeight || 640;
 
-  // 1. Borboleta Rosa Dourada
   const b1X = (w * 0.48) + Math.sin(tVoo * 0.85) * (w * 0.36) + Math.cos(tVoo * 1.6) * 20;
   const b1Y = (h * 0.35) + Math.cos(tVoo * 0.7) * (h * 0.18) + Math.sin(tVoo * 1.4) * 28;
   const dx1 = Math.cos(tVoo * 0.85);
@@ -621,13 +643,11 @@ function atualizarBorboletas() {
   const ang1 = Math.atan2(dy1, dx1) * (180 / Math.PI) + 90;
   b1.style.transform = `translate(${b1X - 25}px, ${b1Y - 25}px) rotate(${ang1}deg)`;
 
-  // 2. Borboleta Dourada
   const b2X = (w * 0.52) + Math.cos(tVoo * 0.95 + 1.2) * (w * 0.34);
   const b2Y = (h * 0.45) + Math.sin(tVoo * 0.8 + 1.2) * (h * 0.22);
   const ang2 = Math.atan2(Math.cos(tVoo * 0.8 + 1.2), -Math.sin(tVoo * 0.95 + 1.2)) * (180 / Math.PI) + 90;
   b2.style.transform = `translate(${b2X - 21}px, ${b2Y - 21}px) rotate(${ang2}deg)`;
 
-  // 3. Borboleta Champanhe
   const b3X = (w * 0.5) + Math.sin(tVoo * 1.1 + 2.5) * (w * 0.28);
   const b3Y = (h * 0.28) + Math.cos(tVoo * 0.9 + 2.5) * (h * 0.15);
   const ang3 = Math.atan2(-Math.sin(tVoo * 0.9 + 2.5), Math.cos(tVoo * 1.1 + 2.5)) * (180 / Math.PI) + 90;
@@ -729,34 +749,24 @@ function animarBrilho(e) {
 let jaIniciou = false;
 let transicaoIniciada = false;
 
-// 1. Toque no Envelope -> DESTRAVAMENTO REAL DE ÁUDIO NO NAVEGADOR
+// 1. Toque no Envelope -> Inicia Castelo
 function iniciarExperiencia() {
   if (jaIniciou) return;
   jaIniciou = true;
 
-  // Destrava o áudio da narração no primeiro toque físico do usuário
+  // Pré-ativação simples de áudio autorizada pelo toque
   if (audioNarracao) {
-    audioNarracao.volume = 0.01;
-    const pA = audioNarracao.play();
-    if (pA !== undefined) {
-      pA.then(() => {
-        audioNarracao.pause();
-        audioNarracao.currentTime = 0;
-        audioNarracao.volume = 1;
-      }).catch(err => console.log("Permissão de áudio concedida", err));
-    }
+    audioNarracao.play().then(() => {
+      audioNarracao.pause();
+      audioNarracao.currentTime = 0;
+    }).catch(() => {});
   }
 
-  // Destrava a música de fundo
   if (musica) {
-    musica.volume = 0.01;
-    const pM = musica.play();
-    if (pM !== undefined) {
-      pM.then(() => {
-        musica.pause();
-        musica.currentTime = 0;
-      }).catch(err => console.log("Permissão de música concedida", err));
-    }
+    musica.play().then(() => {
+      musica.pause();
+      musica.currentTime = 0;
+    }).catch(() => {});
   }
 
   ativarBorboletas(false);
@@ -784,31 +794,29 @@ function iniciarExperiencia() {
   videoAbertura.onerror = iniciarSlideshow;
 }
 
-// 2. Inicia o Slideshow com Narração e Música com volume encorpado
+// 2. Inicia o Slideshow com Narração e Música Encorpada
 function iniciarSlideshow() {
   transicaoIniciada = true;
 
   videoAbertura.classList.remove('visivel');
   setTimeout(() => { videoAbertura.pause(); }, 500);
 
-  // 🎵 Música de fundo aumentada para 0.58 (bem presente e audível)
+  // 🎵 Volume da música bem nítido
   if (musica) {
     musica.volume = 0.58;
     musica.play().catch(() => {});
   }
 
-  // 🎙️ Toca a narração medieval
+  // 🎙️ Toca a narração
   if (audioNarracao) {
     audioNarracao.currentTime = 0;
     audioNarracao.volume = 1;
-    const pPlay = audioNarracao.play();
-    if (pPlay !== undefined) {
-      pPlay.catch(err => {
-        console.warn("Tentando fonte de backup para o áudio:", err);
-        audioNarracao.src = "./narracao.mp3";
-        audioNarracao.play().catch(e => console.error(e));
-      });
-    }
+    audioNarracao.play().catch(err => {
+      console.warn("Falha no play inicial, tentando rota alternativa:", err);
+      indiceFonte++;
+      carregarAudioSeguro();
+      audioNarracao.play().catch(() => {});
+    });
   }
 
   slideshowContainer.classList.add('visivel');
