@@ -15,12 +15,12 @@
 <meta property="og:description" content="Você é nosso convidado especial! Toque para abrir." />
 <meta property="og:image" content="capa.png" />
 
-<!-- Pré-carregamento das Fotos e Presentes -->
+<!-- Pré-carregamento das Fotos da Princesa e Presentes -->
+<link rel="preload" as="image" href="https://i.postimg.cc/nzpLRbSH/Whats-App-Image-2026-10-16-at-20-04-49.jpg">
+<link rel="preload" as="image" href="https://i.postimg.cc/7Lg6nYVL/Whats-App-Image-2026-10-16-at-20-04-50.jpg">
 <link rel="preload" as="image" href="https://i.postimg.cc/qRxN4M6N/Whats-App-Image-2026-10-16-at-20-04-50dd.jpg">
 <link rel="preload" as="image" href="https://i.postimg.cc/MZtnLH80/Whats-App-Image-2026-10-16-at-20-04-50d.jpg">
 <link rel="preload" as="image" href="https://i.postimg.cc/QxyHXzCf/Whats-App-Image-2026-10-16-at-20-04-50s.jpg">
-<link rel="preload" as="image" href="https://i.postimg.cc/7Lg6nYVL/Whats-App-Image-2026-10-16-at-20-04-50.jpg">
-<link rel="preload" as="image" href="https://i.postimg.cc/nzpLRbSH/Whats-App-Image-2026-10-16-at-20-04-49.jpg">
 <link rel="preload" as="image" href="https://i.postimg.cc/zX3NpXj6/presentes.png">
 
 <style>
@@ -42,6 +42,7 @@ html, body {
   background: #000;
   overflow: hidden;
   box-shadow: 0 0 35px rgba(0,0,0,0.85);
+  touch-action: none;
 }
 
 .stage img, .stage video {
@@ -138,7 +139,7 @@ html, body {
   object-fit: cover;
   opacity: 0;
   transform: scale(1.02);
-  transition: opacity 1.3s cubic-bezier(0.4, 0, 0.2, 1), transform 4.6s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 4.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 .slide-photo.ativo {
   opacity: 1;
@@ -153,7 +154,7 @@ html, body {
   opacity: 0;
   pointer-events: none;
   z-index: 5;
-  transition: opacity 0.65s ease-in-out;
+  transition: opacity 0.6s ease-in-out;
 }
 .photo-smoke-pulse.ativo {
   opacity: 1;
@@ -206,12 +207,10 @@ html, body {
   transform: scale(1.3);
 }
 
-/* 🦋 Borboleta 3D */
-#butterfly {
+/* 🦋 3 BORBOLETAS 3D ENCANTADAS */
+.magic-butterfly {
   position: absolute;
   top: 0; left: 0;
-  width: 52px;
-  height: 52px;
   z-index: 75;
   pointer-events: none;
   transform-origin: center center;
@@ -237,21 +236,26 @@ html, body {
   top: 15%;
   width: 48%;
   height: 68%;
-  background: radial-gradient(circle at 75% 25%, #fff9e6 0%, #ff9ebb 50%, #8a1329 100%);
   border: 1.5px solid #ffe066;
   transform-origin: right center;
-  animation: flapLeft 0.26s infinite alternate ease-in-out;
 }
 .wing.left {
   left: 0;
   border-radius: 80% 30% 70% 20%;
+  animation: flapLeft 0.25s infinite alternate ease-in-out;
 }
 .wing.right {
   left: 52%;
   border-radius: 30% 80% 20% 70%;
   transform-origin: left center;
-  animation: flapRight 0.26s infinite alternate ease-in-out;
+  animation: flapRight 0.25s infinite alternate ease-in-out;
 }
+
+/* Cores das 3 borboletas */
+#b1 .wing { background: radial-gradient(circle at 75% 25%, #fff9e6 0%, #ff9ebb 50%, #8a1329 100%); }
+#b2 .wing { background: radial-gradient(circle at 75% 25%, #ffffff 0%, #ffe082 50%, #b37400 100%); }
+#b3 .wing { background: radial-gradient(circle at 75% 25%, #fff5f8 0%, #f48fb1 50%, #6a0b22 100%); }
+
 @keyframes flapLeft {
   0% { transform: rotateY(0deg); }
   100% { transform: rotateY(70deg); }
@@ -399,29 +403,49 @@ html, body {
   <img id="cover" src="./capa.png" alt="Capa" onclick="iniciarExperiencia()">
   <div class="tap-hint" onclick="iniciarExperiencia()">Toque para abrir</div>
 
-  <!-- Borboleta Encantada -->
-  <div id="butterfly">
-    <div class="butterfly-body">
-      <div class="wing left"></div>
-      <div class="butterfly-torso"></div>
-      <div class="wing right"></div>
+  <!-- 🦋 3 BORBOLETAS ENCANTADAS -->
+  <div id="butterflies-group">
+    <!-- Borboleta 1 (Rosa Dourada) -->
+    <div id="b1" class="magic-butterfly" style="width: 50px; height: 50px;">
+      <div class="butterfly-body">
+        <div class="wing left"></div>
+        <div class="butterfly-torso"></div>
+        <div class="wing right"></div>
+      </div>
+    </div>
+    <!-- Borboleta 2 (Dourada) -->
+    <div id="b2" class="magic-butterfly" style="width: 42px; height: 42px;">
+      <div class="butterfly-body">
+        <div class="wing left" style="animation-duration: 0.23s;"></div>
+        <div class="butterfly-torso"></div>
+        <div class="wing right" style="animation-duration: 0.23s;"></div>
+      </div>
+    </div>
+    <!-- Borboleta 3 (Champanhe/Branca) -->
+    <div id="b3" class="magic-butterfly" style="width: 36px; height: 36px;">
+      <div class="butterfly-body">
+        <div class="wing left" style="animation-duration: 0.28s;"></div>
+        <div class="butterfly-torso"></div>
+        <div class="wing right" style="animation-duration: 0.28s;"></div>
+      </div>
     </div>
   </div>
 
   <!-- Vídeo 1: Castelo se abrindo -->
   <video id="video-abertura" class="video-player" playsinline webkit-playsinline x5-playsinline preload="auto" src="https://i.imgur.com/JPzoItH.mp4"></video>
 
-  <!-- 🌟 SLIDESHOW DAS FOTOS DA MAITÊ COM TRANSIÇÃO DE NÉVOA 🌟 -->
+  <!-- 🌟 SLIDESHOW COM A MAITÊ DE PRINCESA PRIMEIRO 🌟 -->
   <div id="slideshow-container">
     <div class="slideshow-title">1 Aninho de Puro Amor ✨</div>
     <div class="photo-frame">
-      <img class="slide-photo" src="https://i.postimg.cc/qRxN4M6N/Whats-App-Image-2026-10-16-at-20-04-50dd.jpg" alt="Maitê 1">
-      <img class="slide-photo" src="https://i.postimg.cc/MZtnLH80/Whats-App-Image-2026-10-16-at-20-04-50d.jpg" alt="Maitê 2">
-      <img class="slide-photo" src="https://i.postimg.cc/QxyHXzCf/Whats-App-Image-2026-10-16-at-20-04-50s.jpg" alt="Maitê 3">
-      <img class="slide-photo" src="https://i.postimg.cc/7Lg6nYVL/Whats-App-Image-2026-10-16-at-20-04-50.jpg" alt="Maitê 4">
-      <img class="slide-photo" src="https://i.postimg.cc/nzpLRbSH/Whats-App-Image-2026-10-16-at-20-04-49.jpg" alt="Maitê 5">
+      <!-- 1 & 2: Princesinha primeiro -->
+      <img class="slide-photo" src="https://i.postimg.cc/nzpLRbSH/Whats-App-Image-2026-10-16-at-20-04-49.jpg" alt="Maitê Princesa 1">
+      <img class="slide-photo" src="https://i.postimg.cc/7Lg6nYVL/Whats-App-Image-2026-10-16-at-20-04-50.jpg" alt="Maitê Princesa 2">
+      <img class="slide-photo" src="https://i.postimg.cc/qRxN4M6N/Whats-App-Image-2026-10-16-at-20-04-50dd.jpg" alt="Maitê 3">
+      <img class="slide-photo" src="https://i.postimg.cc/MZtnLH80/Whats-App-Image-2026-10-16-at-20-04-50d.jpg" alt="Maitê 4">
+      <img class="slide-photo" src="https://i.postimg.cc/QxyHXzCf/Whats-App-Image-2026-10-16-at-20-04-50s.jpg" alt="Maitê 5">
       
-      <!-- Névoa Mágica Suave entre as fotos -->
+      <!-- Névoa Mágica -->
       <div class="photo-smoke-pulse" id="photoSmoke"></div>
     </div>
     <div class="slide-dots">
@@ -489,10 +513,9 @@ html, body {
 <!-- Música de Fundo -->
 <audio id="musica" src="https://i.imgur.com/Qv9rKqF.mp4" loop preload="auto"></audio>
 
-<!-- 🎙️ ÁUDIO DA NARRAÇÃO (Lê do GitHub e tem Catbox como reserva) -->
+<!-- 🎙️ Áudio da Narração -->
 <audio id="audio-narracao" 
-       src="./Video%20Project%203.m4a" 
-       onerror="this.onerror=null; this.src='https://files.catbox.moe/petiz3.m4a';" 
+       src="https://files.catbox.moe/petiz3.m4a" 
        preload="auto">
 </audio>
 
@@ -511,9 +534,12 @@ const musica = document.getElementById('musica');
 const audioNarracao = document.getElementById('audio-narracao');
 const modalPix = document.getElementById('modal-pix');
 const smokeOverlay = document.getElementById('smoke-overlay');
-const butterfly = document.getElementById('butterfly');
 
-// Elementos do Slideshow
+const b1 = document.getElementById('b1');
+const b2 = document.getElementById('b2');
+const b3 = document.getElementById('b3');
+const butterfliesGroup = document.getElementById('butterflies-group');
+
 const slideshowContainer = document.getElementById('slideshow-container');
 const slidePhotos = document.querySelectorAll('.slide-photo');
 const slideDots = document.querySelectorAll('.dot');
@@ -536,45 +562,89 @@ window.addEventListener('resize', ajustarCanvas);
 ajustarCanvas();
 
 // ==========================================
-// 🦋 ANIMAÇÃO DA BORBOLETA E PÓ DE FADA
+// ✨ RASTRO MÁGICO AO PASSAR MOUSE OU DEDO
 // ==========================================
-let borboletaAtiva = true;
-let bX = 160, bY = 240;
-let prevX = 160, prevY = 240;
-let tempoVoo = 0;
-
-function ativarBorboleta(sim) {
-  borboletaAtiva = sim;
-  butterfly.style.display = sim ? 'block' : 'none';
+function soltarBrilhoRastro(x, y) {
+  const cores = ['#ffd700', '#fff8dc', '#ffb6c1', '#ffffff', '#ffe29f'];
+  for (let i = 0; i < 3; i++) {
+    particles.push({
+      x: x + (Math.random() * 12 - 6),
+      y: y + (Math.random() * 12 - 6),
+      vx: (Math.random() - 0.5) * 2,
+      vy: (Math.random() - 0.5) * 2 + 0.5,
+      radius: Math.random() * 3 + 1,
+      alpha: 1,
+      decay: Math.random() * 0.025 + 0.015,
+      color: cores[Math.floor(Math.random() * cores.length)]
+    });
+  }
 }
 
-function atualizarBorboleta() {
-  if (!borboletaAtiva) return;
+// Mouse no Computador
+stage.addEventListener('mousemove', (e) => {
+  const rect = stage.getBoundingClientRect();
+  soltarBrilhoRastro(e.clientX - rect.left, e.clientY - rect.top);
+});
 
-  tempoVoo += 0.025;
+// Toque e Arraste no Celular
+stage.addEventListener('touchmove', (e) => {
+  if (e.touches && e.touches[0]) {
+    const rect = stage.getBoundingClientRect();
+    soltarBrilhoRastro(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
+  }
+}, { passive: true });
+
+
+// ==========================================
+// 🦋 3 BORBOLETAS VOANDO SIMULTANEAMENTE
+// ==========================================
+let borboletasAtivas = true;
+let tVoo = 0;
+
+function ativarBorboletas(sim) {
+  borboletasAtivas = sim;
+  butterfliesGroup.style.display = sim ? 'block' : 'none';
+}
+
+function atualizarBorboletas() {
+  if (!borboletasAtivas) return;
+
+  tVoo += 0.022;
   const w = stage.clientWidth || 360;
   const h = stage.clientHeight || 640;
 
-  prevX = bX;
-  prevY = bY;
+  // 1. Borboleta Rosa Dourada (Trajetória superior suave)
+  const b1X = (w * 0.48) + Math.sin(tVoo * 0.85) * (w * 0.36) + Math.cos(tVoo * 1.6) * 20;
+  const b1Y = (h * 0.35) + Math.cos(tVoo * 0.7) * (h * 0.18) + Math.sin(tVoo * 1.4) * 28;
+  const dx1 = Math.cos(tVoo * 0.85);
+  const dy1 = -Math.sin(tVoo * 0.7);
+  const ang1 = Math.atan2(dy1, dx1) * (180 / Math.PI) + 90;
+  b1.style.transform = `translate(${b1X - 25}px, ${b1Y - 25}px) rotate(${ang1}deg)`;
 
-  bX = (w * 0.5) + Math.sin(tempoVoo * 0.9) * (w * 0.35) + Math.cos(tempoVoo * 1.8) * 25;
-  bY = (h * 0.38) + Math.cos(tempoVoo * 0.7) * (h * 0.22) + Math.sin(tempoVoo * 1.5) * 35;
+  // 2. Borboleta Dourada (Trajetória graciosa cruzada)
+  const b2X = (w * 0.52) + Math.cos(tVoo * 0.95 + 1.2) * (w * 0.34);
+  const b2Y = (h * 0.45) + Math.sin(tVoo * 0.8 + 1.2) * (h * 0.22);
+  const ang2 = Math.atan2(Math.cos(tVoo * 0.8 + 1.2), -Math.sin(tVoo * 0.95 + 1.2)) * (180 / Math.PI) + 90;
+  b2.style.transform = `translate(${b2X - 21}px, ${b2Y - 21}px) rotate(${ang2}deg)`;
 
-  const dx = bX - prevX;
-  const dy = bY - prevY;
-  const angulo = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+  // 3. Borboleta Champanhe (Dança delicada pelo meio)
+  const b3X = (w * 0.5) + Math.sin(tVoo * 1.1 + 2.5) * (w * 0.28);
+  const b3Y = (h * 0.28) + Math.cos(tVoo * 0.9 + 2.5) * (h * 0.15);
+  const ang3 = Math.atan2(-Math.sin(tVoo * 0.9 + 2.5), Math.cos(tVoo * 1.1 + 2.5)) * (180 / Math.PI) + 90;
+  b3.style.transform = `translate(${b3X - 18}px, ${b3Y - 18}px) rotate(${ang3}deg)`;
 
-  butterfly.style.transform = `translate(${bX - 26}px, ${bY - 26}px) rotate(${angulo}deg)`;
-
-  if (Math.random() < 0.7) {
+  // Pó de fada das 3 borboletas
+  if (Math.random() < 0.8) {
+    const alvos = [ {x: b1X, y: b1Y}, {x: b2X, y: b2Y}, {x: b3X, y: b3Y} ];
+    const p = alvos[Math.floor(Math.random() * alvos.length)];
     const cores = ['#ffe29f', '#ffffff', '#ffd700', '#ffb6c1'];
+
     butterflySparkles.push({
-      x: bX + (Math.random() * 8 - 4),
-      y: bY + (Math.random() * 8 - 4),
+      x: p.x + (Math.random() * 8 - 4),
+      y: p.y + (Math.random() * 8 - 4),
       vx: (Math.random() - 0.5) * 1.2,
       vy: Math.random() * 1.5 + 0.4,
-      radius: Math.random() * 3 + 1.2,
+      radius: Math.random() * 2.8 + 1.2,
       alpha: 1,
       decay: Math.random() * 0.02 + 0.015,
       color: cores[Math.floor(Math.random() * cores.length)]
@@ -585,8 +655,9 @@ function atualizarBorboleta() {
 function loopAnimacao() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  atualizarBorboleta();
+  atualizarBorboletas();
 
+  // Partículas das borboletas
   for (let i = butterflySparkles.length - 1; i >= 0; i--) {
     const p = butterflySparkles[i];
     p.x += p.vx;
@@ -608,6 +679,7 @@ function loopAnimacao() {
     }
   }
 
+  // Partículas de toques e arrastes
   for (let i = particles.length - 1; i >= 0; i--) {
     const p = particles[i];
     p.x += p.vx;
@@ -660,17 +732,16 @@ function animarBrilho(e) {
 let jaIniciou = false;
 let transicaoIniciada = false;
 
-// 1. Toque no Envelope -> DESTRAVA OS ÁUDIOS NO NAVEGADOR
+// 1. Toque no Envelope -> Inicia Castelo e destrava áudio
 function iniciarExperiencia() {
   if (jaIniciou) return;
   jaIniciou = true;
 
-  // 🔓 DESTRAVA O ÁUDIO PARA O CELULAR PERMITIR TOCAR
   if (audioNarracao) {
     audioNarracao.volume = 0;
-    const promessa = audioNarracao.play();
-    if (promessa !== undefined) {
-      promessa.then(() => {
+    const p = audioNarracao.play();
+    if (p !== undefined) {
+      p.then(() => {
         audioNarracao.pause();
         audioNarracao.currentTime = 0;
         audioNarracao.volume = 1;
@@ -680,16 +751,16 @@ function iniciarExperiencia() {
 
   if (musica) {
     musica.volume = 0;
-    const promessaMusica = musica.play();
-    if (promessaMusica !== undefined) {
-      promessaMusica.then(() => {
+    const pm = musica.play();
+    if (pm !== undefined) {
+      pm.then(() => {
         musica.pause();
         musica.currentTime = 0;
       }).catch(() => {});
     }
   }
 
-  ativarBorboleta(false);
+  ativarBorboletas(false);
 
   stage.classList.add('opened');
   videoAbertura.classList.add('visivel');
@@ -714,35 +785,34 @@ function iniciarExperiencia() {
   videoAbertura.onerror = iniciarSlideshow;
 }
 
-// 2. Inicia o Slideshow com Narração e Música em segundo plano
+// 2. Inicia o Slideshow com SINCRONIA EXATA DO ÁUDIO
 function iniciarSlideshow() {
   transicaoIniciada = true;
 
   videoAbertura.classList.remove('visivel');
   setTimeout(() => { videoAbertura.pause(); }, 500);
 
-  // Inicia a música de fundo com volume bem baixinho para a voz ficar perfeita
   if (musica) {
     musica.volume = 0.18;
     musica.play().catch(() => {});
   }
 
-  // Toca o áudio da Narração destravado
   if (audioNarracao) {
     audioNarracao.currentTime = 0;
     audioNarracao.volume = 1;
-    audioNarracao.play().catch(err => {
-      console.log("Tentando reproduzir narração:", err);
-    });
-    
-    audioNarracao.onended = () => {
-      if (musica) musica.volume = 0.5;
-    };
+    audioNarracao.play().catch(() => {});
   }
 
   slideshowContainer.classList.add('visivel');
   slideAtual = 0;
   mostrarSlide(slideAtual);
+
+  // ⏱️ Calcula o tempo exato por foto com base na duração do áudio
+  let duracaoNarracao = (audioNarracao && audioNarracao.duration && !isNaN(audioNarracao.duration)) 
+                        ? audioNarracao.duration 
+                        : 16;
+  
+  let tempoPorFoto = Math.max(2800, (duracaoNarracao / slidePhotos.length) * 1000);
 
   slideInterval = setInterval(() => {
     photoSmoke.classList.add('ativo');
@@ -761,7 +831,15 @@ function iniciarSlideshow() {
       }
     }, 550);
 
-  }, 3800);
+  }, tempoPorFoto);
+
+  // Se o áudio acabar antes, avança naturalmente
+  audioNarracao.onended = () => {
+    if (slideInterval) {
+      clearInterval(slideInterval);
+      finalizarSlideshowEIrParaFala();
+    }
+  };
 }
 
 function mostrarSlide(index) {
@@ -837,14 +915,14 @@ function abrirPaginaPresentes() {
   presentesPage.classList.add('show');
   btnLayerPresentes.classList.add('show');
 
-  ativarBorboleta(true);
+  ativarBorboletas(true);
 }
 
 function voltarAoConvite() {
   presentesPage.classList.remove('show');
   btnLayerPresentes.classList.remove('show');
 
-  ativarBorboleta(false);
+  ativarBorboletas(false);
 
   convitePage.classList.add('show');
   btnLayerPrincipal.classList.add('show');
