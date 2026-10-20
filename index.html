@@ -5,11 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Convite Especial - Maitê</title>
 
+<!-- Fontes Nobres -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Great+Vibes&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Convite Especial - 1 Aninho da Maitê" />
 <meta property="og:description" content="Você é nosso convidado especial! Toque para abrir." />
 <meta property="og:image" content="capa.png" />
 
+<!-- Pré-carregamento das Fotos da Maitê e Presentes -->
+<link rel="preload" as="image" href="https://i.postimg.cc/qRxN4M6N/Whats-App-Image-2026-10-16-at-20-04-50dd.jpg">
+<link rel="preload" as="image" href="https://i.postimg.cc/MZtnLH80/Whats-App-Image-2026-10-16-at-20-04-50d.jpg">
+<link rel="preload" as="image" href="https://i.postimg.cc/QxyHXzCf/Whats-App-Image-2026-10-16-at-20-04-50s.jpg">
+<link rel="preload" as="image" href="https://i.postimg.cc/7Lg6nYVL/Whats-App-Image-2026-10-16-at-20-04-50.jpg">
+<link rel="preload" as="image" href="https://i.postimg.cc/nzpLRbSH/Whats-App-Image-2026-10-16-at-20-04-49.jpg">
 <link rel="preload" as="image" href="https://i.postimg.cc/zX3NpXj6/presentes.png">
 
 <style>
@@ -68,7 +79,7 @@ html, body {
   position: absolute;
   right: 14px;
   bottom: 24px;
-  z-index: 45;
+  z-index: 48;
   display: none;
   background: rgba(0, 0, 0, 0.75);
   color: #fff;
@@ -78,6 +89,77 @@ html, body {
   font-size: 13px;
   font-weight: bold;
   cursor: pointer;
+}
+
+/* 🌟 NOVO: SLIDESHOW DE RETROSPECTIVA DA MAITÊ 🌟 */
+#slideshow-container {
+  position: absolute;
+  inset: 0;
+  z-index: 42;
+  background: radial-gradient(circle at center, #1f060f 0%, #0d0206 100%);
+  display: none;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  overflow: hidden;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#slideshow-container.visivel {
+  display: flex;
+  opacity: 1;
+}
+.slideshow-title {
+  font-family: 'Great Vibes', cursive;
+  color: #f7d58b;
+  font-size: clamp(28px, 7vw, 36px);
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.65);
+  margin-bottom: 12px;
+  z-index: 3;
+  text-align: center;
+  padding: 0 15px;
+}
+.photo-frame {
+  position: relative;
+  width: 82%;
+  height: 64%;
+  border-radius: 24px;
+  border: 3px solid #d4af37;
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.45), 0 15px 35px rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+  background: #140308;
+}
+.slide-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1);
+  transition: opacity 0.8s ease-in-out, transform 3.6s ease-out;
+}
+.slide-photo.ativo {
+  opacity: 1;
+  transform: scale(1.08); /* Efeito Ken Burns */
+}
+.slide-dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  z-index: 3;
+}
+.dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid #d4af37;
+  transition: all 0.4s ease;
+}
+.dot.ativo {
+  background: #ffd700;
+  transform: scale(1.4);
+  box-shadow: 0 0 8px #ffd700;
 }
 
 /* 3. Página Principal */
@@ -109,17 +191,17 @@ html, body {
   transform: scale(1.3);
 }
 
-/* 🦋 BORBOLETA 3D */
+/* 🦋 BORBOLETA 3D COM Z-INDEX SUPERIOR */
 #butterfly {
   position: absolute;
   top: 0; left: 0;
-  width: 48px;
-  height: 48px;
-  z-index: 55;
+  width: 52px;
+  height: 52px;
+  z-index: 75; /* Fica acima da capa e de tudo */
   pointer-events: none;
   transform-origin: center center;
-  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.85));
-  display: none;
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.9));
+  display: block;
   will-change: transform;
 }
 .butterfly-body {
@@ -127,30 +209,41 @@ html, body {
   position: relative;
   perspective: 600px;
 }
+.butterfly-torso {
+  position: absolute;
+  top: 25%; left: 47%;
+  width: 6%; height: 45%;
+  background: #5c0f1e;
+  border-radius: 10px;
+  z-index: 3;
+}
 .wing {
   position: absolute;
   top: 15%;
-  width: 50%;
-  height: 70%;
-  background: radial-gradient(circle at 70% 30%, #fff7d6 0%, #ff9ebb 55%, #b31b38 100%);
-  border: 1px solid #ffd700;
-  border-radius: 80% 30% 70% 20%;
+  width: 48%;
+  height: 68%;
+  background: radial-gradient(circle at 75% 25%, #fff9e6 0%, #ff9ebb 50%, #8a1329 100%);
+  border: 1.5px solid #ffe066;
   transform-origin: right center;
-  animation: flapLeft 0.28s infinite alternate ease-in-out;
+  animation: flapLeft 0.26s infinite alternate ease-in-out;
+}
+.wing.left {
+  left: 0;
+  border-radius: 80% 30% 70% 20%;
 }
 .wing.right {
-  left: 50%;
+  left: 52%;
   border-radius: 30% 80% 20% 70%;
   transform-origin: left center;
-  animation: flapRight 0.28s infinite alternate ease-in-out;
+  animation: flapRight 0.26s infinite alternate ease-in-out;
 }
 @keyframes flapLeft {
   0% { transform: rotateY(0deg); }
-  100% { transform: rotateY(68deg); }
+  100% { transform: rotateY(70deg); }
 }
 @keyframes flapRight {
   0% { transform: rotateY(0deg); }
-  100% { transform: rotateY(-68deg); }
+  100% { transform: rotateY(-70deg); }
 }
 
 /* 4. Página de Presentes */
@@ -227,7 +320,7 @@ html, body {
 #sparkle-canvas {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
-  z-index: 54;
+  z-index: 70;
   pointer-events: none;
 }
 
@@ -295,12 +388,34 @@ html, body {
   <div id="butterfly">
     <div class="butterfly-body">
       <div class="wing left"></div>
+      <div class="butterfly-torso"></div>
       <div class="wing right"></div>
     </div>
   </div>
 
-  <!-- Vídeos -->
+  <!-- Vídeo 1: Castelo se abrindo -->
   <video id="video-abertura" class="video-player" playsinline webkit-playsinline x5-playsinline preload="auto" src="https://i.imgur.com/JPzoItH.mp4"></video>
+
+  <!-- 🌟 NOVO: SLIDESHOW DAS FOTOS DA MAITÊ 🌟 -->
+  <div id="slideshow-container">
+    <div class="slideshow-title">1 Aninho de Puro Amor ✨</div>
+    <div class="photo-frame">
+      <img class="slide-photo" src="https://i.postimg.cc/qRxN4M6N/Whats-App-Image-2026-10-16-at-20-04-50dd.jpg" alt="Maitê 1">
+      <img class="slide-photo" src="https://i.postimg.cc/MZtnLH80/Whats-App-Image-2026-10-16-at-20-04-50d.jpg" alt="Maitê 2">
+      <img class="slide-photo" src="https://i.postimg.cc/QxyHXzCf/Whats-App-Image-2026-10-16-at-20-04-50s.jpg" alt="Maitê 3">
+      <img class="slide-photo" src="https://i.postimg.cc/7Lg6nYVL/Whats-App-Image-2026-10-16-at-20-04-50.jpg" alt="Maitê 4">
+      <img class="slide-photo" src="https://i.postimg.cc/nzpLRbSH/Whats-App-Image-2026-10-16-at-20-04-49.jpg" alt="Maitê 5">
+    </div>
+    <div class="slide-dots">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+
+  <!-- Vídeo 2: Maitê falando -->
   <video id="video-fala" class="video-player" playsinline webkit-playsinline x5-playsinline preload="auto" src="https://i.imgur.com/3W1InHI.mp4"></video>
 
   <!-- Efeito Fumaça / Névoa Mágica -->
@@ -310,7 +425,7 @@ html, body {
 
   <canvas id="sparkle-canvas"></canvas>
 
-  <!-- 3. Convite Principal (Sua imagem editada) -->
+  <!-- 3. Convite Principal (Arte limpa da Maitê) -->
   <img id="convite-page" src="./pagina.png" alt="Convite Principal">
 
   <!-- Botões Principais -->
@@ -371,6 +486,13 @@ const modalPix = document.getElementById('modal-pix');
 const smokeOverlay = document.getElementById('smoke-overlay');
 const butterfly = document.getElementById('butterfly');
 
+// Slideshow elements
+const slideshowContainer = document.getElementById('slideshow-container');
+const slidePhotos = document.querySelectorAll('.slide-photo');
+const slideDots = document.querySelectorAll('.dot');
+let slideAtual = 0;
+let slideInterval = null;
+
 document.getElementById('texto-chave-pix').innerText = CHAVE_PIX;
 
 const canvas = document.getElementById('sparkle-canvas');
@@ -388,22 +510,15 @@ ajustarCanvas();
 // ==========================================
 // 🦋 ANIMAÇÃO DA BORBOLETA E PÓ DE FADA
 // ==========================================
-let borboletaAtiva = false;
-let bX = 100, bY = 200;
-let prevX = 100, prevY = 200;
+let borboletaAtiva = true;
+let bX = 160, bY = 240;
+let prevX = 160, prevY = 240;
 let tempoVoo = 0;
 
 function ativarBorboleta(sim) {
   borboletaAtiva = sim;
-  if (sim) {
-    butterfly.style.display = 'block';
-  } else {
-    butterfly.style.display = 'none';
-  }
+  butterfly.style.display = sim ? 'block' : 'none';
 }
-
-// Inicia na Capa
-ativarBorboleta(true);
 
 function atualizarBorboleta() {
   if (!borboletaAtiva) return;
@@ -422,16 +537,16 @@ function atualizarBorboleta() {
   const dy = bY - prevY;
   const angulo = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
 
-  butterfly.style.transform = `translate(${bX - 24}px, ${bY - 24}px) rotate(${angulo}deg)`;
+  butterfly.style.transform = `translate(${bX - 26}px, ${bY - 26}px) rotate(${angulo}deg)`;
 
-  if (Math.random() < 0.65) {
+  if (Math.random() < 0.7) {
     const cores = ['#ffe29f', '#ffffff', '#ffd700', '#ffb6c1'];
     butterflySparkles.push({
       x: bX + (Math.random() * 8 - 4),
       y: bY + (Math.random() * 8 - 4),
       vx: (Math.random() - 0.5) * 1.2,
       vy: Math.random() * 1.5 + 0.4,
-      radius: Math.random() * 2.8 + 1.2,
+      radius: Math.random() * 3 + 1.2,
       alpha: 1,
       decay: Math.random() * 0.02 + 0.015,
       color: cores[Math.floor(Math.random() * cores.length)]
@@ -517,6 +632,7 @@ function animarBrilho(e) {
 let jaIniciou = false;
 let transicaoIniciada = false;
 
+// 1. Toque no Envelope -> Inicia o Castelo
 function iniciarExperiencia() {
   if (jaIniciou) return;
   jaIniciou = true;
@@ -530,51 +646,87 @@ function iniciarExperiencia() {
   videoAbertura.currentTime = 0;
   videoAbertura.play().catch(() => {
     videoAbertura.muted = true;
-    videoAbertura.play().catch(transicaoParaFala);
+    videoAbertura.play().catch(iniciarSlideshow);
   });
 
   videoAbertura.addEventListener('timeupdate', () => {
     if (!transicaoIniciada && videoAbertura.duration && (videoAbertura.duration - videoAbertura.currentTime <= 0.65)) {
       transicaoIniciada = true;
-      transicaoParaFala();
+      iniciarSlideshow();
     }
   });
 
   videoAbertura.onended = () => {
-    if (!transicaoIniciada) transicaoParaFala();
+    if (!transicaoIniciada) iniciarSlideshow();
   };
-  videoAbertura.onerror = transicaoParaFala;
+  videoAbertura.onerror = iniciarSlideshow;
 }
 
-function transicaoParaFala() {
+// 2. 🌟 Inicia o Slideshow de Fotos com a Música de Fundo 🌟
+function iniciarSlideshow() {
   transicaoIniciada = true;
+
+  // Fade out do vídeo 1
+  videoAbertura.classList.remove('visivel');
+  setTimeout(() => { videoAbertura.pause(); }, 500);
+
+  // Inicia a música de fundo
+  if (musica) {
+    musica.volume = 0.55;
+    musica.play().catch(() => {});
+  }
+
+  // Abre o container do slideshow
+  slideshowContainer.classList.add('visivel');
+  slideAtual = 0;
+  mostrarSlide(slideAtual);
+
+  // Alterna fotos a cada 2.8 segundos
+  slideInterval = setInterval(() => {
+    slideAtual++;
+    if (slideAtual < slidePhotos.length) {
+      mostrarSlide(slideAtual);
+    } else {
+      clearInterval(slideInterval);
+      finalizarSlideshowEIrParaFala();
+    }
+  }, 2800);
+}
+
+function mostrarSlide(index) {
+  slidePhotos.forEach((img, i) => {
+    img.classList.toggle('ativo', i === index);
+  });
+  slideDots.forEach((dot, i) => {
+    dot.classList.toggle('ativo', i === index);
+  });
+}
+
+// 3. Fim das Fotos -> Transição para o Vídeo 2 (Maitê falando)
+function finalizarSlideshowEIrParaFala() {
+  slideshowContainer.classList.remove('visivel');
+
+  // Abaixa um pouco a música para não cobrir a voz da Maitê
+  if (musica) {
+    musica.volume = 0.28;
+  }
 
   videoFala.currentTime = 0;
   videoFala.muted = false;
   videoFala.classList.add('visivel');
-
-  if (musica) {
-    musica.volume = 0.35;
-    musica.play().catch(() => {});
-  }
 
   videoFala.play().catch(() => {
     videoFala.muted = true;
     videoFala.play().catch(irParaFinal);
   });
 
-  setTimeout(() => {
-    videoAbertura.classList.remove('visivel');
-    setTimeout(() => {
-      videoAbertura.pause();
-    }, 600);
-  }, 300);
-
   videoFala.onended = irParaFinal;
   videoFala.onerror = irParaFinal;
 }
 
+// 4. Fim do Vídeo 2 -> Fumaça Mágica e Convite Final
 function irParaFinal() {
+  if (slideInterval) clearInterval(slideInterval);
   btnPular.style.display = 'none';
 
   smokeOverlay.classList.add('animar');
@@ -583,6 +735,9 @@ function irParaFinal() {
     if (videoAbertura) {
       videoAbertura.classList.remove('visivel');
       videoAbertura.pause();
+    }
+    if (slideshowContainer) {
+      slideshowContainer.classList.remove('visivel');
     }
     if (videoFala) {
       videoFala.classList.remove('visivel');
