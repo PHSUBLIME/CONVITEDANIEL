@@ -118,7 +118,6 @@ html, body {
   opacity: 1;
 }
 
-/* Fundo do Castelo com Forçador de Atualização */
 .slideshow-bg {
   position: absolute;
   inset: -15px;
@@ -503,7 +502,7 @@ html, body {
 
   <canvas id="sparkle-canvas"></canvas>
 
-  <!-- 3. Convite Principal (Forçado com ?v=3 para atualizar na hora!) -->
+  <!-- 3. Convite Principal -->
   <img id="convite-page" src="./pagina.png?v=3" alt="Convite Principal">
 
   <!-- Botões Principais -->
@@ -515,10 +514,9 @@ html, body {
     <a id="btn-presente" class="btn-click" href="javascript:void(0)" 
        onclick="animarBrilho(event); abrirPaginaPresentes()"></a>
 
-    <!-- Confirmação Medieval no WhatsApp -->
-    <a id="btn-presenca" class="btn-click" 
-       href="https://wa.me/5521981461040?text=Sauda%C3%A7%C3%B5es%20Reais!%20%F0%9F%8F%B0%F0%9F%91%91%20Atendendo%20%C3%A0%20nobre%20convoca%C3%A7%C3%A3o%20de%20Sua%20Alteza%2C%20a%20Princesa%20Mait%C3%AA%2C%20confirmo%20com%20imensa%20honra%20e%20alegria%20a%20nossa%20presen%C3%A7a%20no%20Grande%20Baile%20do%20seu%201%C2%BA%20Aninho!%20Nos%20vemos%20dia%2014%2F11%20%C3%A0s%2016h%20no%20Espa%C3%A7o%20Aquarela!%20%F0%9F%8E%89%E2%9C%A8" 
-       target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
+    <!-- 🏰 CONFIRMAÇÃO DE PRESENÇA COM EMOJIS NATIVOS VIA JS 🏰 -->
+    <a id="btn-presenca" class="btn-click" href="javascript:void(0)" 
+       onclick="confirmarPresencaWhatsapp(event)"></a>
   </div>
 
   <!-- 4. Presentes -->
@@ -605,6 +603,17 @@ function ajustarCanvas() {
 }
 window.addEventListener('resize', ajustarCanvas);
 ajustarCanvas();
+
+// ==========================================
+// 📱 CONFIRMAÇÃO DE PRESENÇA NO WHATSAPP COM EMOJIS REAIS
+// ==========================================
+function confirmarPresencaWhatsapp(e) {
+  if (e) animarBrilho(e);
+  const telefone = "5521981461040";
+  const mensagem = "Saudações Reais! 🏰👑 Atendendo à nobre convocação de Sua Alteza, a Princesa Maitê, confirmo com imensa honra e alegria a nossa presença no Grande Baile do seu 1º Aninho! Nos vemos dia 14/11 às 16h no Espaço Aquarela! 🎉✨";
+  const urlWhatsapp = "https://wa.me/" + telefone + "?text=" + encodeURIComponent(mensagem);
+  window.open(urlWhatsapp, '_blank');
+}
 
 // ==========================================
 // 🎙️ SISTEMA DE BUSCA DE ÁUDIO À PROVA DE FALHAS
