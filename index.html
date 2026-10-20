@@ -23,9 +23,11 @@
 <!-- Pré-carregamento das Fotos e Presentes -->
 <link rel="preload" as="image" href="https://i.postimg.cc/nzpLRbSH/Whats-App-Image-2026-10-16-at-20-04-49.jpg">
 <link rel="preload" as="image" href="https://i.postimg.cc/7Lg6nYVL/Whats-App-Image-2026-10-16-at-20-04-50.jpg">
-<link rel="preload" as="image" href="https://i.postimg.cc/qRxN4M6N/Whats-App-Image-2026-10-16-at-20-04-50dd.jpg">
-<link rel="preload" as="image" href="https://i.postimg.cc/MZtnLH80/Whats-App-Image-2026-10-16-at-20-04-50d.jpg">
-<link rel="preload" as="image" href="https://i.postimg.cc/QxyHXzCf/Whats-App-Image-2026-10-16-at-20-04-50s.jpg">
+<link rel="preload" as="image" href="https://i.postimg.cc/bYCmhQXW/Whats-App-Image-2026-10-20-at-x.jpg">
+<link rel="preload" as="image" href="https://i.postimg.cc/dtgn7wVH/Whats-App-Image-2026-10-20-at-10-06-09xx.jpg">
+<link rel="preload" as="image" href="https://i.postimg.cc/BvBCwFch/Whats-App-Image-2026-10-20-at-10-06-09x.jpg">
+<link rel="preload" as="image" href="https://i.postimg.cc/qqzXR5fP/Whats-App-Image-2026-10-20-at-10-06-09.jpg">
+<link rel="preload" as="image" href="https://i.postimg.cc/QxyHXzCf/Whats-App-Image-2026-10-20-at-20-04-50s.jpg">
 <link rel="preload" as="image" href="https://i.postimg.cc/zX3NpXj6/presentes.png">
 
 <style>
@@ -115,7 +117,6 @@ html, body {
   opacity: 1;
 }
 
-/* Fundo do Castelo com Desfoque de Cinema */
 .slideshow-bg {
   position: absolute;
   inset: -15px;
@@ -179,12 +180,12 @@ html, body {
 
 .slide-dots {
   display: flex;
-  gap: 8px;
+  gap: 7px;
   margin-top: 14px;
   z-index: 3;
 }
 .dot {
-  width: 8px; height: 8px;
+  width: 7px; height: 7px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.35);
   border: 1px solid #d4af37;
@@ -367,8 +368,8 @@ html, body {
 /* Modal Pix */
 #modal-pix {
   position: absolute; inset: 0;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(5px);
   z-index: 100;
   display: none;
   align-items: center;
@@ -386,16 +387,27 @@ html, body {
   box-shadow: 0 10px 30px rgba(0,0,0,0.6);
 }
 .modal-box h3 { color: #8a1e32; font-size: 19px; margin-bottom: 8px; }
-.modal-box p { color: #555; font-size: 13px; margin-bottom: 16px; }
+.modal-box p { color: #555; font-size: 13px; margin-bottom: 12px; }
 .pix-chave-container {
   background: #f0e6d6;
   padding: 10px;
   border-radius: 10px;
   font-family: monospace;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #7b1328;
   word-break: break-all;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
   border: 1px dashed #c09d3b;
+}
+.pix-info-extra {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 15px;
+  line-height: 1.5;
+  background: rgba(212, 175, 55, 0.12);
+  padding: 8px;
+  border-radius: 8px;
 }
 .btn-copiar {
   background: #8a1e32;
@@ -452,21 +464,29 @@ html, body {
   <!-- Vídeo 1: Castelo se abrindo -->
   <video id="video-abertura" class="video-player" playsinline webkit-playsinline x5-playsinline preload="auto" src="https://i.imgur.com/JPzoItH.mp4"></video>
 
-  <!-- 🌟 SLIDESHOW COM O CASTELO NO FUNDO 🌟 -->
+  <!-- 🌟 SLIDESHOW COM 7 FOTOS DA MAITÊ 🌟 -->
   <div id="slideshow-container">
     <div class="slideshow-bg"></div>
 
     <div class="slideshow-title">1 Aninho de Puro Amor ✨</div>
     <div class="photo-frame">
+      <!-- 1 e 2: Princesinha primeiro -->
       <img class="slide-photo" src="https://i.postimg.cc/nzpLRbSH/Whats-App-Image-2026-10-16-at-20-04-49.jpg" alt="Maitê Princesa 1">
       <img class="slide-photo" src="https://i.postimg.cc/7Lg6nYVL/Whats-App-Image-2026-10-16-at-20-04-50.jpg" alt="Maitê Princesa 2">
-      <img class="slide-photo" src="https://i.postimg.cc/qRxN4M6N/Whats-App-Image-2026-10-16-at-20-04-50dd.jpg" alt="Maitê 3">
-      <img class="slide-photo" src="https://i.postimg.cc/MZtnLH80/Whats-App-Image-2026-10-16-at-20-04-50d.jpg" alt="Maitê 4">
-      <img class="slide-photo" src="https://i.postimg.cc/QxyHXzCf/Whats-App-Image-2026-10-16-at-20-04-50s.jpg" alt="Maitê 5">
+      <!-- 4 Fotos novas -->
+      <img class="slide-photo" src="https://i.postimg.cc/bYCmhQXW/Whats-App-Image-2026-10-20-at-x.jpg" alt="Maitê 3">
+      <img class="slide-photo" src="https://i.postimg.cc/dtgn7wVH/Whats-App-Image-2026-10-20-at-10-06-09xx.jpg" alt="Maitê 4">
+      <img class="slide-photo" src="https://i.postimg.cc/BvBCwFch/Whats-App-Image-2026-10-20-at-10-06-09x.jpg" alt="Maitê 5">
+      <img class="slide-photo" src="https://i.postimg.cc/qqzXR5fP/Whats-App-Image-2026-10-20-at-10-06-09.jpg" alt="Maitê 6">
+      <!-- Última foto -->
+      <img class="slide-photo" src="https://i.postimg.cc/QxyHXzCf/Whats-App-Image-2026-10-20-at-20-04-50s.jpg" alt="Maitê 7">
       
       <div class="photo-smoke-pulse" id="photoSmoke"></div>
     </div>
+    <!-- 7 Indicadores -->
     <div class="slide-dots">
+      <span class="dot"></span>
+      <span class="dot"></span>
       <span class="dot"></span>
       <span class="dot"></span>
       <span class="dot"></span>
@@ -497,9 +517,9 @@ html, body {
     <a id="btn-presente" class="btn-click" href="javascript:void(0)" 
        onclick="animarBrilho(event); abrirPaginaPresentes()"></a>
 
-    <!-- 🏰 CONFIRMAÇÃO DE PRESENÇA MEDIEVAL NO WHATSAPP 🏰 -->
+    <!-- Confirmação Medieval no WhatsApp -->
     <a id="btn-presenca" class="btn-click" 
-       href="https://wa.me/5521981461040?text=Sauda%C3%A7%C3%B5es%20Reais!%20%F0%9F%8F%B0%F0%9F%91%91%20Atendendo%20%C3%A0%20nobre%20convoca%C3%A7%C3%A3o%20de%20Sua%20Alteza%2C%20a%20Princesa%20Mait%C3%AA%2C%20confirmo%20com%20imensa%20honra%20e%20alegria%20a%20nossa%20presen%C3%A7a%20no%20Grande%20Baile%20do%20seu%201%C2%BA%20Aninho!%20Preparem%20o%20banquete%2C%20nos%20vemos%20dia%2014%2F11%20%C3%A0s%2016h%20no%20Espa%C3%A7o%20Aquarela!%20%F0%9F%8E%89%E2%9C%A8" 
+       href="https://wa.me/5521981461040?text=Sauda%C3%A7%C3%B5es%20Reais!%20%F0%9F%8F%B0%F0%9F%91%91%20Atendendo%20%C3%A0%20nobre%20convoca%C3%A7%C3%A3o%20de%20Sua%20Alteza%2C%20a%20Princesa%20Mait%C3%AA%2C%20confirmo%20com%20imensa%20honra%20e%20alegria%20a%20nossa%20presen%C3%A7a%20no%20Grande%20Baile%20do%20seu%201%C2%BA%20Aninho!%20Nos%20vemos%20dia%2014%2F11%20%C3%A0s%2016h%20no%20Espa%C3%A7o%20Aquarela!%20%F0%9F%8E%89%E2%9C%A8" 
        target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
   </div>
 
@@ -516,12 +536,21 @@ html, body {
     <a id="btn-voltar" class="btn-click" href="javascript:void(0)" onclick="animarBrilho(event); voltarAoConvite()"></a>
   </div>
 
-  <!-- Modal Pix -->
+  <!-- Modal Pix com Dados Completos -->
   <div id="modal-pix" onclick="fecharModalPix(event)">
     <div class="modal-box" onclick="event.stopPropagation()">
       <h3>🎁 Vale Presente da Maitê</h3>
       <p>Caso prefira nos agraciar com um mimo via Pix para o cofrinho da princesinha Maitê:</p>
-      <div class="pix-chave-container" id="texto-chave-pix">SUACHAVEPIXAQUI</div>
+      
+      <!-- Chave Pix -->
+      <div class="pix-chave-container" id="texto-chave-pix">14812948738</div>
+      
+      <!-- Dados do Favorecido -->
+      <div class="pix-info-extra">
+        <strong>Favorecida:</strong> Tahayssa Avelino da Silva<br>
+        <strong>Instituição:</strong> PicPay
+      </div>
+
       <button class="btn-copiar" type="button" onclick="copiarChavePix()">Copiar Chave Pix ✨</button>
       <button class="btn-fechar" type="button" onclick="fecharModalPix()">Fechar</button>
     </div>
@@ -536,7 +565,8 @@ html, body {
 <audio id="audio-narracao" preload="auto"></audio>
 
 <script>
-const CHAVE_PIX = "SUACHAVEPIXAQUI";
+// Chave Pix Configurada
+const CHAVE_PIX = "14812948738";
 
 const stage = document.getElementById('stage');
 const videoAbertura = document.getElementById('video-abertura');
@@ -844,7 +874,7 @@ function iniciarSlideshow() {
                         ? audioNarracao.duration 
                         : 16;
   
-  let tempoPorFoto = Math.max(2800, (duracaoNarracao / slidePhotos.length) * 1000);
+  let tempoPorFoto = Math.max(2400, (duracaoNarracao / slidePhotos.length) * 1000);
 
   slideInterval = setInterval(() => {
     photoSmoke.classList.add('ativo');
@@ -981,12 +1011,8 @@ function fecharModalPix(e) {
 }
 
 function copiarChavePix() {
-  if (CHAVE_PIX === "SUACHAVEPIXAQUI") {
-    alert("✨ Por favor, substitua 'SUACHAVEPIXAQUI' no início do script pelo seu Pix real!");
-    return;
-  }
   navigator.clipboard.writeText(CHAVE_PIX).then(() => {
-    alert("✨ Chave Pix copiada com sucesso!");
+    alert("✨ Chave Pix copiada com sucesso!\n\nFavorecida: Tahayssa Avelino da Silva\nInstituição: PicPay");
     fecharModalPix();
   }).catch(() => {
     prompt("Copie a chave Pix abaixo:", CHAVE_PIX);
