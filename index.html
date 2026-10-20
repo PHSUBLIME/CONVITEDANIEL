@@ -21,6 +21,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Great+Vibes&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
 
 <!-- Pré-carregamento das Fotos e Presentes -->
+<link rel="preload" as="image" href="./pagina.png?v=3">
 <link rel="preload" as="image" href="https://i.postimg.cc/nzpLRbSH/Whats-App-Image-2026-10-16-at-20-04-49.jpg">
 <link rel="preload" as="image" href="https://i.postimg.cc/7Lg6nYVL/Whats-App-Image-2026-10-16-at-20-04-50.jpg">
 <link rel="preload" as="image" href="https://i.postimg.cc/bYCmhQXW/Whats-App-Image-2026-10-20-at-x.jpg">
@@ -117,10 +118,11 @@ html, body {
   opacity: 1;
 }
 
+/* Fundo do Castelo com Forçador de Atualização */
 .slideshow-bg {
   position: absolute;
   inset: -15px;
-  background: url('./pagina.png') center/cover no-repeat;
+  background: url('./pagina.png?v=3') center/cover no-repeat;
   filter: blur(5px) brightness(0.55);
   transform: scale(1.06);
   z-index: 1;
@@ -470,20 +472,16 @@ html, body {
 
     <div class="slideshow-title">1 Aninho de Puro Amor ✨</div>
     <div class="photo-frame">
-      <!-- 1 e 2: Princesinha primeiro -->
       <img class="slide-photo" src="https://i.postimg.cc/nzpLRbSH/Whats-App-Image-2026-10-16-at-20-04-49.jpg" alt="Maitê Princesa 1">
       <img class="slide-photo" src="https://i.postimg.cc/7Lg6nYVL/Whats-App-Image-2026-10-16-at-20-04-50.jpg" alt="Maitê Princesa 2">
-      <!-- 4 Fotos novas -->
       <img class="slide-photo" src="https://i.postimg.cc/bYCmhQXW/Whats-App-Image-2026-10-20-at-x.jpg" alt="Maitê 3">
       <img class="slide-photo" src="https://i.postimg.cc/dtgn7wVH/Whats-App-Image-2026-10-20-at-10-06-09xx.jpg" alt="Maitê 4">
       <img class="slide-photo" src="https://i.postimg.cc/BvBCwFch/Whats-App-Image-2026-10-20-at-10-06-09x.jpg" alt="Maitê 5">
       <img class="slide-photo" src="https://i.postimg.cc/qqzXR5fP/Whats-App-Image-2026-10-20-at-10-06-09.jpg" alt="Maitê 6">
-      <!-- Última foto -->
       <img class="slide-photo" src="https://i.postimg.cc/QxyHXzCf/Whats-App-Image-2026-10-20-at-20-04-50s.jpg" alt="Maitê 7">
       
       <div class="photo-smoke-pulse" id="photoSmoke"></div>
     </div>
-    <!-- 7 Indicadores -->
     <div class="slide-dots">
       <span class="dot"></span>
       <span class="dot"></span>
@@ -505,8 +503,8 @@ html, body {
 
   <canvas id="sparkle-canvas"></canvas>
 
-  <!-- 3. Convite Principal -->
-  <img id="convite-page" src="./pagina.png" alt="Convite Principal">
+  <!-- 3. Convite Principal (Forçado com ?v=3 para atualizar na hora!) -->
+  <img id="convite-page" src="./pagina.png?v=3" alt="Convite Principal">
 
   <!-- Botões Principais -->
   <div class="btn-layer" id="btnLayerPrincipal">
@@ -542,10 +540,8 @@ html, body {
       <h3>🎁 Vale Presente da Maitê</h3>
       <p>Caso prefira nos agraciar com um mimo via Pix para o cofrinho da princesinha Maitê:</p>
       
-      <!-- Chave Pix -->
       <div class="pix-chave-container" id="texto-chave-pix">14812948738</div>
       
-      <!-- Dados do Favorecido -->
       <div class="pix-info-extra">
         <strong>Favorecida:</strong> Tahayssa Avelino da Silva<br>
         <strong>Instituição:</strong> PicPay
@@ -565,7 +561,6 @@ html, body {
 <audio id="audio-narracao" preload="auto"></audio>
 
 <script>
-// Chave Pix Configurada
 const CHAVE_PIX = "14812948738";
 
 const stage = document.getElementById('stage');
