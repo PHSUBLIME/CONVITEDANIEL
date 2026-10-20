@@ -5,12 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Convite Especial - Maitê</title>
 
+<!-- Fontes Nobres para o Nome da Maitê -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Great+Vibes&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Convite Especial - 1 Aninho da Maitê" />
 <meta property="og:description" content="Você é nosso convidado especial! Toque para abrir." />
 <meta property="og:image" content="capa.png" />
 
-<!-- Pré-carregamento da foto de presentes -->
 <link rel="preload" as="image" href="https://i.postimg.cc/zX3NpXj6/presentes.png">
 
 <style>
@@ -54,7 +58,7 @@ html, body {
   transition: opacity 0.5s ease;
 }
 
-/* 2. Vídeos com Transição Suave */
+/* 2. Vídeos com Transição */
 .video-player {
   z-index: 40;
   opacity: 0;
@@ -66,7 +70,6 @@ html, body {
   pointer-events: auto;
 }
 
-/* Botão Pular Vídeo */
 #btn-pular {
   position: absolute;
   right: 14px;
@@ -81,10 +84,9 @@ html, body {
   font-size: 13px;
   font-weight: bold;
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
 }
 
-/* 3. Página Principal (Convite) */
+/* 3. Página Principal */
 #convite-page {
   z-index: 10;
   display: none;
@@ -94,6 +96,68 @@ html, body {
 #convite-page.show {
   display: block;
   opacity: 1;
+}
+
+/* 🌟 SOBREPOSIÇÃO INTELIGENTE DOS DADOS DA MAITÊ 🌟 */
+.overlay-dados-maite {
+  position: absolute;
+  top: 27%;
+  left: 17%;
+  width: 66%;
+  height: 42.5%;
+  background: #fdf5ea;
+  border-radius: 25px;
+  z-index: 15;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.35);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  padding: 8px 12px;
+}
+#convite-page.show ~ .overlay-dados-maite {
+  display: flex;
+}
+
+.overlay-dados-maite h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(34px, 8vw, 44px);
+  color: #7b1328;
+  margin: 0;
+  line-height: 1;
+  text-shadow: 1px 1px 2px rgba(212, 175, 55, 0.4);
+}
+.overlay-dados-maite .idade {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #9b6c28;
+  letter-spacing: 2px;
+  margin-top: 2px;
+  margin-bottom: 12px;
+}
+.info-badge {
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid #e2c88d;
+  border-radius: 20px;
+  padding: 5px 12px;
+  width: 92%;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6a1727;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+}
+.info-badge.local {
+  font-size: 11px;
+  line-height: 1.2;
 }
 
 /* 4. Página de Presentes */
@@ -108,7 +172,6 @@ html, body {
   opacity: 1;
 }
 
-/* Indicador de toque na capa */
 .tap-hint {
   position: absolute;
   top: 59%; left: 50%;
@@ -124,7 +187,6 @@ html, body {
   text-transform: uppercase;
   pointer-events: none;
   animation: pulse 1.8s infinite;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.5);
 }
 .opened .tap-hint { display: none !important; }
 
@@ -133,7 +195,6 @@ html, body {
   50% { transform: translate(-50%, -50%) scale(1.06); }
 }
 
-/* Camadas de botões invisíveis */
 .btn-layer {
   position: absolute; inset: 0;
   z-index: 35;
@@ -145,7 +206,6 @@ html, body {
   position: absolute;
   display: block;
   background: transparent;
-  -webkit-tap-highlight-color: transparent;
   cursor: pointer;
 }
 
@@ -154,7 +214,7 @@ html, body {
 #btn-presente { left: 37.5%; top: 73.5%; width: 25%; height: 15%; border-radius: 50%; }
 #btn-presenca { left: 65.5%; top: 73.5%; width: 25%; height: 15%; border-radius: 50%; }
 
-/* Botões da Página de Presentes */
+/* Botões de Presentes */
 #btn-pedagogicos { left: 19%; top: 46%; width: 19%; height: 16%; border-radius: 50%; }
 #btn-livros       { left: 40.5%; top: 46%; width: 19%; height: 16%; border-radius: 50%; }
 #btn-roupas       { left: 62%; top: 46%; width: 19%; height: 16%; border-radius: 50%; }
@@ -171,34 +231,16 @@ html, body {
   border-radius: 25px;
 }
 
-/* Efeito de brilho ao clicar */
-.btn-click:active::after {
-  content: '';
-  position: absolute;
-  inset: -10%;
-  border-radius: inherit;
-  background: radial-gradient(circle, rgba(255, 223, 100, 0.8) 0%, rgba(212, 175, 55, 0.4) 50%, rgba(255, 255, 255, 0) 70%);
-  animation: flashClick 0.5s ease-out;
-}
-
-@keyframes flashClick {
-  0% { transform: scale(0.6); opacity: 1; }
-  100% { transform: scale(1.4); opacity: 0; }
-}
-
 #sparkle-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
   z-index: 48;
   pointer-events: none;
 }
 
-/* Modal do Pix */
+/* Modal Pix */
 #modal-pix {
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(4px);
   z-index: 100;
@@ -216,32 +258,16 @@ html, body {
   width: 90%;
   max-width: 340px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-  animation: popIn 0.3s ease-out;
 }
-@keyframes popIn {
-  from { transform: scale(0.85); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-.modal-box h3 {
-  color: #8a1e32;
-  font-size: 19px;
-  margin-bottom: 8px;
-}
-.modal-box p {
-  color: #555;
-  font-size: 13px;
-  line-height: 1.4;
-  margin-bottom: 16px;
-}
+.modal-box h3 { color: #8a1e32; font-size: 19px; margin-bottom: 8px; }
+.modal-box p { color: #555; font-size: 13px; margin-bottom: 16px; }
 .pix-chave-container {
   background: #f0e6d6;
   padding: 10px;
   border-radius: 10px;
   font-family: monospace;
   font-size: 13px;
-  color: #333;
   word-break: break-all;
-  user-select: all;
   margin-bottom: 16px;
   border: 1px dashed #c09d3b;
 }
@@ -252,9 +278,7 @@ html, body {
   padding: 12px 22px;
   border-radius: 25px;
   font-weight: bold;
-  font-size: 14px;
   cursor: pointer;
-  display: block;
   width: 100%;
   margin-bottom: 10px;
 }
@@ -262,7 +286,6 @@ html, body {
   background: transparent;
   color: #777;
   border: none;
-  font-size: 13px;
   cursor: pointer;
   text-decoration: underline;
 }
@@ -271,11 +294,11 @@ html, body {
 <body>
 
 <div class="stage" id="stage">
-  <!-- 1. Capa Envelope -->
-  <img id="cover" src="./capa.png" alt="Capa Envelope" onclick="iniciarExperiencia()">
+  <!-- 1. Capa -->
+  <img id="cover" src="./capa.png" alt="Capa" onclick="iniciarExperiencia()">
   <div class="tap-hint" onclick="iniciarExperiencia()">Toque para abrir</div>
 
-  <!-- VÍDEOS COM TRANSIÇÃO -->
+  <!-- Vídeos -->
   <video id="video-abertura" class="video-player" playsinline webkit-playsinline x5-playsinline preload="auto" src="https://i.imgur.com/JPzoItH.mp4"></video>
   <video id="video-fala" class="video-player" playsinline webkit-playsinline x5-playsinline preload="auto" src="https://i.imgur.com/3W1InHI.mp4"></video>
 
@@ -286,9 +309,17 @@ html, body {
   <!-- 3. Convite Principal -->
   <img id="convite-page" src="./pagina.png" alt="Convite Principal">
 
-  <!-- Botões da Página Principal -->
+  <!-- CAMADA DOS DADOS DA MAITÊ (SOBREPOSIÇÃO) -->
+  <div class="overlay-dados-maite" id="overlayMaite">
+    <h1>Maitê</h1>
+    <div class="idade">👑 1 ANINHO 👑</div>
+    <div class="info-badge">📅 14 de Novembro de 2025</div>
+    <div class="info-badge">⏰ Às 16h00</div>
+    <div class="info-badge local">📍 Espaço Aquarela Festas e Eventos</div>
+  </div>
+
+  <!-- Botões Principais -->
   <div class="btn-layer" id="btnLayerPrincipal">
-    <!-- LOCALIZAÇÃO ATUALIZADA: ESPAÇO AQUARELA -->
     <a id="btn-local" class="btn-click" 
        href="https://www.google.com/maps/search/?api=1&query=Espa%C3%A7o+Aquarela+Festas+e+Eventos" 
        target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
@@ -296,52 +327,30 @@ html, body {
     <a id="btn-presente" class="btn-click" href="javascript:void(0)" 
        onclick="animarBrilho(event); abrirPaginaPresentes()"></a>
 
-    <!-- WHATSAPP ATUALIZADO: MAITÊ - 14/11 ÀS 16H -->
     <a id="btn-presenca" class="btn-click" 
        href="https://wa.me/55SEUNUMERODOTELEFONE?text=Ol%C3%A1!%20%F0%9F%92%95%20Com%20muita%20alegria%20confirmo%20minha%20presen%C3%A7a%20no%20anivers%C3%A1rio%20de%201%20aninho%20da%20Mait%C3%AA!%20%F0%9F%91%91%E2%9C%A8%20Nos%20vemos%20dia%2014%2F11%20%C3%A0s%2016h%20no%20Espa%C3%A7o%20Aquarela!%20%F0%9F%8E%89" 
        target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
   </div>
 
-  <!-- 4. Página de Presentes -->
-  <img id="presentes-page" src="https://i.postimg.cc/zX3NpXj6/presentes.png" alt="Página de Presentes">
+  <!-- 4. Presentes -->
+  <img id="presentes-page" src="https://i.postimg.cc/zX3NpXj6/presentes.png" alt="Presentes">
 
-  <!-- Botões Interativos da Página de Presentes -->
   <div class="btn-layer" id="btnLayerPresentes">
-    <a id="btn-pedagogicos" class="btn-click" 
-       href="https://www.amazon.com.br/s?k=brinquedos+pedagogicos+1+ano" 
-       target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
-
-    <a id="btn-livros" class="btn-click" 
-       href="https://www.amazon.com.br/s?k=livros+infantis+bebe+1+ano" 
-       target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
-
-    <a id="btn-roupas" class="btn-click" 
-       href="https://www.lojasrenner.com.br/c/infantil/bebe" 
-       target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
-
-    <a id="btn-higiene" class="btn-click" 
-       href="https://www.granado.com.br/bebe" 
-       target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
-
-    <a id="btn-educativos" class="btn-click" 
-       href="https://www.rihappy.com.br/brinquedos-para-bebes" 
-       target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
-
-    <a id="btn-valepix" class="btn-click" href="javascript:void(0)" 
-       onclick="animarBrilho(event); abrirModalPix()"></a>
-
-    <a id="btn-voltar" class="btn-click" href="javascript:void(0)" 
-       onclick="animarBrilho(event); voltarAoConvite()"></a>
+    <a id="btn-pedagogicos" class="btn-click" href="https://www.amazon.com.br/s?k=brinquedos+pedagogicos+1+ano" target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
+    <a id="btn-livros" class="btn-click" href="https://www.amazon.com.br/s?k=livros+infantis+bebe+1+ano" target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
+    <a id="btn-roupas" class="btn-click" href="https://www.lojasrenner.com.br/c/infantil/bebe" target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
+    <a id="btn-higiene" class="btn-click" href="https://www.granado.com.br/bebe" target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
+    <a id="btn-educativos" class="btn-click" href="https://www.rihappy.com.br/brinquedos-para-bebes" target="_blank" rel="noopener noreferrer" onclick="animarBrilho(event)"></a>
+    <a id="btn-valepix" class="btn-click" href="javascript:void(0)" onclick="animarBrilho(event); abrirModalPix()"></a>
+    <a id="btn-voltar" class="btn-click" href="javascript:void(0)" onclick="animarBrilho(event); voltarAoConvite()"></a>
   </div>
 
   <!-- Modal Pix -->
   <div id="modal-pix" onclick="fecharModalPix(event)">
     <div class="modal-box" onclick="event.stopPropagation()">
       <h3>🎁 Vale Presente da Maitê</h3>
-      <p>Caso prefira nos agraciar com um mimo via Pix para o cofrinho da nossa princesinha Maitê:</p>
-      
+      <p>Caso prefira nos agraciar com um mimo via Pix para o cofrinho da princesinha Maitê:</p>
       <div class="pix-chave-container" id="texto-chave-pix">SUACHAVEPIXAQUI</div>
-      
       <button class="btn-copiar" type="button" onclick="copiarChavePix()">Copiar Chave Pix ✨</button>
       <button class="btn-fechar" type="button" onclick="fecharModalPix()">Fechar</button>
     </div>
@@ -349,18 +358,17 @@ html, body {
 
 </div>
 
-<!-- Música de Fundo -->
 <audio id="musica" src="https://i.imgur.com/Qv9rKqF.mp4" loop preload="auto"></audio>
 
 <script>
-// --- CONFIGURE AQUI SUA CHAVE PIX ---
-const CHAVE_PIX = "SUACHAVEPIXAQUI"; // Coloque seu Pix aqui
+const CHAVE_PIX = "SUACHAVEPIXAQUI";
 
 const stage = document.getElementById('stage');
 const videoAbertura = document.getElementById('video-abertura');
 const videoFala = document.getElementById('video-fala');
 const btnPular = document.getElementById('btn-pular');
 const convitePage = document.getElementById('convite-page');
+const overlayMaite = document.getElementById('overlayMaite');
 const presentesPage = document.getElementById('presentes-page');
 const btnLayerPrincipal = document.getElementById('btnLayerPrincipal');
 const btnLayerPresentes = document.getElementById('btnLayerPresentes');
@@ -369,7 +377,6 @@ const modalPix = document.getElementById('modal-pix');
 
 document.getElementById('texto-chave-pix').innerText = CHAVE_PIX;
 
-// Canvas de brilhos
 const canvas = document.getElementById('sparkle-canvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -519,11 +526,13 @@ function irParaFinal() {
   }
 
   convitePage.classList.add('show');
+  overlayMaite.style.display = 'flex';
   btnLayerPrincipal.classList.add('show');
 }
 
 function abrirPaginaPresentes() {
   convitePage.classList.remove('show');
+  overlayMaite.style.display = 'none';
   btnLayerPrincipal.classList.remove('show');
 
   presentesPage.classList.add('show');
@@ -535,6 +544,7 @@ function voltarAoConvite() {
   btnLayerPresentes.classList.remove('show');
 
   convitePage.classList.add('show');
+  overlayMaite.style.display = 'flex';
   btnLayerPrincipal.classList.add('show');
 }
 
