@@ -512,10 +512,9 @@ html, body {
 <!-- Música de Fundo -->
 <audio id="musica" src="https://i.imgur.com/Qv9rKqF.mp4" loop preload="auto"></audio>
 
-<!-- 🎙️ ÁUDIO DA NARRAÇÃO COM FONTES MÚLTIPLAS DE SEGURANÇA -->
+<!-- 🎙️ Áudio da Narração com múltiplas fontes -->
 <audio id="audio-narracao" preload="auto">
   <source src="./narracao.mp3" type="audio/mpeg">
-  <source src="./narra%C3%A7%C3%A3o.mp3" type="audio/mpeg">
   <source src="https://files.catbox.moe/txl3r7.mp3" type="audio/mpeg">
 </audio>
 
@@ -544,8 +543,12 @@ const slideshowContainer = document.getElementById('slideshow-container');
 const slidePhotos = document.querySelectorAll('.slide-photo');
 const slideDots = document.querySelectorAll('.dot');
 const photoSmoke = document.getElementById('photoSmoke');
+
 let slideAtual = 0;
 let slideInterval = null;
+let photoChangeTimeout = null;
+let smokeTimeout = null;
+let falaIniciada = false; // 🔒 Trava que impede o vídeo de repetir
 
 document.getElementById('texto-chave-pix').innerText = CHAVE_PIX;
 
@@ -726,18 +729,13 @@ function animarBrilho(e) {
 let jaIniciou = false;
 let transicaoIniciada = false;
 
-// 1. Toque no Envelope -> Inicia Castelo e pré-carrega áudio
+// 1. Toque no Envelope -> Inicia Castelo
 function iniciarExperiencia() {
   if (jaIniciou) return;
   jaIniciou = true;
 
-  if (audioNarracao) {
-    audioNarracao.load();
-  }
-
-  if (musica) {
-    musica.load();
-  }
+  if (audioNarracao) audioNarracao.load();
+  if (musica) musica.load();
 
   ativarBorboletas(false);
 
@@ -764,26 +762,25 @@ function iniciarExperiencia() {
   videoAbertura.onerror = iniciarSlideshow;
 }
 
-// 2. Inicia o Slideshow com Narração
+// 2. Inicia o Slideshow com Narração e Música com volume ajustado
 function iniciarSlideshow() {
   transicaoIniciada = true;
 
   videoAbertura.classList.remove('visivel');
   setTimeout(() => { videoAbertura.pause(); }, 500);
 
+  // 🎵 Volume da música aumentado para 0.32 (mais presente e emocionante)
   if (musica) {
-    musica.volume = 0.16;
+    musica.volume = 0.32;
     musica.play().catch(() => {});
   }
 
-  // Toca a narração com fallback automático
   if (audioNarracao) {
     audioNarracao.currentTime = 0;
     audioNarracao.volume = 1;
     const pAudio = audioNarracao.play();
     if (pAudio !== undefined) {
       pAudio.catch(() => {
-        // Se a fonte local falhar, tenta imediatamente o link da nuvem
         audioNarracao.src = "https://files.catbox.moe/txl3r7.mp3";
         audioNarracao.play().catch(() => {});
       });
@@ -805,16 +802,14 @@ function iniciarSlideshow() {
   slideInterval = setInterval(() => {
     photoSmoke.classList.add('ativo');
 
-    setTimeout(() => {
+    photoChangeTimeout = setTimeout(() => {
       slideAtual++;
       if (slideAtual < slidePhotos.length) {
         mostrarSlide(slideAtual);
-        setTimeout(() => {
+        smokeTimeout = setTimeout(() => {
           photoSmoke.classList.remove('ativo');
         }, 350);
       } else {
-        clearInterval(slideInterval);
-        photoSmoke.classList.remove('ativo');
         finalizarSlideshowEIrParaFala();
       }
     }, 550);
@@ -822,10 +817,7 @@ function iniciarSlideshow() {
   }, tempoPorFoto);
 
   audioNarracao.onended = () => {
-    if (slideInterval) {
-      clearInterval(slideInterval);
-      finalizarSlideshowEIrParaFala();
-    }
+    finalizarSlideshowEIrParaFala();
   };
 }
 
@@ -838,14 +830,29 @@ function mostrarSlide(index) {
   });
 }
 
+// 3. Fim das Fotos -> Vídeo 2 com trava anti-repetição
 function finalizarSlideshowEIrParaFala() {
+  // 🔒 Se já foi chamado, não repete nunca!
+  if (falaIniciada) return;
+  falaIniciada = true;
+
+  // Limpa todos os temporizadores imediatamente
+  if (slideInterval) {
+    clearInterval(slideInterval);
+    slideInterval = null;
+  }
+  if (photoChangeTimeout) clearTimeout(photoChangeTimeout);
+  if (smokeTimeout) clearTimeout(smokeTimeout);
+
   slideshowContainer.classList.remove('visivel');
   ativarBorboletas(false);
 
+  // Volume suave para a Maitê falar
   if (musica) {
-    musica.volume = 0.28;
+    musica.volume = 0.22;
   }
 
+  // Inicia o vídeo uma única vez
   videoFala.currentTime = 0;
   videoFala.muted = false;
   videoFala.classList.add('visivel');
@@ -859,11 +866,15 @@ function finalizarSlideshowEIrParaFala() {
   videoFala.onerror = irParaFinal;
 }
 
+// 4. Convite Final
 function irParaFinal() {
+  falaIniciada = true;
   if (slideInterval) clearInterval(slideInterval);
+  if (photoChangeTimeout) clearTimeout(photoChangeTimeout);
+  if (smokeTimeout) clearTimeout(smokeTimeout);
   if (audioNarracao) audioNarracao.pause();
+  
   btnPular.style.display = 'none';
-
   smokeOverlay.classList.add('animar');
 
   setTimeout(() => {
@@ -889,6 +900,7 @@ function irParaFinal() {
     convitePage.classList.add('show');
     btnLayerPrincipal.classList.add('show');
 
+    // 🦋 Borboletas ativas no convite final!
     ativarBorboletas(true);
 
     setTimeout(() => {
