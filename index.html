@@ -207,7 +207,7 @@ html, body {
   transform: scale(1.3);
 }
 
-/* 🦋 3 BORBOLETAS 3D ENCANTADAS (COM Z-INDEX ALTO) */
+/* 🦋 3 BORBOLETAS 3D ENCANTADAS */
 #butterflies-group {
   position: absolute;
   inset: 0;
@@ -466,7 +466,7 @@ html, body {
 
   <canvas id="sparkle-canvas"></canvas>
 
-  <!-- 3. Convite Principal (Com borboletas voando por cima!) -->
+  <!-- 3. Convite Principal -->
   <img id="convite-page" src="./pagina.png" alt="Convite Principal">
 
   <!-- Botões Principais -->
@@ -512,10 +512,11 @@ html, body {
 <!-- Música de Fundo -->
 <audio id="musica" src="https://i.imgur.com/Qv9rKqF.mp4" loop preload="auto"></audio>
 
-<!-- 🎙️ Novo Áudio Medieval da Convocação Real -->
-<audio id="audio-narracao" 
-       src="https://files.catbox.moe/txl3r7.mp3" 
-       preload="auto">
+<!-- 🎙️ ÁUDIO DA NARRAÇÃO COM FONTES MÚLTIPLAS DE SEGURANÇA -->
+<audio id="audio-narracao" preload="auto">
+  <source src="./narracao.mp3" type="audio/mpeg">
+  <source src="./narra%C3%A7%C3%A3o.mp3" type="audio/mpeg">
+  <source src="https://files.catbox.moe/txl3r7.mp3" type="audio/mpeg">
 </audio>
 
 <script>
@@ -725,35 +726,20 @@ function animarBrilho(e) {
 let jaIniciou = false;
 let transicaoIniciada = false;
 
-// 1. Toque no Envelope -> Inicia Castelo e destrava áudios
+// 1. Toque no Envelope -> Inicia Castelo e pré-carrega áudio
 function iniciarExperiencia() {
   if (jaIniciou) return;
   jaIniciou = true;
 
   if (audioNarracao) {
-    audioNarracao.volume = 0;
-    const p = audioNarracao.play();
-    if (p !== undefined) {
-      p.then(() => {
-        audioNarracao.pause();
-        audioNarracao.currentTime = 0;
-        audioNarracao.volume = 1;
-      }).catch(() => {});
-    }
+    audioNarracao.load();
   }
 
   if (musica) {
-    musica.volume = 0;
-    const pm = musica.play();
-    if (pm !== undefined) {
-      pm.then(() => {
-        musica.pause();
-        musica.currentTime = 0;
-      }).catch(() => {});
-    }
+    musica.load();
   }
 
-  ativarBorboletas(false); // Oculta durante o vídeo 1
+  ativarBorboletas(false);
 
   stage.classList.add('opened');
   videoAbertura.classList.add('visivel');
@@ -778,7 +764,7 @@ function iniciarExperiencia() {
   videoAbertura.onerror = iniciarSlideshow;
 }
 
-// 2. Inicia o Slideshow com SINCRONIA EXATA DO ÁUDIO MEDIEVAL
+// 2. Inicia o Slideshow com Narração
 function iniciarSlideshow() {
   transicaoIniciada = true;
 
@@ -790,17 +776,25 @@ function iniciarSlideshow() {
     musica.play().catch(() => {});
   }
 
+  // Toca a narração com fallback automático
   if (audioNarracao) {
     audioNarracao.currentTime = 0;
     audioNarracao.volume = 1;
-    audioNarracao.play().catch(() => {});
+    const pAudio = audioNarracao.play();
+    if (pAudio !== undefined) {
+      pAudio.catch(() => {
+        // Se a fonte local falhar, tenta imediatamente o link da nuvem
+        audioNarracao.src = "https://files.catbox.moe/txl3r7.mp3";
+        audioNarracao.play().catch(() => {});
+      });
+    }
   }
 
   slideshowContainer.classList.add('visivel');
   slideAtual = 0;
   mostrarSlide(slideAtual);
 
-  ativarBorboletas(true); // 🦋 Borboletas voando nas fotos!
+  ativarBorboletas(true);
 
   let duracaoNarracao = (audioNarracao && audioNarracao.duration && !isNaN(audioNarracao.duration)) 
                         ? audioNarracao.duration 
@@ -846,7 +840,7 @@ function mostrarSlide(index) {
 
 function finalizarSlideshowEIrParaFala() {
   slideshowContainer.classList.remove('visivel');
-  ativarBorboletas(false); // Oculta durante a fala da Maitê
+  ativarBorboletas(false);
 
   if (musica) {
     musica.volume = 0.28;
@@ -865,7 +859,6 @@ function finalizarSlideshowEIrParaFala() {
   videoFala.onerror = irParaFinal;
 }
 
-// 4. Convite Final
 function irParaFinal() {
   if (slideInterval) clearInterval(slideInterval);
   if (audioNarracao) audioNarracao.pause();
@@ -896,7 +889,6 @@ function irParaFinal() {
     convitePage.classList.add('show');
     btnLayerPrincipal.classList.add('show');
 
-    // 🦋 BORBOLETAS ATIVAS NO CONVITE PRINCIPAL!
     ativarBorboletas(true);
 
     setTimeout(() => {
@@ -913,7 +905,7 @@ function abrirPaginaPresentes() {
   presentesPage.classList.add('show');
   btnLayerPresentes.classList.add('show');
 
-  ativarBorboletas(true); // 🦋 Borboletas ativas nos presentes!
+  ativarBorboletas(true);
 }
 
 function voltarAoConvite() {
@@ -923,7 +915,7 @@ function voltarAoConvite() {
   convitePage.classList.add('show');
   btnLayerPrincipal.classList.add('show');
 
-  ativarBorboletas(true); // 🦋 Continua voando no convite!
+  ativarBorboletas(true);
 }
 
 function abrirModalPix() {
